@@ -1,13 +1,43 @@
 :root {
+  /* Custom theming for CreatorHub modern dashboard & learning */
+  --electric-blue: #1E90FF;
+  --coral: #FF7E5F;
+  --coral-2: #FD3A69;
+  --navy-bg: #111827;
+  --gray-bg: #1F2937;
+
+  /* New theme overrides: */
+  --primary: #1E90FF;
+  --accent: #FF7E5F;
+  --accent-secondary: #FD3A69;
+  --accent-gradient: linear-gradient(90deg, #FF7E5F 8%, #FD3A69 92%);
+  --accent-gradient-focus: linear-gradient(92deg, #FF7E5F 0%, #FD3A69 100%);
+  --icon-btn-gradient: linear-gradient(96deg, #1E90FF 18%, #FF7E5F 60%, #FD3A69 97%);
+
+  --background-main: #111827;
+  --background-secondary: #1F2937;
+  --background-frost: rgba(44,48,80,0.72);
+  --glass-blur: blur(16px) saturate(135%);
+  --card-bg: rgba(44,48,80,0.70);
+  --card-backdrop: blur(16px) saturate(135%);
+  --gray-frost: rgba(61,69,112,0.14);
+
+  --text-color: #FFFFFF;
+  --text-secondary: #E5E7EB;
+
+  --border-color: rgba(255,255,255,0.121);
+  --card-radius: 28px;
+  --container-radius: 36px;
+
+  --skeleton-bg: #242944;
+  --shadow-card: 0 7px 32px 0 rgba(44,62,112,0.18), 0 3px 12px rgba(32,52,92,0.10);
+  --shadow-hover: 0 13px 43px 0 rgba(51,71,145,0.29), 0 2.5px 13px 0 rgba(50,70,144,0.18);
+
+  /* Kept legacy accent for reference (do not remove, code fallback compatibility) */
   --base-light: #00ffff;
   --base-dark: #06071a;
-  --primary: #25315e;
   --secondary: #171826;
-  --accent: #f9b221;
-  --accent-secondary: #e87a41;
-  --accent-gradient: linear-gradient(93deg, #f9b221 15%, #e87a41 100%);
-  --accent-gradient-focus: linear-gradient(90deg, #ffc700 0%, #ef943d 100%);
-  --icon-btn-gradient: linear-gradient(94deg, #ffe897 18%, #f9b221 54%, #e87a41 97%);
+  --frost-border: 1.4px solid rgba(255,255,255,0.13);
   --success: #20dba2;
   --info: #41abeb;
   --warning: #ffd234;
@@ -715,4 +745,101 @@ a:hover {
   font-weight: 400;
   max-width: 620px;
   margin-bottom: 24px;
+}
+
+/* === Additional: Dashboard main greeting and cards grid === */
+.dashboard-greeting {
+  font-family: inherit;
+  background: linear-gradient(85deg,#1E90FF 60%,#FD3A69 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: var(--accent);
+  font-weight: 800;
+  text-shadow: 0 2px 44px #1e90ff3d;
+}
+.dashboard-tool-card-grid {
+  margin-top: 9px;
+}
+.dashboard-tool-card-grid .ch-card {
+  background: var(--card-bg,rgba(44,48,80,0.7));
+  backdrop-filter: var(--glass-blur) !important;
+  border-radius: var(--card-radius, 28px);
+  min-height: 168px;
+  transition: box-shadow .18s, transform .16s, background .2s;
+  will-change: box-shadow,transform;
+  box-shadow: var(--shadow-card);
+  cursor: pointer;
+  margin-bottom: 0;
+}
+.dashboard-tool-card-grid .ch-card:focus-visible, .dashboard-tool-card-grid .ch-card:hover {
+  box-shadow: var(--shadow-hover);
+  background: rgba(44,48,80,0.92);
+  border-color: var(--accent-secondary);
+  outline: none;
+  transform: translateY(-5px) scale(1.027);
+}
+.dashboard-tool-card-grid .ch-card .ch-card-title {
+  color: var(--accent-secondary);
+}
+.dashboard-tool-card-grid .ch-card-tag {
+  font-size: .98em;
+  border-radius: 16px;
+  font-weight: 600;
+  padding: 4px 13px 4px 13px;
+}
+.dashboard-tool-card-grid .ch-info-btn {
+  border-radius: 99px !important;
+  font-weight: 700;
+  box-shadow: 0 2.5px 11px 0 rgba(253,58,105,0.07);
+  margin-top: 8px;
+  letter-spacing: .02em;
+  font-size: 1.03em;
+}
+@media (max-width: 800px) {
+  .dashboard-tool-card-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* === Learning split view adjustments === */
+.learning-split-root {
+  background: linear-gradient(108deg, #181d31 45%, #181d31 100%);
+  border-radius: var(--container-radius,36px);
+  box-shadow: 0 7px 38px 0 rgba(38,54,111,0.17);
+}
+.learning-split-root nav {
+  backdrop-filter: blur(14px) saturate(130%);
+}
+.learning-split-root ul li {
+  font-size: 1.12em;
+}
+.learning-split-root ul li[aria-current="page"],
+.learning-split-root ul li:focus-visible {
+  outline: 2.2px solid #1E90FF;
+  background: var(--accent-gradient);
+  color: #181E30;
+}
+.learning-split-root ul li:hover:not([aria-current="page"]) {
+  background: #1E2336;
+  color: #FF7E5F;
+  cursor: pointer;
+}
+.learning-split-root > div {
+  border-radius: 0 var(--container-radius,36px) var(--container-radius,36px) 0;
+}
+@media (max-width: 800px) {
+  .learning-split-root {
+    flex-direction: column;
+    border-radius: 20px;
+  }
+  .learning-split-root nav {
+    max-width: 100vw;
+    flex: none;
+    border-radius: 20px 20px 0 0;
+    border-right: none;
+    border-bottom: 2.5px solid #222a3c;
+  }
+  .learning-split-root > div {
+    border-radius: 0 0 20px 20px;
+  }
 }
