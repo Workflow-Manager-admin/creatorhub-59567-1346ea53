@@ -2,10 +2,9 @@ import React from "react";
 
 // PUBLIC_INTERFACE
 function MainContainer({ children }) {
-  /** Main app layout container */
+  /** Main content area for dashboards, API tools, etc. Handles content stacking for mobile/desktop */
   return (
-    <div className="main-container">
-      {/* Sidebar, Topbar, Filters, etc, will be added here */}
+    <div className="ch-main-container">
       {children}
     </div>
   );

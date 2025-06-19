@@ -177,13 +177,62 @@ body.dark-mode {
   }
   .ch-sidebar {
     min-width: 0;
-    width: 100%;
+    width: 100vw;
     border-right: none;
     border-bottom: 1px solid var(--border-color);
     padding: 16px 12px;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    z-index: 110;
+    background: var(--primary);
+    transition: var(--transition-fast);
+  }
+  .ch-sidebar-toggle {
+    display: block;
   }
   .ch-content-area {
     padding: 16px 10px;
+  }
+}
+
+.ch-sidebar-toggle {
+  display: none;
+}
+
+.ch-main-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 500px;
+  width: 100%;
+  margin-top: 0;
+}
+
+.ch-logo {
+  display: flex;
+  align-items: center;
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+.ch-topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  z-index: 120;
+}
+
+.ch-layout-main {
+  margin-top: 64px; /* to offset fixed header */
+}
+
+@media (max-width: 800px) {
+  .ch-layout-main {
+    margin-top: 64px;
+  }
+  .ch-sidebar {
+    box-shadow: 0 4px 16px 0 #242a47;
   }
 }
 
