@@ -22,3 +22,79 @@ cacheable modules 1.37 MiB
     modules by path ./.ve/*.css 2.93 KiB 2 modules
     ./.ve/EditorOverlay.jsx 1.58 KiB [built] [code generated]
 webpack 5.99.9 compiled successfully in 1502 ms
+assets by status 620 bytes [cached] 1 asset
+assets by path *.js 1.53 MiB
+  asset bundle.js 1.52 MiB [emitted] (name: main)
+  asset main.df158a644f9e46d3c171.hot-update.js 4.92 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.df158a644f9e46d3c171.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.53 MiB = bundle.js 1.52 MiB main.df158a644f9e46d3c171.hot-update.js 4.92 KiB
+cached modules 1.36 MiB [cached] 59 modules
+runtime modules 27.5 KiB 14 modules
+./src/components/HookGenerator.js 2.4 KiB [built] [code generated]
+
+WARNING in ./src/components/HookGenerator.js 24:27-43
+export 'generateHooks' (imported as 'apiGenerateHooks') was not found in '../api/rapidapi' (possible exports: fetchRapidAPIContent)
+ @ ./src/components/DashboardView.js 11:0-44 586:39-52
+ @ ./src/App.js 4:0-55 18:32-45 33:32-45
+ @ ./src/index.js 5:0-24 11:32-35
+
+webpack 5.99.9 compiled with 1 warning in 114 ms
+assets by status 620 bytes [cached] 1 asset
+assets by path *.js 1.52 MiB
+  asset bundle.js 1.52 MiB [emitted] (name: main)
+  asset main.5fff88b5d482ff99782a.hot-update.js 4.99 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.5fff88b5d482ff99782a.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.52 MiB = bundle.js 1.52 MiB main.5fff88b5d482ff99782a.hot-update.js 4.99 KiB
+cached modules 1.35 MiB [cached] 59 modules
+runtime modules 27.5 KiB 14 modules
+./src/components/CaptionGenerator.js 2.46 KiB [built] [code generated]
+
+WARNING in ./src/components/CaptionGenerator.js 24:27-46
+export 'generateCaptions' (imported as 'apiGenerateCaptions') was not found in '../api/rapidapi' (possible exports: fetchRapidAPIContent)
+ @ ./src/components/DashboardView.js 10:0-50 558:39-55
+ @ ./src/App.js 4:0-55 18:32-45 33:32-45
+ @ ./src/index.js 5:0-24 11:32-35
+
+WARNING in ./src/components/HookGenerator.js 24:27-43
+export 'generateHooks' (imported as 'apiGenerateHooks') was not found in '../api/rapidapi' (possible exports: fetchRapidAPIContent)
+ @ ./src/components/DashboardView.js 11:0-44 586:39-52
+ @ ./src/App.js 4:0-55 18:32-45 33:32-45
+ @ ./src/index.js 5:0-24 11:32-35
+
+webpack 5.99.9 compiled with 2 warnings in 63 ms
+assets by status 620 bytes [cached] 1 asset
+assets by path *.js 1.52 MiB
+  asset bundle.js 1.52 MiB [emitted] (name: main)
+  asset main.b602543746695a48397d.hot-update.js 3.91 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.b602543746695a48397d.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.52 MiB = bundle.js 1.52 MiB main.b602543746695a48397d.hot-update.js 3.91 KiB
+cached modules 1.33 MiB [cached] 56 modules
+runtime modules 27.5 KiB 14 modules
+javascript modules 26.7 KiB
+  ./src/components/DashboardView.js 19.6 KiB [code generated]
+  ./src/components/CaptionGenerator.js 2.46 KiB [code generated]
+  ./src/api/rapidapi.js 2.17 KiB [built] [code generated]
+  ./src/components/HookGenerator.js 2.4 KiB [code generated]
+
+WARNING in ./src/components/DashboardView.js 200:61-81
+export 'fetchRapidAPIContent' (imported as 'fetchRapidAPIContent') was not found in '../api/rapidapi' (possible exports: generateCaptions, generateContentIdeas, generateHooks, generatePostPlan, getYoutubeChannelStats)
+ @ ./src/App.js 4:0-55 18:32-45 33:32-45
+ @ ./src/index.js 5:0-24 11:32-35
+
+webpack 5.99.9 compiled with 1 warning in 41 ms
+assets by status 620 bytes [cached] 1 asset
+assets by path *.js 1.52 MiB
+  asset bundle.js 1.52 MiB [emitted] (name: main)
+  asset main.2b698a1b0dad1dc1026e.hot-update.js 3.15 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.2b698a1b0dad1dc1026e.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.52 MiB = bundle.js 1.52 MiB main.2b698a1b0dad1dc1026e.hot-update.js 3.15 KiB
+cached modules 1.35 MiB [cached] 59 modules
+runtime modules 27.5 KiB 14 modules
+./src/components/Modal.js 1.21 KiB [built] [code generated]
+
+WARNING in ./src/components/DashboardView.js 200:61-81
+export 'fetchRapidAPIContent' (imported as 'fetchRapidAPIContent') was not found in '../api/rapidapi' (possible exports: generateCaptions, generateContentIdeas, generateHooks, generatePostPlan, getYoutubeChannelStats)
+ @ ./src/App.js 4:0-55 18:32-45 33:32-45
+ @ ./src/index.js 5:0-24 11:32-35
+
+webpack 5.99.9 compiled with 1 warning in 45 ms
