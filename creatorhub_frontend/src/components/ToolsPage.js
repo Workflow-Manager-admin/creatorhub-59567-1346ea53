@@ -4,18 +4,20 @@ import HashtagGenerator from "./HashtagGenerator";
 import CaptionGenerator from "./CaptionGenerator";
 import HookGenerator from "./HookGenerator";
 import PostPlanner from "./PostPlanner";
+import ContentIdeaGenerator from "./ContentIdeaGenerator";
 import Modal from "./Modal";
 
 // PUBLIC_INTERFACE
 /**
  * ToolsPage - Peer tool cards, each launches modal overlay in fixed viewport context.
+ * Now includes the Content Idea Generator integrated with the real API and consistent modal UI.
  */
 function ToolsPage() {
   // Modal state opens for sample tool card (legacy, but SmallToolCard now controls modal itself)
   const [openModal, setOpenModal] = useState(false);
   const [modalContent, setModalContent] = useState(null);
 
-  // Tools array now includes Post Planner
+  // Tools array now includes Content Idea Generator and Post Planner
   const tools = [
     {
       id: "hashtag",
@@ -32,6 +34,14 @@ function ToolsPage() {
       tags: [{ label: "Generator", accent: "tool" }],
       iconType: "icon",
       toolContent: <CaptionGenerator />
+    },
+    {
+      id: "contentidea",
+      title: "Content Idea Generator",
+      desc: "Brainstorm winning content ideas for any topic or audience, powered by AI.",
+      tags: [{ label: "Generator", accent: "tool" }],
+      iconType: "lottie",
+      toolContent: <ContentIdeaGenerator />
     },
     {
       id: "hook",
