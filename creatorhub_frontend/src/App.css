@@ -119,7 +119,8 @@ html {
 }
 
 body {
-  background: radial-gradient(ellipse 80% 70% at 70% 18%, rgba(42,78,134,0.24) 0%, rgba(18,17,35,0.88) 100%), var(--base-dark);
+  /* FIX: Reduce unwanted persistent dim by decreasing the rgba(18,17,35,0.88) opacity to 1 for a crisper look */
+  background: radial-gradient(ellipse 80% 70% at 70% 18%, rgba(42,78,134,0.24) 0%, rgba(18,17,35,1) 100%), var(--base-dark);
   color: var(--text-color);
   margin: 0;
   font-family: 'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif;
@@ -133,7 +134,8 @@ body {
   min-height: 100vh;
 }
 body.dark-mode {
-  background: radial-gradient(circle 48% at 75% 24%, #22264a66 0, #191a2f 85%);
+  /* Reduce opacity of overlay for dark mode as well */
+  background: radial-gradient(circle 48% at 75% 24%, #22264a99 0, #191a2f 85%);
   color: var(--text-color);
   transition: var(--transition-fast);
 }
