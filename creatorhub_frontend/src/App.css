@@ -6,9 +6,9 @@
   --navy-bg: #111827;
   --gray-bg: #1F2937;
 
-  /* Highlight fix: Assigned palette for accent/gradient contrast text */
-  --palette-primary: #2C3E70;
-  --palette-secondary: #1E1E2F;
+  /* Palette for consistent contrast: high-contrast text on accents */
+  --palette-primary: #fff;             /* Bright for accent bg */
+  --palette-secondary: #191c27;        /* Deep navy for accent text on pale bg */
 
   /* New theme overrides: */
   --primary: #1E90FF;
@@ -26,8 +26,9 @@
   --card-backdrop: blur(16px) saturate(135%);
   --gray-frost: rgba(61,69,112,0.14);
 
-  --text-color: #FFFFFF;
+  --text-color: #fff;
   --text-secondary: #E5E7EB;
+  --text-inverse: #181a2e; /* Use for text on very light backgrounds */
 
   --border-color: rgba(255,255,255,0.121);
   --card-radius: 28px;
@@ -84,7 +85,7 @@
   display: inline-flex;
   align-items: center;
   background: var(--icon-btn-gradient, var(--accent-gradient));
-  color: var(--palette-primary); /* ensure high contrast text */
+  color: #fff !important;
   font-weight: 700;
   border: none;
   border-radius: 40px;
@@ -104,7 +105,7 @@
   overflow: hidden;
   isolation: isolate;
 }
-.ch-info-btn svg { color: #d47102; opacity: 0.82; transition: color 0.16s; }
+.ch-info-btn svg { color: #fff; opacity: 0.86; transition: color 0.16s; }
 .ch-info-btn:focus-visible {
   outline: var(--focus-outline);
   box-shadow: 0 1.5px 15px var(--accent-secondary), 0 0 0 2px #f7b221a0;
@@ -112,15 +113,15 @@
 .ch-info-btn:hover,
 .ch-info-btn:active {
   background: var(--accent-gradient-focus);
-  color: #191c27;
+  color: #fff !important;
   box-shadow: 0 7px 14px var(--accent-secondary), 0 2.1px 8px #ef943d33;
   transform: translateY(-2px) scale(1.04) rotate(-0.5deg);
 }
 .ch-info-btn:active {
-  filter: brightness(1.06) drop-shadow(0 2px 7px #eca51260);
+  filter: brightness(1.08) drop-shadow(0 2px 7px #eca51260);
   transform: scale(0.97) translateY(2px);
 }
-.ch-info-btn svg { color: var(--accent-secondary); }
+.ch-info-btn svg { color: #fff; }
 
 .ch-filterbar-item {
   display: flex;
@@ -377,10 +378,19 @@ body.dark-mode {
   align-items: center;
   gap: 8px;
   color: var(--text-secondary);
-  transition: color 0.19s;
+  transition: color 0.19s, background 0.13s;
+}
+.ch-sidebar li[aria-current], .ch-sidebar li.active,
+.ch-sidebar li.sidebar-link.active
+{
+  background: var(--accent-gradient);
+  color: #fff !important;
+  font-weight: 700;
+  box-shadow: 0 3px 18px #fd3a6927;
 }
 .ch-sidebar li:hover {
-  color: var(--accent);
+  color: #fff !important;
+  background: rgba(253, 58, 105, 0.14);
 }
 .ch-sidebar li:before {
   font-family: system-ui;
@@ -456,7 +466,7 @@ body.dark-mode {
 
 .ch-card-tag {
   background: #232845;
-  color: var(--accent);
+  color: #fff !important;
   border-radius: 13px;
   font-size: 0.96em;
   margin-right: 10px;
@@ -471,12 +481,13 @@ body.dark-mode {
 .ch-card-tag[style*="gradient"], /* in-case inline style */
 .ch-card-tag.gradient,
 .ch-card-tag.ch-gradient {
-  color: var(--palette-primary) !important;
+  background: var(--accent-gradient) !important;
+  color: #fff !important;
 }
 .ch-card:hover .ch-card-tag,
 .ch-card:focus-within .ch-card-tag {
-  background: var(--accent-gradient);
-  color: var(--palette-primary);
+  background: var(--accent-gradient-focus) !important;
+  color: #fff !important;
   box-shadow: 0 2.5px 10px #eca51230;
 }
 
@@ -550,11 +561,13 @@ body.dark-mode {
   cursor: pointer;
   position: relative;
   z-index: 1;
+  color: #fff;
+  transition: background 0.17s, color 0.13s, border 0.13s;
 }
 .ch-filterbar button.active,
 .ch-filterbar button:focus {
   background: var(--accent-gradient);
-  color: var(--palette-secondary);
+  color: #fff !important;
   border-color: var(--accent);
   outline: none;
   letter-spacing: .01em;
@@ -562,6 +575,8 @@ body.dark-mode {
 }
 .ch-filterbar button:active {
   filter: brightness(1.08);
+  background: var(--accent-gradient-focus);
+  color: #fff;
 }
 .ch-filterbar select:focus,
 .ch-filterbar input[type="text"]:focus {

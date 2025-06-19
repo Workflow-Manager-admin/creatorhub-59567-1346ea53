@@ -24,7 +24,7 @@ function Topbar({ sidebarCollapsed, setSidebarCollapsed }) {
         style={{
           marginRight: 18,
           background: "var(--accent-gradient)",
-          color: "#181E2E",
+          color: "#fff",
           border: "none",
           borderRadius: 99,
           padding: "8px 13px",

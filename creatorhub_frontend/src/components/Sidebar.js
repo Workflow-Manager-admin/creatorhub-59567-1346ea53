@@ -107,7 +107,7 @@ function Sidebar({ collapsed, activeTab, setActiveTab }) {
                     padding: "13px 13px",
                     margin: "0 0 13px 0",
                     borderRadius: 15,
-                    color: activeTab === link.key ? "var(--accent)" : "var(--text-secondary)",
+                    color: activeTab === link.key ? "#fff" : "var(--text-secondary)",
                     background: activeTab === link.key
                       ? "var(--accent-gradient)"
                       : "none",
@@ -179,7 +179,7 @@ function Sidebar({ collapsed, activeTab, setActiveTab }) {
               gap: 14,
               borderRadius: collapsed ? "17px" : "19px",
               fontWeight: activeTab === link.key ? 700 : 500,
-              color: activeTab === link.key ? "var(--accent)" : "var(--text-secondary)",
+              color: activeTab === link.key ? "#fff" : "var(--text-secondary)",
               background: activeTab === link.key
                 ? "var(--accent-gradient)"
                 : "none",
