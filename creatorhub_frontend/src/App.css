@@ -766,6 +766,11 @@ body.ch-modal-dim,
   }
 }
 
+/* Failsafe: ensure .ch-modal-backdrop without .active is never visible in DOM */
+.ch-modal-backdrop:not(.active) {
+  display: none !important;
+}
+
 /* App-wide helpers for links/typography */
 a, a:visited {
   color: var(--accent-secondary);

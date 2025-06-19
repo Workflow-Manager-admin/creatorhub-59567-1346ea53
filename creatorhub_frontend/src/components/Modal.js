@@ -8,8 +8,12 @@ import React from "react";
 function Modal({ open = false, children, onClose }) {
   // If not open, don't render anything in DOM
   if (!open) return null;
+  // Only render the backdrop and add 'active' class conditionally
   return (
-    <div className="ch-modal-backdrop" onClick={onClose}>
+    <div
+      className={`ch-modal-backdrop${open ? " active" : ""}`}
+      onClick={onClose}
+    >
       <div
         className="ch-modal"
         onClick={e => {
