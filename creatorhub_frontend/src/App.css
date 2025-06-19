@@ -1,18 +1,27 @@
 :root {
   --primary: #A178DF;
   --accent: #CE6D87;
-  --accent-secondary: #A6567B;
+  --accent-secondary: #A6567B; /* This is a more muted reddish-purple, good for accent */
   --accent-gradient: linear-gradient(90deg, #A178DF 0%, #CE6D87 100%);
   --accent-gradient-focus: linear-gradient(92deg, #CE6D87 0%, #A178DF 100%);
   --icon-btn-gradient: linear-gradient(96deg, #A178DF 10%, #CE6D87 90%);
+  
+  /* Defined color palette for better consistency and control */
+  --palette-primary: #F0EFF4; /* A light color for better contrast, used as base text color for buttons */
+  --palette-secondary: #FFFFFF; /* Pure white for even better contrast, for button hover text */
+
+  /* Adjusted for less pinkish tones in certain buttons/cards */
+  --btn-gradient-orange-red: linear-gradient(90deg, #FF7E5F 0%, #EF6A6A 100%); /* Orange to Red */
+  --btn-gradient-orange-red-focus: linear-gradient(92deg, #EF6A6A 0%, #FF7E5F 100%); /* Red to Orange on focus */
+
   --background-main: #12131A;
   --background-secondary: #1C1D25;
-  --card-bg: rgba(36, 38, 50, 0.92);
-  --modal-bg: rgba(28, 29, 37, 0.92);
-  --glass-blur: blur(18px) saturate(135%);
-  --frost-border: 1.4px solid rgba(255, 255, 255, 0.08);
+  --card-bg: rgba(36, 38, 50, 0.98); /* Increased from 0.92 */
+  --modal-bg: rgba(28, 29, 37, 0.98); /* Increased from 0.92 */
+  --glass-blur: blur(16px) saturate(145%); /* Slightly less blur, more saturation */
+  --frost-border: 1.4px solid rgba(255, 255, 255, 0.12); /* Slightly brighter border */
   --text-color: #F0EFF4;
-  --text-secondary: rgba(240, 239, 244, 0.68);
+  --text-secondary: rgba(240, 239, 244, 0.85); /* Increased from 0.68 for better legibility */
   --text-inverse: #16141C;
   --shadow-card: 0 6px 30px rgba(22, 21, 30, 0.28);
   --shadow-hover: 0 12px 32px rgba(46, 43, 72, 0.42);
@@ -20,10 +29,10 @@
   --info: #82C4EC;
   --warning: #F0C86F;
   --danger: #EF6A6A;
-  --success-bg: rgba(88, 216, 154, 0.08);
-  --info-bg: rgba(130, 196, 236, 0.1);
-  --warning-bg: rgba(240, 200, 111, 0.08);
-  --danger-bg: rgba(239, 106, 106, 0.09);
+  --success-bg: rgba(88, 216, 154, 0.12);
+  --info-bg: rgba(130, 196, 236, 0.14);
+  --warning-bg: rgba(240, 200, 111, 0.12);
+  --danger-bg: rgba(239, 106, 106, 0.13);
 }
 
 /* Dynamic accent states for bg and text */
@@ -40,8 +49,9 @@
 .ch-info-btn {
   display: inline-flex;
   align-items: center;
-  background: var(--icon-btn-gradient, var(--accent-gradient));
-  color: #fff !important;
+  /* Using the new orange-red gradient for these buttons as requested */
+  background: var(--btn-gradient-orange-red);
+  color: var(--palette-primary) !important; /* Use defined palette primary */
   font-weight: 700;
   border: none;
   border-radius: 40px;
@@ -61,23 +71,23 @@
   overflow: hidden;
   isolation: isolate;
 }
-.ch-info-btn svg { color: #fff; opacity: 0.86; transition: color 0.16s; }
+.ch-info-btn svg { color: var(--palette-secondary); opacity: 0.86; transition: color 0.16s; } /* SVG color matches button text */
 .ch-info-btn:focus-visible {
   outline: var(--focus-outline);
-  box-shadow: 0 1.5px 15px var(--accent-secondary), 0 0 0 2px #f7b221a0;
+  box-shadow: 0 1.5px 15px var(--accent-secondary), 0 0 0 2px #f7b221a0; /* This shadow might still be yellow-ish, consider adjusting if too bright */
 }
 .ch-info-btn:hover,
 .ch-info-btn:active {
-  background: var(--accent-gradient-focus);
-  color: #fff !important;
-  box-shadow: 0 7px 14px var(--accent-secondary), 0 2.1px 8px #ef943d33;
+  background: var(--btn-gradient-orange-red-focus); /* Using new focus gradient */
+  color: var(--palette-secondary) !important; /* Use defined palette secondary for hover */
+  box-shadow: 0 7px 14px rgba(239,106,106,0.5), 0 2.1px 8px rgba(239,106,106,.33); /* Adjusted shadow for orange/red */
   transform: translateY(-2px) scale(1.04) rotate(-0.5deg);
 }
 .ch-info-btn:active {
-  filter: brightness(1.08) drop-shadow(0 2px 7px #eca51260);
+  filter: brightness(1.08) drop-shadow(0 2px 7px rgba(239,106,106,0.6)); /* Adjusted shadow for orange/red */
   transform: scale(0.97) translateY(2px);
 }
-.ch-info-btn svg { color: #fff; }
+.ch-info-btn svg { color: var(--palette-secondary); } /* SVG color matches button text */
 
 .ch-filterbar-item {
   display: flex;
@@ -98,7 +108,7 @@ body, *::-webkit-scrollbar-thumb {
   background-clip: padding-box;
 }
 body, *::-webkit-scrollbar-thumb:hover {
-  background: var(--accent);
+  background: var(--accent); /* This is still reddish-purple, consider if you want pure orange/red scrollbar */
   opacity: 0.37;
 }
 body, *::-webkit-scrollbar-corner {
@@ -110,7 +120,7 @@ html {
 }
 
 body {
-  background: radial-gradient(ellipse 80% 70% at 70% 18%, rgba(42,78,134,0.16) 0%, rgba(18,17,35,0.98) 100%), var(--base-dark);
+  background: radial-gradient(ellipse 80% 70% at 70% 18%, rgba(42,78,134,0.18) 0%, rgba(18,17,35,0.95) 100%), var(--base-dark);
   color: var(--text-color);
   margin: 0;
   font-family: 'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif;
@@ -125,7 +135,7 @@ body {
 }
 
 body.dark-mode {
-  background: radial-gradient(circle 48% at 75% 24%, #22264a80 0, #191a2fc9 85%);
+  background: radial-gradient(circle 48% at 75% 24%, #22264a80 0, #191a2fc6 85%);
   color: var(--text-color);
   transition: var(--transition-fast);
 }
@@ -183,7 +193,7 @@ body.dark-mode {
   display: flex;
   align-items: center;
   height: 63px;
-  background: rgba(46, 51, 84, 0.56);
+  background: rgba(46, 51, 84, 0.65); /* Increased from 0.56 */
   color: var(--text-color);
   padding: 0 20px;
   border-bottom: var(--frost-border);
@@ -196,7 +206,7 @@ body.dark-mode {
   width: 100vw;
   z-index: 120;
   box-shadow: 0 7px 28px rgba(56,49,85,0.13);
-  backdrop-filter: blur(18px) saturate(145%);
+  backdrop-filter: blur(14px) saturate(155%); /* Reduced blur, increased saturation */
 }
 .ch-logo {
   font-weight: bold;
@@ -245,14 +255,15 @@ body.dark-mode {
 .ch-modal-close {
   min-width: 64px;
   font-weight: 700;
-  color: var(--palette-primary); /* palette for accent/gradient bg */
-  background: var(--accent-gradient);
+  color: var(--palette-primary); /* Using defined palette primary */
+  /* Using the new orange-red gradient for these buttons as requested */
+  background: var(--btn-gradient-orange-red);
   border: none;
   border-radius: 99px;
   cursor: pointer;
   transition: background 0.27s, color 0.18s, filter 0.13s;
-  box-shadow: 0 2.5px 11px 0 rgba(249,178,33,0.07),
-    0 0.6px 3px rgba(230,122,65,.05);
+  box-shadow: 0 2.5px 11px 0 rgba(255,126,95,0.07), /* Adjusted shadow for orange/red */
+    0 0.6px 3px rgba(239,106,106,.05); /* Adjusted shadow for orange/red */
   font-size: 1.11rem;
   padding: 9px 18px;
   letter-spacing: 0.015em;
@@ -272,7 +283,8 @@ body.dark-mode {
   height: 100%;
   width: 80%;
   opacity: 0.22;
-  background: linear-gradient(98deg, #ffe4ad 18%, #fff7cf40 85%);
+  /* Adjusted shimmer color for orange/red */
+  background: linear-gradient(98deg, #ffe4ad 18%, #fff7cf40 85%); 
   filter: blur(14px);
   transition: left 0.42s cubic-bezier(.85, 0, .21, .99);
   z-index: -1;
@@ -293,9 +305,10 @@ body.dark-mode {
 .ch-dark-toggle:hover,
 .ch-sidebar-toggle:hover,
 .ch-modal-close:hover {
-  filter: brightness(1.07) drop-shadow(0 4px 16px var(--accent-secondary));
-  color: var(--palette-secondary); /* better contrast */
-  background: var(--accent-gradient-focus);
+  filter: brightness(1.07) drop-shadow(0 4px 16px rgba(239,106,106,0.5)); /* Adjusted shadow for orange/red */
+  color: var(--palette-secondary); /* Using defined palette secondary */
+  /* Using the new orange-red focus gradient for these buttons as requested */
+  background: var(--btn-gradient-orange-red-focus);
 }
 
 /* Main area */
@@ -310,7 +323,7 @@ body.dark-mode {
 
 .ch-sidebar {
   min-width: 175px;
-  background: rgba(60,68,112,0.54);
+  background: rgba(60,68,112,0.68); /* Increased from 0.54 */
   color: var(--text-color);
   padding: 32px 14px 30px 32px;
   border-right: var(--frost-border);
@@ -318,7 +331,7 @@ body.dark-mode {
   box-shadow: 2px 0 24px 0px rgba(23,28,54,.08);
   transition: var(--transition-fast);
   position: relative;
-  backdrop-filter: blur(18px) saturate(120%);
+  backdrop-filter: blur(14px) saturate(135%); /* Reduced blur, increased saturation */
   outline: none;
   z-index: 100;
 }
@@ -333,20 +346,22 @@ body.dark-mode {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: var(--text-secondary);
+  color: var(--text-secondary); /* This will now be 0.85 opacity */
   transition: color 0.19s, background 0.13s;
 }
 .ch-sidebar li[aria-current], .ch-sidebar li.active,
 .ch-sidebar li.sidebar-link.active
 {
-  background: var(--accent-gradient);
+  /* This still uses the accent gradient (purple to reddish-purple), consider if you want orange/red */
+  background: var(--accent-gradient); 
   color: #fff !important;
   font-weight: 700;
   box-shadow: 0 3px 18px #fd3a6927;
 }
 .ch-sidebar li:hover {
   color: #fff !important;
-  background: rgba(253, 58, 105, 0.14);
+  /* This is a pinkish background, changed to a more muted tone for hover */
+  background: rgba(253, 58, 105, 0.08); /* Reduced opacity for less pink, more subtle */
 }
 .ch-sidebar li:before {
   font-family: system-ui;
@@ -379,13 +394,9 @@ body.dark-mode {
 }
 
 /* Frosted glass floating card with animated microinteractions */
-/* 
- * Original .ch-card backdrop-filter preserved for easy revert:
- * backdrop-filter: var(--card-backdrop);
- */
 .ch-card {
-  background: var(--card-bg);
-  backdrop-filter: none !important;
+  background: var(--card-bg); /* This will now be 0.98 opacity */
+  backdrop-filter: var(--glass-blur); /* Reinstated backdrop-filter */
   border-radius: 24px;
   margin-bottom: 32px;
   box-shadow: var(--shadow-card);
@@ -405,7 +416,8 @@ body.dark-mode {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: radial-gradient(ellipse 60% 40% at 82% 17%, #f9b22119 0, #181c2a00 100%);
+  /* This radial gradient still has a yellow hint, consider if you want it more orange/red */
+  background: radial-gradient(ellipse 60% 40% at 82% 17%, #f9b22119 0, #181c2a00 100%); 
   pointer-events: none;
   opacity: 0.59;
   transition: opacity 0.28s;
@@ -416,8 +428,9 @@ body.dark-mode {
   font-size: 1.29rem;
   letter-spacing: -.02em;
   margin-bottom: 11px;
-  color: var(--accent);
-  text-shadow: 0 2px 11px #ef943d44;
+  /* This accent color is reddish-purple, consider if you want full orange/red */
+  color: var(--accent); 
+  text-shadow: 0 2px 11px #ef943d44; /* This shadow is orange/yellow */
 }
 
 .ch-card-tag {
@@ -437,24 +450,26 @@ body.dark-mode {
 .ch-card-tag[style*="gradient"], /* in-case inline style */
 .ch-card-tag.gradient,
 .ch-card-tag.ch-gradient {
-  background: var(--accent-gradient) !important;
+  /* Using new orange-red gradient for tags */
+  background: var(--btn-gradient-orange-red) !important; 
   color: #fff !important;
 }
 .ch-card:hover .ch-card-tag,
 .ch-card:focus-within .ch-card-tag {
-  background: var(--accent-gradient-focus) !important;
+  /* Using new orange-red focus gradient for tags */
+  background: var(--btn-gradient-orange-red-focus) !important;
   color: #fff !important;
-  box-shadow: 0 2.5px 10px #eca51230;
+  box-shadow: 0 2.5px 10px rgba(239,106,106,0.3); /* Adjusted shadow for orange/red */
 }
 
 .ch-card:hover,
 .ch-card:focus-within {
   box-shadow: var(--shadow-hover);
   transform: translateY(-7px) scale(1.027);
-  border-color: var(--accent-secondary);
+  border-color: var(--accent-secondary); /* This is reddish-purple, fine for border */
   outline: none;
   z-index: 3;
-  background: rgba(44,48,80,0.9);
+  background: rgba(44,48,80,0.95); /* Increased from 0.9 */
 }
 .ch-card:focus-visible {
   outline: var(--focus-outline);
@@ -482,7 +497,7 @@ body.dark-mode {
 
 /* FilterBar with floating effect */
 .ch-filterbar {
-  background: rgba(61,69,112,0.43);
+  background: rgba(61,69,112,0.58); /* Increased from 0.43 */
   border-radius: 20px;
   box-shadow: 0 2px 19px rgba(44,62,112,0.08);
   padding: 18px 26px;
@@ -493,7 +508,7 @@ body.dark-mode {
   gap: 1.15rem;
   transition: var(--transition-fast);
   border: var(--frost-border);
-  backdrop-filter: blur(13px) saturate(132%);
+  backdrop-filter: blur(10px) saturate(145%); /* Reduced blur, increased saturation */
 }
 .ch-filterbar button,
 .ch-filterbar select,
@@ -511,6 +526,7 @@ body.dark-mode {
   transition: box-shadow 0.18s, background 0.17s, color 0.13s, border 0.17s;
 }
 .ch-filterbar button {
+  /* This still uses --primary which is purple, consider if you want orange/red for default filter buttons */
   background: var(--primary);
   border: 1.4px solid var(--border-color);
   font-weight: 600;
@@ -522,15 +538,17 @@ body.dark-mode {
 }
 .ch-filterbar button.active,
 .ch-filterbar button:focus {
+  /* This still uses --accent-gradient, consider if you want orange/red for active/focused filter buttons */
   background: var(--accent-gradient);
   color: #fff !important;
-  border-color: var(--accent);
+  border-color: var(--accent); /* Accent is reddish-purple */
   outline: none;
   letter-spacing: .01em;
   box-shadow: 0 2.5px 9px rgba(249,178,33,0.08) inset;
 }
 .ch-filterbar button:active {
   filter: brightness(1.08);
+  /* This still uses --accent-gradient-focus, consider if you want orange/red for active filter buttons */
   background: var(--accent-gradient-focus);
   color: #fff;
 }
@@ -646,7 +664,7 @@ body.dark-mode {
 /* Modal content styles (glass, shadow, always above overlay) */
 .ch-modal {
   background: var(--modal-bg);
-  backdrop-filter: blur(30px) saturate(140%);
+  backdrop-filter: blur(25px) saturate(150%); /* Reduced blur, increased saturation */
   border-radius: 26px;
   box-shadow: var(--shadow-modal);
   color: var(--text-color);
@@ -672,6 +690,13 @@ body.dark-mode {
   margin-left: 0;
   float: right;
   min-width: 60px;
+  /* Ensure modal close button also uses orange/red */
+  background: var(--btn-gradient-orange-red);
+  color: var(--palette-primary);
+}
+.ch-modal-close:hover {
+  background: var(--btn-gradient-orange-red-focus);
+  color: var(--palette-secondary);
 }
 
 /* Prevent persistent/global blur or dim outside modal context */
@@ -693,8 +718,9 @@ body.ch-modal-dim,
 .ch-sidebar-toggle {
   display: none;
   margin-left: 9px;
-  background: var(--primary);
-  color: var(--accent-secondary);
+  /* Ensure sidebar toggle also uses orange/red */
+  background: var(--btn-gradient-orange-red);
+  color: var(--palette-primary);
   border-radius: 99px;
   border: none;
   padding: 11px 18px;
@@ -707,6 +733,11 @@ body.ch-modal-dim,
   outline: none;
   position: relative;
 }
+.ch-sidebar-toggle:hover {
+  background: var(--btn-gradient-orange-red-focus);
+  color: var(--palette-secondary);
+}
+
 
 /* Responsive tweaks */
 @media (max-width: 800px) {
@@ -724,7 +755,7 @@ body.ch-modal-dim,
     top: 63px;
     left: 0;
     z-index: 110;
-    background: rgba(60,68,112,0.72);
+    background: rgba(60,68,112,0.85); /* Increased from 0.72 */
     border-radius: 0 0 25px 25px;
     box-shadow: 0 7px 40px 0 #233159d8;
     transition: var(--transition-fast);
@@ -807,12 +838,13 @@ a:hover {
 /* === Additional: Dashboard main greeting and cards grid === */
 .dashboard-greeting {
   font-family: inherit;
-  background: linear-gradient(85deg,#1E90FF 60%,#FD3A69 100%);
+  /* Adjusted gradient colors to be brighter orange/blue mix */
+  background: linear-gradient(85deg, #4FA8FF 60%, #FF7E5F 100%);
   background-clip: text;
   -webkit-background-clip: text;
-  color: var(--palette-primary); /* ensure fallback is palette */
+  color: transparent; /* Changed to transparent so gradient shows */
   font-weight: 800;
-  text-shadow: 0 2px 44px #1e90ff3d;
+  text-shadow: 0 2px 44px rgba(79, 168, 255, 0.3); /* Adjusted shadow to match new blue */
 }
 .dashboard-tool-card-grid {
   margin-top: 9px;
@@ -851,11 +883,15 @@ a:hover {
   margin-top: 8px;
   letter-spacing: .02em;
   font-size: 1.03em;
+  /* These still use palette-primary which defaults to purple/pink gradient.
+     If you want orange/red, this needs to be explicitly set or override ch-info-btn in this context */
   color: var(--palette-primary);
+  background: var(--btn-gradient-orange-red); /* Added for consistency */
 }
 .dashboard-tool-card-grid .ch-info-btn:hover,
 .dashboard-tool-card-grid .ch-info-btn:focus {
   color: var(--palette-secondary);
+  background: var(--btn-gradient-orange-red-focus); /* Added for consistency */
 }
 @media (max-width: 800px) {
   .dashboard-tool-card-grid {
@@ -877,13 +913,15 @@ a:hover {
 }
 .learning-split-root ul li[aria-current="page"],
 .learning-split-root ul li:focus-visible {
+  /* This still uses a specific blue. If you want this to align with orange/red, adjust */
   outline: 2.2px solid #1E90FF;
-  background: var(--accent-gradient);
+  background: var(--accent-gradient); /* This is purple-pink gradient */
   color: var(--palette-secondary);
 }
 .learning-split-root ul li:hover:not([aria-current="page"]) {
   background: #1E2336;
-  color: #FF7E5F;
+  /* This is orange/pink, consistent with your request, so kept */
+  color: #FF7E5F; 
   cursor: pointer;
 }
 .learning-split-root > div {
