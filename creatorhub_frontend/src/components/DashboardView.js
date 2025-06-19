@@ -19,9 +19,18 @@ function CategoryTag({ children, accent }) {
     boxShadow: "0 1px 10px #f98b8030",
     verticalAlign: "middle"
   };
-  if (accent === "guide") style.background = "linear-gradient(89deg,#1E90FF20,#1E90FF55)";
-  if (accent === "tool") style.background = "linear-gradient(90deg,#FF7E5F88,#FD3A6942)";
-  if (accent === "new") style.background = "var(--accent-gradient)";
+  if (accent === "guide") {
+    style.background = "linear-gradient(89deg,#1E90FF20,#1E90FF55)";
+    style.color = "var(--palette-primary)";
+  }
+  if (accent === "tool") {
+    style.background = "linear-gradient(90deg,#FF7E5F88,#FD3A6942)";
+    style.color = "var(--palette-primary)";
+  }
+  if (accent === "new") {
+    style.background = "var(--accent-gradient)";
+    style.color = "var(--palette-primary)";
+  }
   return (
     <span className="ch-card-tag" style={style}>{children}</span>
   );
@@ -99,7 +108,7 @@ function DashboardView({ user = { name: "Alex" }, loading = false, tools = [] })
         title: "AI Text Generator",
         desc: "Generate content instantly with AI.",
         tags: [{ label: "Tool", accent: "tool" }, { label: "New", accent: "new" }],
-        Button: <button className="ch-info-btn" style={{ background: "var(--accent-gradient)", marginTop: 10 }}>Launch</button>,
+        Button: <button className="ch-info-btn" style={{ background: "var(--accent-gradient)", marginTop: 10, color: "var(--palette-primary)" }}>Launch</button>,
         iconType: "lottie"
       },
       {
@@ -108,7 +117,7 @@ function DashboardView({ user = { name: "Alex" }, loading = false, tools = [] })
         title: "React Mastery Guide",
         desc: "Level up with interactive chapters and code labs.",
         tags: [{ label: "Guide", accent: "guide" }],
-        Button: <button className="ch-info-btn" style={{ background: "linear-gradient(90deg,#1E90FF,#FD3A69)", marginTop: 10 }}>Start</button>,
+        Button: <button className="ch-info-btn" style={{ background: "linear-gradient(90deg,#1E90FF,#FD3A69)", marginTop: 10, color: "var(--palette-primary)" }}>Start</button>,
         iconType: "icon"
       },
       {
@@ -117,7 +126,7 @@ function DashboardView({ user = { name: "Alex" }, loading = false, tools = [] })
         title: "API Playground",
         desc: "Explore live API endpoints with docs.",
         tags: [{ label: "Tool", accent: "tool" }, { label: "Beta", accent: "new" }],
-        Button: <button className="ch-info-btn" style={{ background: "var(--accent-gradient)", marginTop: 10 }}>Try Demo</button>,
+        Button: <button className="ch-info-btn" style={{ background: "var(--accent-gradient)", marginTop: 10, color: "var(--palette-primary)" }}>Try Demo</button>,
         iconType: "icon"
       }
     ];
@@ -144,7 +153,7 @@ function DashboardView({ user = { name: "Alex" }, loading = false, tools = [] })
           fontSize: "2.07rem",
           fontWeight: 800,
           marginBottom: 12,
-          color: "var(--accent, #1E90FF)",
+          color: "var(--palette-primary)",
           letterSpacing: "-0.01em",
           textAlign: "center",
           textShadow: "0 2px 40px #1e90ff54,0 1px 8px #fd3a6921"

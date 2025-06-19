@@ -6,6 +6,10 @@
   --navy-bg: #111827;
   --gray-bg: #1F2937;
 
+  /* Highlight fix: Assigned palette for accent/gradient contrast text */
+  --palette-primary: #2C3E70;
+  --palette-secondary: #1E1E2F;
+
   /* New theme overrides: */
   --primary: #1E90FF;
   --accent: #FF7E5F;
@@ -80,7 +84,7 @@
   display: inline-flex;
   align-items: center;
   background: var(--icon-btn-gradient, var(--accent-gradient));
-  color: #1a182a;
+  color: var(--palette-primary); /* ensure high contrast text */
   font-weight: 700;
   border: none;
   border-radius: 40px;
@@ -284,7 +288,7 @@ body.dark-mode {
 .ch-modal-close {
   min-width: 64px;
   font-weight: 700;
-  color: var(--primary);
+  color: var(--palette-primary); /* palette for accent/gradient bg */
   background: var(--accent-gradient);
   border: none;
   border-radius: 99px;
@@ -333,7 +337,7 @@ body.dark-mode {
 .ch-sidebar-toggle:hover,
 .ch-modal-close:hover {
   filter: brightness(1.07) drop-shadow(0 4px 16px var(--accent-secondary));
-  color: #191c27;
+  color: var(--palette-secondary); /* better contrast */
   background: var(--accent-gradient-focus);
 }
 
@@ -464,10 +468,15 @@ body.dark-mode {
   display: inline-block;
   transition: background 0.18s, color 0.13s, box-shadow 0.19s;
 }
+.ch-card-tag[style*="gradient"], /* in-case inline style */
+.ch-card-tag.gradient,
+.ch-card-tag.ch-gradient {
+  color: var(--palette-primary) !important;
+}
 .ch-card:hover .ch-card-tag,
 .ch-card:focus-within .ch-card-tag {
   background: var(--accent-gradient);
-  color: #1e1810;
+  color: var(--palette-primary);
   box-shadow: 0 2.5px 10px #eca51230;
 }
 
@@ -545,7 +554,7 @@ body.dark-mode {
 .ch-filterbar button.active,
 .ch-filterbar button:focus {
   background: var(--accent-gradient);
-  color: #191821;
+  color: var(--palette-secondary);
   border-color: var(--accent);
   outline: none;
   letter-spacing: .01em;
@@ -793,7 +802,7 @@ a:hover {
   background: linear-gradient(85deg,#1E90FF 60%,#FD3A69 100%);
   background-clip: text;
   -webkit-background-clip: text;
-  color: var(--accent);
+  color: var(--palette-primary); /* ensure fallback is palette */
   font-weight: 800;
   text-shadow: 0 2px 44px #1e90ff3d;
 }
@@ -834,6 +843,11 @@ a:hover {
   margin-top: 8px;
   letter-spacing: .02em;
   font-size: 1.03em;
+  color: var(--palette-primary);
+}
+.dashboard-tool-card-grid .ch-info-btn:hover,
+.dashboard-tool-card-grid .ch-info-btn:focus {
+  color: var(--palette-secondary);
 }
 @media (max-width: 800px) {
   .dashboard-tool-card-grid {
@@ -857,7 +871,7 @@ a:hover {
 .learning-split-root ul li:focus-visible {
   outline: 2.2px solid #1E90FF;
   background: var(--accent-gradient);
-  color: #181E30;
+  color: var(--palette-secondary);
 }
 .learning-split-root ul li:hover:not([aria-current="page"]) {
   background: #1E2336;

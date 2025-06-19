@@ -32,7 +32,7 @@ function LearningSplitView({
       <div
         style={{
           background: accentGradient,
-          color: "#19202A",
+          color: "var(--palette-secondary)", // palette for accent/gradient BG
           fontWeight: 600,
           padding: "17px 18px",
           borderRadius: 20,
