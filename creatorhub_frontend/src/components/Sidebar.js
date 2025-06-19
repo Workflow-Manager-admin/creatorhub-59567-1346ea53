@@ -24,7 +24,7 @@ function Sidebar({ collapsed, activeTab, setActiveTab }) {
         // Lucide Wrench Icon
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round"><path d="M21.6 20.3a2.4 2.4 0 0 1-3.5 0l-4.2-4.2a7 7 0 0 1-6.1-1.9 7 7 0 0 1-1.9-6.1l4.2-4.2a2.4 2.4 0 1 1 3.5-3.5l4.2 4.2a7 7 0 0 1 1.9 6.1 7 7 0 0 1-6.1 1.9z"/><path d="M18 22h0"/></svg>
       ),
-      label: "Tools",
+      label: "Tools", // Updated to route to new Tools page via its key
     },
     {
       key: "learning",
@@ -32,7 +32,7 @@ function Sidebar({ collapsed, activeTab, setActiveTab }) {
         // Phosphor Book Icon
         <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round"><path d="M3 19.5V6a2 2 0 0 1 2-2h11.5"/><path d="M9 7h7.5A2.5 2.5 0 0 1 19 9.5v11.5"/><path d="M3.27 20h17.46"/><path d="M7 17l2-2 2 2 2-2 2 2"/></svg>
       ),
-      label: "Learning",
+      label: "Learning", // Updated to route to LearningSplitView via its key
     },
   ];
 
