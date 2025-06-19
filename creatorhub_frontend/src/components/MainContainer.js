@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import Card from "./Card";
-import Loader from "./Loader";
+import Loader from "./Loader"; // Not used, can be removed if not planned for future use
 import SkeletonLoader from "./SkeletonLoader";
 import Modal from "./Modal";
 import FilterBar from "./FilterBar";
@@ -23,7 +23,7 @@ function MainContainer({ children }) {
   // Modal state demo
   const [modalOpen, setModalOpen] = useState(false);
 
-  // Filtering by source or tag (for demo, sources: youtube/devto/rapidapi/gemini; tags for devto)
+  // Filtering by source or tag (for demo, sources: youtube/devto/gemini; tags for devto)
   const [filter, setFilter] = useState("all");
   const [textFilter, setTextFilter] = useState("");
 
@@ -55,6 +55,7 @@ function MainContainer({ children }) {
       );
     }
     // rapidapi content loading is now replaced by direct API component use (see DashboardView and tools)
+    // Removed rapidData from dependency array as it's not used.
     if (geminiData && geminiData.length) {
       geminiData.forEach(item =>
         cards.push({
@@ -68,7 +69,7 @@ function MainContainer({ children }) {
       );
     }
     return cards;
-  }, [ytData, devtoData, rapidData, geminiData]);
+  }, [ytData, devtoData, geminiData]); // Removed rapidData from dependency array
 
   // All tags (flat uniq, for filter option)
   const allTags = useMemo(() => {
@@ -76,7 +77,7 @@ function MainContainer({ children }) {
     if (devtoData && devtoData.length) {
       devtoData.forEach(a => a.tags && a.tags.forEach(tag => tags.add(tag)));
     }
-    // Could extend to RapidAPI/gemini later if needed
+    // Could extend to Gemini later if needed
     return Array.from(tags);
   }, [devtoData]);
 
@@ -84,7 +85,7 @@ function MainContainer({ children }) {
   const filteredCards = useMemo(() => {
     let cards = allCards;
     if (filter !== "all") {
-      if (["youtube", "devto", "rapidapi", "gemini"].includes(filter)) {
+      if (["youtube", "devto", "gemini"].includes(filter)) { // Removed "rapidapi"
         cards = cards.filter(c => c.source === filter);
       } else {
         // treat as tag filter
@@ -98,14 +99,15 @@ function MainContainer({ children }) {
           (c.title && c.title.toLowerCase().includes(lower)) ||
           (c.description && c.description.toLowerCase().includes(lower)) ||
           (c.author && c.author.toLowerCase().includes(lower)) ||
-          (c.channel && c.channel.toLowerCase().includes(lower))
+          (c.channel && c.channel.toLowerCase().includes(lower)) ||
+          (c.tags && c.tags.some(tag => tag.toLowerCase().includes(lower))) // Added tag filtering for text search
       );
     }
     return cards;
   }, [allCards, filter, textFilter]);
 
   // Loading/skeleton control: Is any source still loading?
-  const isAnyLoading = ytLoading || devtoLoading || rapidLoading || geminiLoading;
+  const isAnyLoading = ytLoading || devtoLoading || geminiLoading; // Removed rapidLoading
 
   // FilterBar UI controls
   const filterButtons = [
@@ -116,7 +118,7 @@ function MainContainer({ children }) {
     >
       All
     </button>,
-    ...["youtube", "devto", "rapidapi", "gemini"].map(src => (
+    ...["youtube", "devto", "gemini"].map(src => ( // Removed "rapidapi"
       <button
         key={src}
         onClick={() => setFilter(src)}
@@ -130,13 +132,8 @@ function MainContainer({ children }) {
           <select
             key="tag-filter"
             onChange={e => setFilter(e.target.value)}
-            style={{
-              background: "var(--primary)",
-              color: "var(--text-color)",
-              border: "1px solid var(--border-color)", borderRadius: 4,
-              padding: "6px 8px", minWidth: 88
-            }}
-            value={["youtube", "devto", "rapidapi", "gemini"].includes(filter) ? "all" : filter}
+            // Removed redundant inline styles as they are now handled by app.css
+            value={["youtube", "devto", "gemini"].includes(filter) ? "all" : filter} // Removed "rapidapi"
           >
             <option value="all">Tags</option>
             {allTags.map(tag => (
@@ -149,7 +146,8 @@ function MainContainer({ children }) {
       key="search"
       type="text"
       placeholder="Filter by title/author..."
-      style={{ border: "1px solid var(--border-color)", borderRadius: 20, background: "#181d26", color: "var(--text-color)", padding: "7px 10px", minWidth: 120 }}
+      // Removed redundant inline styles as they are now handled by app.css
+      className="ch-search" // Apply existing search class
       value={textFilter}
       onChange={e => setTextFilter(e.target.value)}
     />,
@@ -194,7 +192,7 @@ function MainContainer({ children }) {
       <FilterBar filters={filterButtons} />
       {/* Modal overlay demo, closes by click-outside or button */}
       {modalOpen && (
-        <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
+        <Modal open={modalOpen} onClose={() => setModalOpen(false)} blur={true}> {/* Added blur={true} */}
           {modalContent}
         </Modal>
       )}
@@ -262,33 +260,12 @@ function MainContainer({ children }) {
                         <span className="ch-card-tag" key={tag}>
                           #{tag}
                         </span>
-                      ))
-                    }
+                      ))}
                   </div>
                 </div>
               </Card>
             );
-          } else if (card.source === "rapidapi") {
-            // Use the official RapidAPI API or directory link when valid, fallback to directory home if not
-            const rapidLink =
-              card.url && /^https:\/\/rapidapi\.com\//.test(card.url)
-                ? card.url
-                : "https://rapidapi.com/collection/popular-apis";
-            return (
-              <Card title={card.title} key={card.id}>
-                <div>
-                  <div style={{ fontWeight: 500 }}>{card.category || "API"}</div>
-                  <div style={{ color: "var(--text-secondary)", fontSize: ".97em" }}>
-                    {card.description}
-                  </div>
-                  <a href={rapidLink} target="_blank" rel="noopener noreferrer"
-                    style={{ color: "var(--accent)" }}>
-                    Explore on RapidAPI
-                  </a>
-                </div>
-              </Card>
-            );
-          } else if (card.source === "gemini") {
+          } else if (card.source === "gemini") { // Removed rapidapi case
             return (
               <Card title={card.title} key={card.id}>
                 <div>

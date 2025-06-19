@@ -3,6 +3,7 @@ import SmallToolCard from "./SmallToolCard";
 import HashtagGenerator from "./HashtagGenerator";
 import CaptionGenerator from "./CaptionGenerator";
 import HookGenerator from "./HookGenerator";
+import PostPlanner from "./PostPlanner";
 import Modal from "./Modal";
 
 // PUBLIC_INTERFACE
@@ -14,7 +15,7 @@ function ToolsPage() {
   const [openModal, setOpenModal] = useState(false);
   const [modalContent, setModalContent] = useState(null);
 
-  // Sample tools for grid demo (can be replaced by actual API/resource fetch)
+  // Tools array now includes Post Planner
   const tools = [
     {
       id: "hashtag",
@@ -39,6 +40,14 @@ function ToolsPage() {
       tags: [{ label: "Generator", accent: "tool" }],
       iconType: "lottie",
       toolContent: <HookGenerator />
+    },
+    {
+      id: "postplanner",
+      title: "Post Planner",
+      desc: "Get a full weekly post plan based on your content goal.",
+      tags: [{ label: "Planner", accent: "tool" }],
+      iconType: "icon",
+      toolContent: <PostPlanner />
     }
   ];
 

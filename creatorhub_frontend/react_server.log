@@ -100,3 +100,15 @@ cached modules 1.33 MiB [cached] 59 modules
 runtime modules 27.5 KiB 14 modules
 ./node_modules/css-loader/dist/cjs.js!./src/App.css 26.3 KiB [built] [code generated]
 webpack 5.99.9 compiled successfully in 80 ms
+assets by status 620 bytes [cached] 1 asset
+assets by path *.js 1.53 MiB
+  asset bundle.js 1.52 MiB [emitted] (name: main)
+  asset main.0ac49dc20ba725c3b7b0.hot-update.js 12 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.0ac49dc20ba725c3b7b0.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.53 MiB = bundle.js 1.52 MiB main.0ac49dc20ba725c3b7b0.hot-update.js 12 KiB
+cached modules 1.35 MiB [cached] 59 modules
+runtime modules 27.5 KiB 14 modules
+javascript modules 6.77 KiB
+  ./src/components/ToolsPage.js 4.22 KiB [built] [code generated]
+  ./src/components/PostPlanner.js 2.56 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 99 ms
