@@ -16,8 +16,7 @@ function HookGenerator() {
   // IMPORTANT: Replace 'YOUR_GEMINI_API_HERE' with your actual API key.
   // For production, consider storing this securely (e.g., environment variables)
   // and routing API calls through a backend to avoid exposing it client-side.
-  const GEMINI_API_KEY = 'AIzaSyDfR-hi5UrN9BD4olYleIT-ELn0wXh0g4g
-';
+  const GEMINI_API_KEY = 'AIzaSyDfR-hi5UrN9BD4olYleIT-ELn0wXh0g4g';
   const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
   const model = genAI.getGenerativeModel({ model: 'gemini-1.5-pro-latest' }); // Using a capable model
 
