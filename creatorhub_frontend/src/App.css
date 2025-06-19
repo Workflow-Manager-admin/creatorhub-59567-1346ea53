@@ -8,9 +8,18 @@
   --text-secondary: rgba(255, 255, 255, 0.7);
   --border-color: rgba(255, 255, 255, 0.1);
   --skeleton-bg: #222b42;
-  --transition-fast: 0.2s all;
+  --transition-fast: background 0.25s cubic-bezier(0.33,1,0.68,1), color 0.25s cubic-bezier(0.33,1,0.68,1);
 }
 
+body {
+  background: var(--base-dark);
+  color: var(--text-color);
+  margin: 0;
+  font-family: 'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  transition: var(--transition-fast);
+}
+
+/* Enhanced dark mode theme transition */
 body.dark-mode {
   background: var(--secondary);
   color: var(--text-color);
