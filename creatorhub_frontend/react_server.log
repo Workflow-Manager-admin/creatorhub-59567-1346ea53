@@ -91,3 +91,15 @@ cached modules 1.35 MiB [cached] 61 modules
 runtime modules 27.5 KiB 14 modules
 ./src/components/DashboardView.js 17 KiB [built] [code generated]
 webpack 5.99.9 compiled successfully in 125 ms
+assets by status 649 bytes [cached] 1 asset
+assets by path *.js 1.56 MiB
+  asset bundle.js 1.54 MiB [emitted] (name: main)
+  asset main.407e3589ef5626500fe4.hot-update.js 17.9 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.407e3589ef5626500fe4.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.56 MiB = bundle.js 1.54 MiB main.407e3589ef5626500fe4.hot-update.js 17.9 KiB
+cached modules 1.36 MiB [cached] 61 modules
+runtime modules 27.5 KiB 14 modules
+javascript modules 12.1 KiB
+  ./src/components/SmallToolCard.js 6.99 KiB [built] [code generated]
+  ./src/components/GeminiInsightsModal.js 5.08 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 93 ms

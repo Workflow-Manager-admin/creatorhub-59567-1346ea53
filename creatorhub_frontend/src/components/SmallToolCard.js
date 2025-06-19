@@ -47,39 +47,69 @@ function SmallToolCardIconPlaceholder({ iconType = "lottie" }) {
   }
 }
 
+import GeminiInsightsModal from "./GeminiInsightsModal";
+
 // PUBLIC_INTERFACE
 /**
  * SmallToolCard - dashboard/tools grid card; launches modal overlay above all content, always centered.
+ * Now supports "Learn More" (Gemini Insights) button and modal.
  */
 function SmallToolCard({
   title,
   desc,
-  // tags, // <--- YOU CAN REMOVE THIS PROP IF YOU DON'T PASS IT ANYWHERE ELSE EITHER
+  // tags,
   iconType = "lottie",
   Button,
   toolContent
 }) {
-  // Track modal open/close for this tool
+  // Logic for core tool modal (e.g. open tool UI)
   const [modalOpen, setModalOpen] = useState(false);
+  // State for Gemini Insights modal
+  const [insightsOpen, setInsightsOpen] = useState(false);
 
-  // Intercept Button clicks and propagate correct modal logic everywhere, even if generic Button passed
+  // Intercept Button clicks and propagate correct modal logic everywhere
   let LaunchButton = null;
   if (Button) {
-    // Force modal-open and disable navigation
     LaunchButton = React.cloneElement(Button, {
       onClick: e => {
         if (Button.props.onClick) Button.props.onClick(e);
         if (e && e.preventDefault) e.preventDefault();
         setModalOpen(true);
       },
-      style: {} // Keep this empty if styles are handled by className
+      style: {}
     });
   }
 
+  // Learn More (Gemini) button
+  const learnMoreBtn = (
+    <button
+      className="ch-info-btn"
+      style={{
+        background: "var(--btn-gradient-orange-red-focus)",
+        color: "#fff",
+        fontWeight: 700,
+        marginLeft: 8,
+        minWidth: 98,
+        marginTop: 10
+      }}
+      onClick={e => {
+        e.preventDefault();
+        setInsightsOpen(true);
+      }}
+      type="button"
+      tabIndex={0}
+      aria-label={`Learn more about ${title}`}
+    >
+      {/* Book/info icon */}
+      <span aria-hidden="true" style={{ display: "inline-flex", alignItems: "center", marginRight: 6, fontSize: "1.11em" }}>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 4C3 3.44772 3.44772 3 4 3H14C14.5523 3 15 3.44772 15 4V16C15 16.5523 14.5523 17 14 17H4C3.44772 17 3 16.5523 3 16V4Z" stroke="#fff" strokeWidth="1.6" /><path d="M5 6H13" stroke="#fff" strokeWidth="1.2" strokeLinecap="round" /></svg>
+      </span>
+      Learn More
+    </button>
+  );
+
   return (
-    // Assuming Card component takes a `titleStyle` prop or similar, otherwise Card.js needs to be updated.
-    // If Card directly renders `props.title`, we can wrap it in a span with the desired style.
-    <Card title={<span style={{ color: '#FF0000' }}>{title}</span>}> {/* Applied bright red to the title */}
+    <Card title={<span style={{ color: '#FF0000' }}>{title}</span>}>
       <div style={{ display: "flex", alignItems: "flex-start" }}>
         <SmallToolCardIconPlaceholder iconType={iconType} />
         <div style={{ flex: 1 }}>
@@ -90,28 +120,27 @@ function SmallToolCard({
           }}>
             {desc}
           </div>
-          <div style={{ marginTop: 9, marginBottom: 10 }}>
-            {/* REMOVE OR COMMENT OUT THIS WHOLE BLOCK TO GET RID OF THE TAGS */}
-            {/*
-            {tags && tags.map(tag =>
-              <span
-                className="ch-card-tag"
-                key={tag.label}
-                style={{
-                  background: tag.accent === "tool" ? "var(--accent-gradient)" : "var(--background-secondary)",
-                  color: tag.accent === "tool" ? "var(--palette-primary)" : "var(--accent)",
-                }}>#{tag.label}</span>
-            )}
-            */}
+          <div style={{ marginTop: 9, marginBottom: 10 }} />
+          <div style={{ display: "flex", gap: 7 }}>
+            {LaunchButton}
+            {learnMoreBtn}
           </div>
-          {LaunchButton}
         </div>
       </div>
-      {/* Modal overlay - floating/centered/guaranteed */}
+      {/* Modal for actual tool */}
       {modalOpen && (
         <Modal open={modalOpen} onClose={() => setModalOpen(false)} blur={true}>
           {toolContent}
         </Modal>
+      )}
+      {/* Gemini Insights modal */}
+      {insightsOpen && (
+        <GeminiInsightsModal
+          open={insightsOpen}
+          onClose={() => setInsightsOpen(false)}
+          toolName={title}
+          category={"Tool"}
+        />
       )}
     </Card>
   );
