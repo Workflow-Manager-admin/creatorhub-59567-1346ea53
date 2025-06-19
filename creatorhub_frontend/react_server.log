@@ -7,47 +7,59 @@
 <i> [webpack-dev-server] On Your Network (IPv4): http://172.17.0.2:3000/
 <i> [webpack-dev-server] Content not from webpack is served from './public' directory
 Injecting EditorRootWrapper import: ../.ve/EditorRootWrapper
-asset bundle.js 1.41 MiB [emitted] (name: main)
+asset bundle.js 1.43 MiB [emitted] (name: main)
 asset index.html 1.98 KiB [emitted]
 runtime modules 27.5 KiB 14 modules
 cacheable modules 1.28 MiB
   modules by path ./node_modules/ 1.24 MiB 31 modules
-  modules by path ./src/ 22.9 KiB
-    modules by path ./src/components/*.js 8.42 KiB 7 modules
+  modules by path ./src/ 29 KiB
+    modules by path ./src/components/*.js 13.5 KiB 8 modules
     modules by path ./src/*.css 11.9 KiB 4 modules
-    modules by path ./src/*.js 2.22 KiB 2 modules
-    ./src/hooks/useDarkMode.js 342 bytes [built] [code generated]
+    modules by path ./src/api/*.js 927 bytes 4 modules
+    modules by path ./src/*.js 1.21 KiB 2 modules
+    modules by path ./src/hooks/*.js 1.49 KiB 2 modules
   modules by path ./.ve/ 15.1 KiB
     modules by path ./.ve/*.js 10.6 KiB 2 modules
     modules by path ./.ve/*.css 2.93 KiB 2 modules
     ./.ve/EditorOverlay.jsx 1.58 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 1329 ms
-assets by status 1.98 KiB [cached] 1 asset
-assets by path *.js 1.44 MiB
-  asset bundle.js 1.43 MiB [emitted] (name: main)
-  asset main.e5fb2945a3f1fa87d41a.hot-update.js 16.3 KiB [emitted] [immutable] [hmr] (name: main)
-asset main.e5fb2945a3f1fa87d41a.hot-update.json 28 bytes [emitted] [immutable] [hmr]
-Entrypoint main 1.44 MiB = bundle.js 1.43 MiB main.e5fb2945a3f1fa87d41a.hot-update.js 16.3 KiB
-cached modules 1.28 MiB [cached] 49 modules
-runtime modules 27.5 KiB 14 modules
-javascript modules 7.59 KiB
-  modules by path ./src/api/*.js 927 bytes
-    ./src/api/youtube.js 233 bytes [built] [code generated]
-    ./src/api/devto.js 231 bytes [built] [code generated]
-    ./src/api/rapidapi.js 231 bytes [built] [code generated]
-    ./src/api/gemini.js 232 bytes [built] [code generated]
-  modules by path ./src/components/*.js 5.53 KiB
-    ./src/components/MainContainer.js 5.22 KiB [built] [code generated]
-    ./src/components/Loader.js 316 bytes [built] [code generated]
-  ./src/hooks/useFetchWithSkeleton.js 1.15 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 121 ms
+webpack 5.99.9 compiled successfully in 1312 ms
 assets by status 1.98 KiB [cached] 1 asset
 assets by path *.js 1.43 MiB
   asset bundle.js 1.43 MiB [emitted] (name: main)
-  asset main.6d020793dbf77b8a01f3.hot-update.js 3 KiB [emitted] [immutable] [hmr] (name: main)
-asset main.6d020793dbf77b8a01f3.hot-update.json 28 bytes [emitted] [immutable] [hmr]
-Entrypoint main 1.43 MiB = bundle.js 1.43 MiB main.6d020793dbf77b8a01f3.hot-update.js 3 KiB
+  asset main.e2d6d44c5a62d09258b1.hot-update.js 2.21 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.e2d6d44c5a62d09258b1.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.43 MiB = bundle.js 1.43 MiB main.e2d6d44c5a62d09258b1.hot-update.js 2.21 KiB
 cached modules 1.28 MiB [cached] 55 modules
 runtime modules 27.5 KiB 14 modules
-./src/App.js 705 bytes [built] [code generated]
-webpack 5.99.9 compiled successfully in 41 ms
+./src/api/youtube.js 854 bytes [built] [code generated]
+webpack 5.99.9 compiled successfully in 45 ms
+assets by status 1.98 KiB [cached] 1 asset
+assets by path *.js 1.43 MiB
+  asset bundle.js 1.43 MiB [emitted] (name: main)
+  asset main.6227819ab70a03dc4fce.hot-update.js 2.29 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.6227819ab70a03dc4fce.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.43 MiB = bundle.js 1.43 MiB main.6227819ab70a03dc4fce.hot-update.js 2.29 KiB
+cached modules 1.28 MiB [cached] 55 modules
+runtime modules 27.5 KiB 14 modules
+./src/api/devto.js 925 bytes [built] [code generated]
+webpack 5.99.9 compiled successfully in 38 ms
+assets by status 1.98 KiB [cached] 1 asset
+assets by path *.js 1.43 MiB
+  asset bundle.js 1.43 MiB [emitted] (name: main)
+  asset main.6792c7c2cdc2a47e770c.hot-update.js 2.15 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.6792c7c2cdc2a47e770c.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.43 MiB = bundle.js 1.43 MiB main.6792c7c2cdc2a47e770c.hot-update.js 2.15 KiB
+cached modules 1.28 MiB [cached] 55 modules
+runtime modules 27.5 KiB 14 modules
+./src/api/rapidapi.js 780 bytes [built] [code generated]
+webpack 5.99.9 compiled successfully in 33 ms
+assets by status 1.98 KiB [cached] 1 asset
+assets by path *.js 1.43 MiB
+  asset bundle.js 1.43 MiB [emitted] (name: main)
+  asset main.d9a0ad77e1d9d19e4080.hot-update.js 1.97 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.d9a0ad77e1d9d19e4080.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.43 MiB = bundle.js 1.43 MiB main.d9a0ad77e1d9d19e4080.hot-update.js 1.97 KiB
+cached modules 1.28 MiB [cached] 55 modules
+runtime modules 27.5 KiB 14 modules
+./src/api/gemini.js 630 bytes [built] [code generated]
+webpack 5.99.9 compiled successfully in 31 ms
