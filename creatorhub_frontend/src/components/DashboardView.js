@@ -172,7 +172,12 @@ function DashboardView({ user = { name: "Alex" } }) {
             iconType: "icon",
             Button: (
               <a
-                href={/^https:\/\/dev\.to\//.test(article.url) ? article.url : `https://dev.to/${article.url}`}
+                // Always use official Dev.to article link fallback to homepage if invalid
+                href={
+                  article.url && /^https:\/\/dev\.to\//.test(article.url)
+                    ? article.url
+                    : "https://dev.to/"
+                }
                 className="ch-info-btn"
                 style={{ background: "linear-gradient(90deg,#1E90FF,#FD3A69)", marginTop: 10, color: "var(--palette-primary)" }}
                 target="_blank"
@@ -198,7 +203,12 @@ function DashboardView({ user = { name: "Alex" } }) {
             iconType: "icon",
             Button: (
               <a
-                href={/^https:\/\/rapidapi\.com\//.test(api.url) ? api.url : `https://rapidapi.com/${api.url.replace(/^https?:\/\/(www\.)?rapidapi\.com\/?/, "")}`}
+                // Always use direct RapidAPI directory link; fallback to API directory home if invalid
+                href={
+                  api.url && /^https:\/\/rapidapi\.com\//.test(api.url)
+                    ? api.url
+                    : "https://rapidapi.com/collection/popular-apis"
+                }
                 className="ch-info-btn"
                 style={{ background: "var(--accent-gradient)", marginTop: 10, color: "var(--palette-primary)" }}
                 target="_blank"

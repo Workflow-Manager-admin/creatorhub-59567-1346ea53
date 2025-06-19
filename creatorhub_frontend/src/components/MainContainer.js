@@ -253,6 +253,11 @@ function MainContainer({ children }) {
               </Card>
             );
           } else if (card.source === "devto") {
+            // Use the official Dev.to link when valid, fallback to Dev.to homepage if not
+            const devtoLink =
+              card.url && /^https:\/\/dev\.to\//.test(card.url)
+                ? card.url
+                : "https://dev.to/";
             return (
               <Card title={card.title} key={card.id}>
                 <div>
@@ -260,7 +265,7 @@ function MainContainer({ children }) {
                   <div style={{ color: "var(--text-secondary)", fontSize: ".97em" }}>
                     Published: {card.published_at}
                   </div>
-                  <a href={card.url} target="_blank" rel="noopener noreferrer"
+                  <a href={devtoLink} target="_blank" rel="noopener noreferrer"
                     style={{ color: "var(--accent)" }}>
                     View article
                   </a>
@@ -277,6 +282,11 @@ function MainContainer({ children }) {
               </Card>
             );
           } else if (card.source === "rapidapi") {
+            // Use the official RapidAPI API or directory link when valid, fallback to directory home if not
+            const rapidLink =
+              card.url && /^https:\/\/rapidapi\.com\//.test(card.url)
+                ? card.url
+                : "https://rapidapi.com/collection/popular-apis";
             return (
               <Card title={card.title} key={card.id}>
                 <div>
@@ -284,7 +294,7 @@ function MainContainer({ children }) {
                   <div style={{ color: "var(--text-secondary)", fontSize: ".97em" }}>
                     {card.description}
                   </div>
-                  <a href={card.url} target="_blank" rel="noopener noreferrer"
+                  <a href={rapidLink} target="_blank" rel="noopener noreferrer"
                     style={{ color: "var(--accent)" }}>
                     Explore on RapidAPI
                   </a>

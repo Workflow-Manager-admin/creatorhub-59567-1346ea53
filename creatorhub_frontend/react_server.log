@@ -12,8 +12,8 @@ asset index.html 620 bytes [emitted]
 runtime modules 27.5 KiB 14 modules
 cacheable modules 1.4 MiB
   modules by path ./node_modules/ 1.24 MiB 31 modules
-  modules by path ./src/ 150 KiB
-    modules by path ./src/components/*.js 116 KiB 14 modules
+  modules by path ./src/ 154 KiB
+    modules by path ./src/components/*.js 121 KiB 14 modules
     modules by path ./src/*.css 28.8 KiB 4 modules
     modules by path ./src/api/*.js 3.11 KiB 4 modules
     modules by path ./src/*.js 1.82 KiB 2 modules
@@ -21,34 +21,14 @@ cacheable modules 1.4 MiB
     modules by path ./.ve/*.js 10.6 KiB 2 modules
     modules by path ./.ve/*.css 2.93 KiB 2 modules
     ./.ve/EditorOverlay.jsx 1.58 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 1518 ms
-assets by status 620 bytes [cached] 1 asset
-assets by path *.js 1.59 MiB
-  asset bundle.js 1.57 MiB [emitted] (name: main)
-  asset main.c6fa80aa1448f856c1e0.hot-update.js 22.8 KiB [emitted] [immutable] [hmr] (name: main)
-asset main.c6fa80aa1448f856c1e0.hot-update.json 28 bytes [emitted] [immutable] [hmr]
-Entrypoint main 1.59 MiB = bundle.js 1.57 MiB main.c6fa80aa1448f856c1e0.hot-update.js 22.8 KiB
-cached modules 1.38 MiB [cached] 59 modules
-runtime modules 27.5 KiB 14 modules
-./src/components/DashboardView.js 16.3 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 71 ms
+webpack 5.99.9 compiled successfully in 1588 ms
 assets by status 620 bytes [cached] 1 asset
 assets by path *.js 1.6 MiB
   asset bundle.js 1.57 MiB [emitted] (name: main)
-  asset main.100d3848dc880ea3b366.hot-update.js 28.4 KiB [emitted] [immutable] [hmr] (name: main)
-asset main.100d3848dc880ea3b366.hot-update.json 28 bytes [emitted] [immutable] [hmr]
-Entrypoint main 1.6 MiB = bundle.js 1.57 MiB main.100d3848dc880ea3b366.hot-update.js 28.4 KiB
+  asset main.de54dde79eeb9f492abd.hot-update.js 28.7 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.de54dde79eeb9f492abd.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.6 MiB = bundle.js 1.57 MiB main.de54dde79eeb9f492abd.hot-update.js 28.7 KiB
 cached modules 1.38 MiB [cached] 59 modules
 runtime modules 27.5 KiB 14 modules
-./src/components/DashboardView.js 20.7 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 199 ms
-assets by status 620 bytes [cached] 1 asset
-assets by path *.js 1.6 MiB
-  asset bundle.js 1.57 MiB [emitted] (name: main)
-  asset main.c6758369812fe7b9eaba.hot-update.js 28.6 KiB [emitted] [immutable] [hmr] (name: main)
-asset main.c6758369812fe7b9eaba.hot-update.json 28 bytes [emitted] [immutable] [hmr]
-Entrypoint main 1.6 MiB = bundle.js 1.57 MiB main.c6758369812fe7b9eaba.hot-update.js 28.6 KiB
-cached modules 1.38 MiB [cached] 59 modules
-runtime modules 27.5 KiB 14 modules
-./src/components/DashboardView.js 20.9 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 95 ms
+./src/components/DashboardView.js 21 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 162 ms
