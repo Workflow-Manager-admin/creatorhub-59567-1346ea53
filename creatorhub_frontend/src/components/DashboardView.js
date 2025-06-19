@@ -17,20 +17,8 @@ import { fetchGeminiContent } from "../api/gemini";
 // Helper: Tag badge
 function CategoryTag({ children, accent }) {
   // accent: ("tool"|"guide"|"new"|...)
-  let style = {
-    background: "#232845",
-    color: "var(--accent)",
-    borderRadius: 16,
-    fontSize: "0.98em",
-    padding: "4px 14px",
-    fontWeight: 600,
-    marginRight: 8,
-    marginBottom: 3,
-    display: "inline-block",
-    letterSpacing: ".01em",
-    boxShadow: "0 1px 10px #f98b8030",
-    verticalAlign: "middle"
-  };
+  let style = {}; // Start with an empty style object
+  // These styles are handled by .ch-card-tag. Only accent-specific overrides remain.
   if (accent === "guide") {
     style.background = "linear-gradient(89deg,#1E90FF20,#1E90FF55)";
     style.color = "var(--palette-primary)";
@@ -99,6 +87,7 @@ function ToolCard({ title, desc, tags, accent, loading, Button, iconType, onClic
                 </CategoryTag>
               ))}
           </div>
+          {/* Button is passed as a React element, its styles should be handled by its own className */}
           {Button ? Button : null}
         </div>
       </div>
@@ -148,7 +137,7 @@ function DashboardView({ user = { name: "Alex" } }) {
             <a
               href={yt[0].url}
               className="ch-info-btn"
-              style={{ background: "linear-gradient(90deg,#1E90FF,#FD3A69)", marginTop: 10, color: "var(--palette-primary)" }}
+              // Removed redundant inline styles for background and color, relies on ch-info-btn
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -178,7 +167,7 @@ function DashboardView({ user = { name: "Alex" } }) {
                     : "https://dev.to/"
                 }
                 className="ch-info-btn"
-                style={{ background: "linear-gradient(90deg,#1E90FF,#FD3A69)", marginTop: 10, color: "var(--palette-primary)" }}
+                // Removed redundant inline styles for background and color, relies on ch-info-btn
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -200,7 +189,7 @@ function DashboardView({ user = { name: "Alex" } }) {
             Button: (
               <button
                 className="ch-info-btn"
-                style={{ background: "var(--accent-gradient)", marginTop: 10, color: "var(--palette-primary)" }}
+                // Removed redundant inline styles for background and color, relies on ch-info-btn
                 disabled
               >
                 Demo
@@ -287,16 +276,7 @@ function DashboardView({ user = { name: "Alex" } }) {
             key="category"
             value={category}
             onChange={e => setCategory(e.target.value)}
-            style={{
-              background: "var(--background-secondary,#242b46)",
-              color: "var(--accent)",
-              fontWeight: 600,
-              padding: "7px 16px",
-              borderRadius: 16,
-              border: "1.1px solid var(--border-color)",
-              marginRight: 9,
-              minWidth: 96
-            }}
+            // Removed redundant inline styles for select as they are handled by app.css
             aria-label="Filter by category"
           >
             {allCategories.map(cat =>
@@ -313,7 +293,7 @@ function DashboardView({ user = { name: "Alex" } }) {
             maxLength={64}
             className="ch-search"
             value={search}
-            style={{ background: "#1b2435", borderRadius: 18, minWidth: 178, fontSize: ".98em", marginRight: 7 }}
+            // Removed redundant inline styles for input as they are handled by app.css
             onChange={e => setSearch(e.target.value)}
             autoComplete="off"
           />
@@ -374,7 +354,7 @@ function DashboardView({ user = { name: "Alex" } }) {
               <a
                 href="#"
                 className="ch-info-btn"
-                style={{ background: "var(--accent-gradient)", marginTop: 10, color: "var(--palette-primary)" }}
+                // Removed redundant inline styles here, rely on ch-info-btn
                 onClick={e => { e.preventDefault(); }}
                 tabIndex={0}
                 aria-label="Open Hashtag Generator"
@@ -393,7 +373,7 @@ function DashboardView({ user = { name: "Alex" } }) {
               <a
                 href="#"
                 className="ch-info-btn"
-                style={{ background: "var(--accent-gradient)", marginTop: 10, color: "var(--palette-primary)" }}
+                // Removed redundant inline styles here, rely on ch-info-btn
                 onClick={e => { e.preventDefault(); }}
                 tabIndex={0}
                 aria-label="Open Caption Generator"
@@ -412,7 +392,7 @@ function DashboardView({ user = { name: "Alex" } }) {
               <a
                 href="#"
                 className="ch-info-btn"
-                style={{ background: "var(--accent-gradient)", marginTop: 10, color: "var(--palette-primary)" }}
+                // Removed redundant inline styles here, rely on ch-info-btn
                 onClick={e => { e.preventDefault(); }}
                 tabIndex={0}
                 aria-label="Open Hook Generator"

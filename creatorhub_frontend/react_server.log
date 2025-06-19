@@ -10,105 +10,35 @@ Injecting EditorRootWrapper import: ../.ve/EditorRootWrapper
 asset bundle.js 1.52 MiB [emitted] (name: main)
 asset index.html 620 bytes [emitted]
 runtime modules 27.5 KiB 14 modules
-cacheable modules 1.35 MiB
+cacheable modules 1.36 MiB
   modules by path ./node_modules/ 1.24 MiB 31 modules
-  modules by path ./src/ 103 KiB
-    modules by path ./src/components/*.js 66.4 KiB 14 modules
-    modules by path ./src/*.css 30.4 KiB 4 modules
+  modules by path ./src/ 109 KiB
+    modules by path ./src/components/*.js 70.6 KiB 15 modules
+    modules by path ./src/*.css 31.6 KiB 4 modules
     modules by path ./src/api/*.js 4.53 KiB 4 modules
     modules by path ./src/*.js 1.82 KiB 2 modules
   modules by path ./.ve/ 15.1 KiB
     modules by path ./.ve/*.js 10.6 KiB 2 modules
     modules by path ./.ve/*.css 2.93 KiB 2 modules
     ./.ve/EditorOverlay.jsx 1.58 KiB [built] [code generated]
-
-WARNING in ./src/components/DashboardView.js 200:61-81
-export 'fetchRapidAPIContent' (imported as 'fetchRapidAPIContent') was not found in '../api/rapidapi' (possible exports: generateCaptions, generateContentIdeas, generateHooks, generatePostPlan, getYoutubeChannelStats)
- @ ./src/App.js 4:0-55 18:32-45 33:32-45
- @ ./src/index.js 5:0-24 11:32-35
-
-webpack 5.99.9 compiled with 1 warning in 1458 ms
-assets by status 620 bytes [cached] 1 asset
-assets by path *.js 1.52 MiB
-  asset bundle.js 1.52 MiB [emitted] (name: main)
-  asset main.8eeb313cd52456505f51.hot-update.js 4.6 KiB [emitted] [immutable] [hmr] (name: main)
-asset main.8eeb313cd52456505f51.hot-update.json 28 bytes [emitted] [immutable] [hmr]
-Entrypoint main 1.52 MiB = bundle.js 1.52 MiB main.8eeb313cd52456505f51.hot-update.js 4.6 KiB
-cached modules 1.35 MiB [cached] 59 modules
-runtime modules 27.5 KiB 14 modules
-./src/components/Modal.js 2.54 KiB [built] [code generated]
-
-WARNING in ./src/components/DashboardView.js 200:61-81
-export 'fetchRapidAPIContent' (imported as 'fetchRapidAPIContent') was not found in '../api/rapidapi' (possible exports: generateCaptions, generateContentIdeas, generateHooks, generatePostPlan, getYoutubeChannelStats)
- @ ./src/App.js 4:0-55 18:32-45 33:32-45
- @ ./src/index.js 5:0-24 11:32-35
-
-webpack 5.99.9 compiled with 1 warning in 78 ms
-assets by status 620 bytes [cached] 1 asset
-assets by path *.js 1.52 MiB
-  asset bundle.js 1.52 MiB [emitted] (name: main)
-  asset main.3d8fd397ef6814663ef1.hot-update.js 6.77 KiB [emitted] [immutable] [hmr] (name: main)
-asset main.3d8fd397ef6814663ef1.hot-update.json 28 bytes [emitted] [immutable] [hmr]
-Entrypoint main 1.52 MiB = bundle.js 1.52 MiB main.3d8fd397ef6814663ef1.hot-update.js 6.77 KiB
-cached modules 1.35 MiB [cached] 59 modules
-runtime modules 27.5 KiB 14 modules
-./src/components/SmallToolCard.js 3.88 KiB [built] [code generated]
-
-WARNING in ./src/components/DashboardView.js 200:61-81
-export 'fetchRapidAPIContent' (imported as 'fetchRapidAPIContent') was not found in '../api/rapidapi' (possible exports: generateCaptions, generateContentIdeas, generateHooks, generatePostPlan, getYoutubeChannelStats)
- @ ./src/App.js 4:0-55 18:32-45 33:32-45
- @ ./src/index.js 5:0-24 11:32-35
-
-webpack 5.99.9 compiled with 1 warning in 76 ms
-assets by status 620 bytes [cached] 1 asset
-assets by path *.js 1.54 MiB
-  asset bundle.js 1.52 MiB [emitted] (name: main)
-  asset main.61a80efe929d0f05f705.hot-update.js 27 KiB [emitted] [immutable] [hmr] (name: main)
-asset main.61a80efe929d0f05f705.hot-update.json 28 bytes [emitted] [immutable] [hmr]
-Entrypoint main 1.54 MiB = bundle.js 1.52 MiB main.61a80efe929d0f05f705.hot-update.js 27 KiB
-cached modules 1.34 MiB [cached] 59 modules
-runtime modules 27.5 KiB 14 modules
-./src/components/DashboardView.js 19.6 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 145 ms
-assets by status 620 bytes [cached] 1 asset
-assets by path *.js 1.54 MiB
-  asset bundle.js 1.52 MiB [emitted] (name: main)
-  asset main.97a55c5982c362c3d531.hot-update.js 25.8 KiB [emitted] [immutable] [hmr] (name: main)
-asset main.97a55c5982c362c3d531.hot-update.json 28 bytes [emitted] [immutable] [hmr]
-Entrypoint main 1.54 MiB = bundle.js 1.52 MiB main.97a55c5982c362c3d531.hot-update.js 25.8 KiB
-cached modules 1.34 MiB [cached] 59 modules
-runtime modules 27.5 KiB 14 modules
-./src/components/DashboardView.js 18.5 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 85 ms
-assets by status 620 bytes [cached] 1 asset
-assets by path *.js 1.52 MiB
-  asset bundle.js 1.52 MiB [emitted] (name: main)
-  asset main.e0840a48cbd58c287b1d.hot-update.js 5.65 KiB [emitted] [immutable] [hmr] (name: main)
-asset main.e0840a48cbd58c287b1d.hot-update.json 28 bytes [emitted] [immutable] [hmr]
-Entrypoint main 1.52 MiB = bundle.js 1.52 MiB main.e0840a48cbd58c287b1d.hot-update.js 5.65 KiB
-cached modules 1.35 MiB [cached] 59 modules
-runtime modules 27.5 KiB 14 modules
-./src/components/Modal.js 3.58 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 110 ms
+webpack 5.99.9 compiled successfully in 1447 ms
 assets by status 620 bytes [cached] 1 asset
 assets by path *.js 1.55 MiB
   asset bundle.js 1.52 MiB [emitted] (name: main)
-  asset main.f9eab7d149e9bc725735.hot-update.js 29.7 KiB [emitted] [immutable] [hmr] (name: main)
-asset main.f9eab7d149e9bc725735.hot-update.json 28 bytes [emitted] [immutable] [hmr]
-Entrypoint main 1.55 MiB = bundle.js 1.52 MiB main.f9eab7d149e9bc725735.hot-update.js 29.7 KiB
-cached modules 1.33 MiB [cached] 59 modules
+  asset main.244c8cce70724cb9bfb1.hot-update.js 24.8 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.244c8cce70724cb9bfb1.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.55 MiB = bundle.js 1.52 MiB main.244c8cce70724cb9bfb1.hot-update.js 24.8 KiB
+cached modules 1.34 MiB [cached] 60 modules
 runtime modules 27.5 KiB 14 modules
-./node_modules/css-loader/dist/cjs.js!./src/App.css 26.3 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 80 ms
+./src/components/DashboardView.js 17.6 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 79 ms
 assets by status 620 bytes [cached] 1 asset
 assets by path *.js 1.53 MiB
   asset bundle.js 1.52 MiB [emitted] (name: main)
-  asset main.0ac49dc20ba725c3b7b0.hot-update.js 12 KiB [emitted] [immutable] [hmr] (name: main)
-asset main.0ac49dc20ba725c3b7b0.hot-update.json 28 bytes [emitted] [immutable] [hmr]
-Entrypoint main 1.53 MiB = bundle.js 1.52 MiB main.0ac49dc20ba725c3b7b0.hot-update.js 12 KiB
-cached modules 1.35 MiB [cached] 59 modules
+  asset main.87524569d4b96327b4cd.hot-update.js 9.1 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.87524569d4b96327b4cd.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.53 MiB = bundle.js 1.52 MiB main.87524569d4b96327b4cd.hot-update.js 9.1 KiB
+cached modules 1.36 MiB [cached] 60 modules
 runtime modules 27.5 KiB 14 modules
-javascript modules 6.77 KiB
-  ./src/components/ToolsPage.js 4.22 KiB [built] [code generated]
-  ./src/components/PostPlanner.js 2.56 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 99 ms
+./src/components/SmallToolCard.js 6.02 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 73 ms
