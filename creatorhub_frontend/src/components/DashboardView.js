@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import Card from "./Card";
 import SkeletonLoader from "./SkeletonLoader";
 import GeminiInsightsModal from "./GeminiInsightsModal";
+import Modal from "./Modal"; // <--- NEW: Import the generic Modal component
 // Import Generator components directly, as they will be passed as content
 import HashtagGenerator from "./HashtagGenerator";
 import CaptionGenerator from "./CaptionGenerator";
@@ -620,15 +621,15 @@ function DashboardView({ user = { name: "Alex" } }) {
 
       {/* Central Tool Modal for Hashtag/Caption/Hook Generators */}
       {toolModal.open && (
-        <GeminiInsightsModal // Re-using GeminiInsightsModal for consistency, but passing direct content
+        <Modal // <--- Changed from GeminiInsightsModal to Modal
           open={toolModal.open}
           onClose={handleCloseToolModal}
-          toolName={toolModal.title}
-          category="Tool" // Explicitly "Tool" category for these
-          // Pass the actual component as children for render inside the modal
-          children={toolModal.content}
-          isGenerator={true} // Add a prop to distinguish if it's a generator, for conditional rendering inside modal
-        />
+          // Assuming your generic Modal component accepts a title prop for its header
+          title={toolModal.title}
+          blur={true}
+        >
+          {toolModal.content}
+        </Modal>
       )}
     </section>
   );
