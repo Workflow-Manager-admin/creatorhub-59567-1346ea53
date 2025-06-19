@@ -674,9 +674,10 @@ body.dark-mode {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(19, 25, 34, 0.87); /* Dim background behind modal */
-  backdrop-filter: blur(16px) saturate(140%);
-  animation: modal-fade-in 0.39s cubic-bezier(.55,.08,.68,.65);
+  background: transparent !important; /* No dim background */
+  opacity: 1 !important; /* Remove opacity/dimming effect */
+  backdrop-filter: none !important; /* Eliminate blur */
+  animation: none; /* Remove fade-in animation to avoid opacity transition */
   /* The backdrop only exists in DOM when modal is open; no persistence. */
 }
 
