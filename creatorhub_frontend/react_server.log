@@ -23,3 +23,33 @@ modules by path ./.ve/ 15.1 KiB
     ./node_modules/css-loader/dist/cjs.js!./.ve/EditorOverlay.css 697 bytes [built] [code generated]
   ./.ve/EditorOverlay.jsx 1.58 KiB [built] [code generated]
 webpack 5.99.9 compiled successfully in 1241 ms
+assets by status 1.98 KiB [cached] 1 asset
+assets by path *.js 1.4 MiB
+  asset bundle.js 1.4 MiB [emitted] (name: main)
+  asset main.ddf0a12e9168f5ee91fd.hot-update.js 8.21 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.ddf0a12e9168f5ee91fd.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.4 MiB = bundle.js 1.4 MiB main.ddf0a12e9168f5ee91fd.hot-update.js 8.21 KiB
+cached modules 1.26 MiB [cached] 41 modules
+runtime modules 27.5 KiB 14 modules
+./node_modules/css-loader/dist/cjs.js!./src/App.css 5.58 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 96 ms
+assets by status 1.98 KiB [cached] 1 asset
+assets by path *.js 1.43 MiB
+  asset bundle.js 1.41 MiB [emitted] (name: main)
+  asset main.3002cccb6041532eeb9c.hot-update.js 18.5 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.3002cccb6041532eeb9c.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.43 MiB = bundle.js 1.41 MiB main.3002cccb6041532eeb9c.hot-update.js 18.5 KiB
+cached modules 1.27 MiB [cached] 41 modules
+runtime modules 27.5 KiB 14 modules
+javascript modules 6.37 KiB
+  modules by path ./src/components/*.js 4.16 KiB
+    ./src/components/Layout.js 934 bytes [built] [code generated]
+    ./src/components/MainContainer.js 386 bytes [built] [code generated]
+    ./src/components/Card.js 683 bytes [built] [code generated]
+    ./src/components/SkeletonLoader.js 496 bytes [built] [code generated]
+    ./src/components/DarkModeToggle.js 444 bytes [built] [code generated]
+    ./src/components/Topbar.js 853 bytes [built] [code generated]
+    ./src/components/Sidebar.js 465 bytes [built] [code generated]
+  ./src/App.js 1.88 KiB [built] [code generated]
+  ./src/hooks/useDarkMode.js 342 bytes [built] [code generated]
+webpack 5.99.9 compiled successfully in 121 ms
