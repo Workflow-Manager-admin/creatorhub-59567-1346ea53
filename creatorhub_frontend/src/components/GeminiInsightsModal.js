@@ -92,14 +92,81 @@ function GeminiInsightsModal({ open, onClose, toolName, category }) {
 
   return (
     <Modal open={open} onClose={onClose} blur={true}>
-      <div style={{ width: 420, maxWidth: "94vw" }}>
+      <div
+        style={{
+          width: 420,
+          maxWidth: "94vw",
+          minHeight: 220,
+          position: "relative",
+          paddingBottom: "49px", // ensure content never blocked by icon
+        }}
+      >
         <div style={{ fontWeight: 800, fontSize: "1.22em", marginBottom: 10, color: "var(--accent)" }}>
           Gemini Insights: {toolName}
         </div>
-        <div style={{ color: "var(--text-secondary)", marginBottom: 12 }}>Powered by Google Gemini | Category: <span style={{ color: "#E87A41", fontWeight: 600 }}>{category}</span></div>
+        <div style={{ color: "var(--text-secondary)", marginBottom: 12 }}>
+          Powered by Google Gemini | Category:{" "}
+          <span style={{ color: "#E87A41", fontWeight: 600 }}>{category}</span>
+        </div>
         {loading && <div className="ch-loader" style={{ margin: "28px 0" }}>Loading insights…</div>}
         {error && <div style={{ color: "#EF6A6A", marginBottom: 15 }}>{error}</div>}
         {markdown && !loading && !error && <MarkdownRenderer markdown={markdown} />}
+        {/* Info icon absolutely in bottom right - always present */}
+        <button
+          className="dashboard-card-info-icon"
+          type="button"
+          aria-label="Gemini info"
+          title="This is an AI-powered Gemini insights modal"
+          tabIndex={-1}
+          disabled
+          style={{
+            position: "absolute",
+            bottom: "1.2rem",
+            right: "1.2rem",
+            color: "#82C4EC",
+            background: "transparent",
+            border: "none",
+            fontSize: "1.7rem",
+            padding: 0,
+            cursor: "default",
+            opacity: 0.94,
+            pointerEvents: "none", // ensure no accidental clicks
+            zIndex: 1,
+          }}
+        >
+          <svg
+            width="27"
+            height="27"
+            viewBox="0 0 24 24"
+            fill="none"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <circle
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="2"
+            />
+            <rect
+              x="11"
+              y="10"
+              width="2"
+              height="6"
+              rx="1"
+              fill="currentColor"
+            />
+            <rect
+              x="11"
+              y="7"
+              width="2"
+              height="2"
+              rx="1"
+              fill="currentColor"
+            />
+          </svg>
+        </button>
       </div>
     </Modal>
   );
