@@ -46,9 +46,7 @@ function IconLottiePlaceholder({ type = "lottie", size = 48 }) {
  * Single glassmorphic tool card, now with Gemini Insights support.
  * This component must be at the top level for hooks/imports.
  */
-function ToolCard({ title, desc, accent, loading, Button, iconType }) {
-  const [insightsOpen, setInsightsOpen] = useState(false);
-
+function ToolCard({ title, desc, accent, loading, Button, iconType, onLearnMore }) {
   // Decide Gemini modal category by accent (default "Guide" for guides/resources, "Tool" for AI/gen)
   let geminiCategory = "Other";
   if (accent === "guide") geminiCategory = "Guide";
@@ -79,7 +77,7 @@ function ToolCard({ title, desc, accent, loading, Button, iconType }) {
               type="button"
               onClick={e => {
                 e.preventDefault();
-                setInsightsOpen(true);
+                onLearnMore && onLearnMore(title, geminiCategory);
               }}
               tabIndex={0}
               aria-label={`Learn more about ${title}`}
@@ -92,14 +90,6 @@ function ToolCard({ title, desc, accent, loading, Button, iconType }) {
           </div>
         </div>
       </div>
-      {insightsOpen && (
-        <GeminiInsightsModal
-          open={insightsOpen}
-          onClose={() => setInsightsOpen(false)}
-          toolName={title}
-          category={geminiCategory}
-        />
-      )}
     </Card>
   );
 }
@@ -230,6 +220,21 @@ function DashboardView({ user = { name: "Alex" } }) {
     return out;
   }, [tools, search, category]);
 
+  // Gemini Insights modal state for tool cards (at DashboardView level)
+  const [insightsModal, setInsightsModal] = useState({
+    open: false,
+    toolName: "",
+    category: "Other",
+  });
+
+  // Handler for "Learn More" on any ToolCard (including mapping correct category)
+  const handleOpenInsightsModal = (toolName, category) => {
+    setInsightsModal({ open: true, toolName, category });
+  };
+  const handleCloseInsightsModal = () => {
+    setInsightsModal({ ...insightsModal, open: false });
+  };
+
   // Render
   return (
     <section style={{
@@ -322,9 +327,47 @@ function DashboardView({ user = { name: "Alex" } }) {
           No tools found. Try adjusting your search or filters.
         </div>
       )}
-      {/* Tool cards */}
-      {!loading && (
-        <DashboardQuickCards />
+      {/* Tool cards for loaded data */}
+      {!loading && filteredTools.length > 0 && (
+        <div
+          className="dashboard-tool-card-grid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))",
+            gap: 32,
+            alignItems: "stretch",
+            justifyContent: "center",
+            maxWidth: 1100,
+            width: "100%",
+            margin: "0 auto",
+            padding: "0 12px",
+            marginBottom: 27,
+          }}
+        >
+          {filteredTools.map(tool => (
+            <ToolCard
+              key={tool.id || tool.title}
+              title={tool.title}
+              desc={tool.desc}
+              accent={tool.accent}
+              loading={false}
+              Button={tool.Button}
+              iconType={tool.iconType}
+              onLearnMore={handleOpenInsightsModal}
+            />
+          ))}
+        </div>
+      )}
+      {/* DashboardQuickCards still below, for quick access tools */}
+      {!loading && <DashboardQuickCards />}
+      {/* GeminiInsightsModal shown if any tool card "Learn More" is active */}
+      {insightsModal.open && (
+        <GeminiInsightsModal
+          open={insightsModal.open}
+          onClose={handleCloseInsightsModal}
+          toolName={insightsModal.toolName}
+          category={insightsModal.category}
+        />
       )}
     </section>
   );
