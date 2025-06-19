@@ -1166,25 +1166,25 @@ a:hover {
 /* Example of what your .ch-modal and .ch-modal-close CSS might look like now: */
 
 .ch-modal {
-  background: var(--background-secondary); /* Assuming this variable exists */
-  border-radius: 12px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-  padding: 30px 40px; /* Adjust as per your design */
-  /* Other styles as defined in inline, but remove any positioning that conflicts */
+ background: var(--background-secondary); /* Assuming this variable exists */
+ border-radius: 12px;
+ box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+ padding: 30px 40px; /* Adjust as per your design */
+ /* Other styles as defined in inline, but remove any positioning that conflicts */
 }
 
 .ch-modal-close {
-  /* Existing styles for your close button */
-  background: none;
-  border: none;
-  font-size: 1em;
-  /* Adjust size if 2.2em was too big previously */
-  color: var(--text-secondary);
-  /* Assuming this variable exists */
-  cursor: pointer;
-  /* Other styles as defined inline */
+ /* Existing styles for your close button */
+ background: none;
+ border: none;
+ font-size: 1em;
+ /* Adjust size if 2.2em was too big previously */
+ color: var(--text-secondary);
+ /* Assuming this variable exists */
+ cursor: pointer;
+ /* Other styles as defined inline */
 }
 
 .ch-modal-close:hover {
-  color: var(--accent); /* Assuming this variable exists */
+ color: var(--accent); /* Assuming this variable exists */
 }
