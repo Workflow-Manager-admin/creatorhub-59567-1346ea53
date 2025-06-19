@@ -61,6 +61,7 @@ function SmallToolCard({
   learnMoreBtn, // optional: parent-provided custom button
   onLearnMore, // optional: parent-level handler for Learn More (e.g. for DashboardView central modal)
   accent = "tool",
+  infoIconButton // NEW: allows overriding info icon, e.g. from DashboardQuickCards
 }) {
   const [modalOpen, setModalOpen] = useState(false);
   // Gemini modal state is only local if NOT provided from above
@@ -84,7 +85,52 @@ function SmallToolCard({
   if (accent === "guide") geminiCategory = "Guide";
   if (accent === "tool") geminiCategory = "Tool";
 
-  // If parent provided a handler, "Learn More" is delegated up
+  // Info icon button - overridable (default: render the styled icon button, else use prop if provided)
+  const InfoIconBtn =
+    infoIconButton ? (
+      infoIconButton
+    ) : (
+      <button
+        className="dashboard-card-info-icon"
+        style={{
+          position: "absolute",
+          bottom: "1rem",
+          right: "1rem",
+          color: "#ccc",
+          background: "transparent",
+          border: "none",
+          fontSize: "1.5rem",
+          padding: 0,
+          cursor: "pointer"
+        }}
+        type="button"
+        onClick={e => {
+          e.preventDefault();
+          onLearnMore
+            ? onLearnMore(title, geminiCategory)
+            : setInsightsOpen(true);
+        }}
+        tabIndex={0}
+        aria-label={`Show AI insights for ${title}`}
+        title="Show AI insights"
+      >
+        <svg
+          width="25"
+          height="25"
+          viewBox="0 0 24 24"
+          fill="none"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
+          <rect x="11" y="10" width="2" height="6" rx="1" fill="currentColor" />
+          <rect x="11" y="7" width="2" height="2" rx="1" fill="currentColor" />
+        </svg>
+      </button>
+    );
+
+  // For revert: original learn more button (as comment)
+  /*
   const mergedLearnMoreBtn =
     learnMoreBtn ||
     (onLearnMore ? (
@@ -136,10 +182,11 @@ function SmallToolCard({
         Learn More
       </button>
     ));
+  */
 
   return (
     <Card title={<span style={{ color: '#FF0000' }}>{title}</span>}>
-      <div style={{ display: "flex", alignItems: "flex-start" }}>
+      <div style={{ display: "flex", alignItems: "flex-start", position: "relative" }}>
         <SmallToolCardIconPlaceholder iconType={iconType} />
         <div style={{ flex: 1 }}>
           <div style={{
@@ -152,10 +199,9 @@ function SmallToolCard({
           <div style={{ marginTop: 9, marginBottom: 10 }} />
           <div style={{ display: "flex", gap: 7 }}>
             {LaunchButton}
-            {/* "Learn More" button always present, handler delegated if parent controls */}
-            {mergedLearnMoreBtn}
           </div>
         </div>
+        {InfoIconBtn}
       </div>
       {/* Modal for actual tool */}
       {modalOpen && (
@@ -164,7 +210,7 @@ function SmallToolCard({
         </Modal>
       )}
       {/* Gemini Insights modal: only if *not* delegated to parent */}
-      {!onLearnMore && !learnMoreBtn && insightsOpen && (
+      {!onLearnMore && !learnMoreBtn && !infoIconButton && insightsOpen && (
         <GeminiInsightsModal
           open={insightsOpen}
           onClose={() => setInsightsOpen(false)}

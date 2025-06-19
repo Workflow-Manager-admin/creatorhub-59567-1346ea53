@@ -212,6 +212,64 @@ function DashboardView({ user = { name: "Alex" } }) {
             </div>
             <div style={{ marginTop: 10, display: "flex", flexWrap: "wrap", gap: 7 }}>
               {Button ? Button : null}
+              {/* ---REPLACED 'Learn More' button with grey info icon button (accessible, bottom right)--- */}
+              <button
+                className="dashboard-card-info-icon"
+                style={{
+                  position: "absolute",
+                  bottom: "1rem",
+                  right: "1rem",
+                  color: "#ccc",
+                  background: "transparent",
+                  border: "none",
+                  fontSize: "1.5rem",
+                  padding: 0,
+                  cursor: "pointer"
+                }}
+                type="button"
+                onClick={e => {
+                  e.preventDefault();
+                  onLearnMore && onLearnMore(title, geminiCategory);
+                }}
+                tabIndex={0}
+                aria-label={`Show AI insights for ${title}`}
+                title="Show AI insights"
+              >
+                <svg
+                  width="25"
+                  height="25"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  />
+                  <rect
+                    x="11"
+                    y="10"
+                    width="2"
+                    height="6"
+                    rx="1"
+                    fill="currentColor"
+                  />
+                  <rect
+                    x="11"
+                    y="7"
+                    width="2"
+                    height="2"
+                    rx="1"
+                    fill="currentColor"
+                  />
+                </svg>
+              </button>
+              {/* --Original button kept below for revert (commented out):-- */}
+              {/*
               <button
                 className="ch-info-btn"
                 style={{
@@ -244,6 +302,7 @@ function DashboardView({ user = { name: "Alex" } }) {
                 </span>
                 Learn More
               </button>
+              */}
             </div>
           </div>
         </div>

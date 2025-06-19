@@ -117,6 +117,45 @@ function ToolsPage() {
               </a>
             }
             toolContent={tool.toolContent}
+            infoIconButton={
+              <button
+                className="dashboard-card-info-icon"
+                style={{
+                  position: "absolute",
+                  bottom: "1rem",
+                  right: "1rem",
+                  color: "#ccc",
+                  background: "transparent",
+                  border: "none",
+                  fontSize: "1.5rem",
+                  padding: 0,
+                  cursor: "pointer"
+                }}
+                type="button"
+                onClick={e => {
+                  e.preventDefault();
+                  // Local insights for tools page; default to open modal
+                  // Category logic as in SmallToolCard above
+                  document.dispatchEvent(new CustomEvent("show-ai-insights", { detail: { tool: tool.title, category: "Tool" }}));
+                }}
+                tabIndex={0}
+                aria-label={`Show AI insights for ${tool.title}`}
+                title="Show AI insights"
+              >
+                <svg
+                  width="25"
+                  height="25"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
+                  <rect x="11" y="10" width="2" height="6" rx="1" fill="currentColor" />
+                  <rect x="11" y="7" width="2" height="2" rx="1" fill="currentColor" />
+                </svg>
+              </button>
+            }
           />
         ))}
       </div>
