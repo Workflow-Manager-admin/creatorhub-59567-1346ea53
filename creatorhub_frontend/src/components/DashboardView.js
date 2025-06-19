@@ -9,6 +9,7 @@ import FilterBar from "./FilterBar";
 import HashtagGenerator from "./HashtagGenerator";
 import CaptionGenerator from "./CaptionGenerator";
 import HookGenerator from "./HookGenerator";
+import SmallToolCard from "./SmallToolCard";
 import { fetchYoutubeContent } from "../api/youtube";
 import { fetchDevToContent } from "../api/devto";
 import { fetchRapidAPIContent } from "../api/rapidapi";
@@ -396,28 +397,64 @@ function DashboardView({ user = { name: "Alex" } }) {
             padding: "0 12px"
           }}
         >
-          {/* Quick Access Tools as peer cards */}
-          <div className="ch-card" style={{ marginBottom: 0, minHeight: 0, borderRadius: 28, background: "var(--card-bg,rgba(44,48,80,0.96))", boxShadow: "var(--shadow-card)" }}>
-            <div className="ch-card-title" style={{ fontWeight: 800, fontSize: "1.14em", color: "var(--accent)", marginBottom: 5 }}>Hashtag Generator</div>
-            <div style={{ color: "var(--text-secondary)", fontSize: ".97em", marginBottom: 11 }}>Suggested hashtags for engagement & trending topics. Enter your niche!</div>
-            <div style={{ marginBottom: 11 }}>
-              <HashtagGenerator />
-            </div>
-          </div>
-          <div className="ch-card" style={{ marginBottom: 0, minHeight: 0, borderRadius: 28, background: "var(--card-bg,rgba(44,48,80,0.96))", boxShadow: "var(--shadow-card)" }}>
-            <div className="ch-card-title" style={{ fontWeight: 800, fontSize: "1.14em", color: "var(--accent)", marginBottom: 5 }}>Caption Generator</div>
-            <div style={{ color: "var(--text-secondary)", fontSize: ".97em", marginBottom: 11 }}>Type a topic and pick a tone for fresh caption ideas.</div>
-            <div style={{ marginBottom: 11 }}>
-              <CaptionGenerator />
-            </div>
-          </div>
-          <div className="ch-card" style={{ marginBottom: 0, minHeight: 0, borderRadius: 28, background: "var(--card-bg,rgba(44,48,80,0.96))", boxShadow: "var(--shadow-card)" }}>
-            <div className="ch-card-title" style={{ fontWeight: 800, fontSize: "1.14em", color: "var(--accent)", marginBottom: 5 }}>Hook Generator</div>
-            <div style={{ color: "var(--text-secondary)", fontSize: ".97em", marginBottom: 11 }}>Get attention-grabbing hooks for Reels, Shorts, TikToks, and more.</div>
-            <div style={{ marginBottom: 11 }}>
-              <HookGenerator />
-            </div>
-          </div>
+          {/* Quick Access Tools as peer cards - unified small card layout */}
+          <SmallToolCard
+            title="Hashtag Generator"
+            desc="Suggested hashtags for engagement & trending topics. Enter your niche!"
+            tags={[{ label: "Generator", accent: "tool" }]}
+            iconType="lottie"
+            Button={
+              <a
+                href="#"
+                className="ch-info-btn"
+                style={{ background: "var(--accent-gradient)", marginTop: 10, color: "var(--palette-primary)" }}
+                onClick={e => { e.preventDefault(); }}
+                tabIndex={0}
+                aria-label="Open Hashtag Generator"
+              >
+                Open Tool
+              </a>
+            }
+            toolContent={<HashtagGenerator />}
+          />
+          <SmallToolCard
+            title="Caption Generator"
+            desc="Type a topic and pick a tone for fresh caption ideas."
+            tags={[{ label: "Generator", accent: "tool" }]}
+            iconType="icon"
+            Button={
+              <a
+                href="#"
+                className="ch-info-btn"
+                style={{ background: "var(--accent-gradient)", marginTop: 10, color: "var(--palette-primary)" }}
+                onClick={e => { e.preventDefault(); }}
+                tabIndex={0}
+                aria-label="Open Caption Generator"
+              >
+                Open Tool
+              </a>
+            }
+            toolContent={<CaptionGenerator />}
+          />
+          <SmallToolCard
+            title="Hook Generator"
+            desc="Get attention-grabbing hooks for Reels, Shorts, TikToks, and more."
+            tags={[{ label: "Generator", accent: "tool" }]}
+            iconType="lottie"
+            Button={
+              <a
+                href="#"
+                className="ch-info-btn"
+                style={{ background: "var(--accent-gradient)", marginTop: 10, color: "var(--palette-primary)" }}
+                onClick={e => { e.preventDefault(); }}
+                tabIndex={0}
+                aria-label="Open Hook Generator"
+              >
+                Open Tool
+              </a>
+            }
+            toolContent={<HookGenerator />}
+          />
           {/* Resource Tool Cards */}
           {filteredTools.length > 0 ? (
             filteredTools.map(tool =>
