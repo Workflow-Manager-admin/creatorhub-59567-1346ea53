@@ -13,7 +13,7 @@ function LearningSplitView({
     { id: 4, title: "Advanced Tips", preview: "Speed up content creation with advanced features." }
   ],
   renderContent,
-  accentGradient = "linear-gradient(90deg,#FF7E5F,#FD3A69)",
+  accentGradient = "var(--accent-gradient)",
 }) {
   const [selected, setSelected] = useState(0);
 
@@ -21,7 +21,7 @@ function LearningSplitView({
   const Content = renderContent || (() => (
     <div style={{
       fontSize: "1.13em",
-      color: "var(--text-color,#fff)",
+      color: "var(--text-color)",
       padding: "30px 16px"
     }}>
       <b>{chapters[selected]?.title}</b>
@@ -31,14 +31,14 @@ function LearningSplitView({
       {/* Accent callout demo */}
       <div
         style={{
-          background: accentGradient,
-          color: "var(--palette-secondary)", // palette for accent/gradient BG
+          background: "var(--accent-gradient)",
+          color: "var(--text-inverse)",
           fontWeight: 600,
           padding: "17px 18px",
           borderRadius: 20,
           margin: "40px 0 0 0",
           maxWidth: 400,
-          filter: "drop-shadow(0 1.5px 17px #FD3A6940)"
+          filter: "drop-shadow(0 1.5px 17px #CE6D8740)"
         }}
       >
         Try the interactive exercise!
@@ -53,8 +53,8 @@ function LearningSplitView({
         display: "flex",
         width: "100%",
         minHeight: "78vh",
-        background: "var(--secondary,#111827)",
-        borderRadius: "24px",
+        background: "var(--background-main)",
+        borderRadius: "var(--container-radius, 36px)",
         boxShadow: "0 7px 32px 0 rgba(44,62,112,0.14)",
         marginTop: 30,
         overflow: "hidden",
@@ -66,17 +66,18 @@ function LearningSplitView({
           flex: "0 0 260px",
           minWidth: 150,
           maxWidth: 310,
-          background: "rgba(30,42,88,0.78)",
-          borderRight: "2px solid #222a3c",
+          background: "var(--background-secondary, rgba(36,38,50,0.93))",
+          borderRight: "1.4px solid var(--border-color)",
           padding: "30px 0 20px 0",
           display: "flex",
           flexDirection: "column",
+          backdropFilter: "blur(14px) saturate(130%)"
         }}
         aria-label="Chapters navigation"
       >
         <div style={{
           fontWeight: 700,
-          color: "var(--accent,#1E90FF)",
+          color: "var(--accent)",
           fontSize: "1.08em",
           marginBottom: 17,
           marginLeft: 27,
@@ -92,15 +93,15 @@ function LearningSplitView({
           {chapters.map((c, i) => (
             <li key={c.id}
               style={{
-                background: i === selected ? accentGradient : "none",
-                color: i === selected ? "#1E1F2E" : "var(--text-color,#fff)",
+                background: i === selected ? "var(--accent-gradient)" : "none",
+                color: i === selected ? "var(--text-inverse)" : "var(--text-color)",
                 fontWeight: i === selected ? 800 : 500,
                 padding: "11px 23px 11px 29px",
                 borderRadius: "18px 0 0 18px",
                 margin: "0 0 6px 0",
-                boxShadow: i === selected ? "0 1.5px 13px #FD3A6970" : "none",
+                boxShadow: i === selected ? "0 1.5px 12px #A178DF36" : "none",
                 cursor: "pointer",
-                transition: "background .15s, color .12s,font-weight .09s, box-shadow .22s",
+                transition: "background .15s, color .12s, font-weight .09s, box-shadow .22s",
                 outline: "none",
                 border: "none"
               }}
@@ -121,10 +122,10 @@ function LearningSplitView({
           flex: "1 1 0",
           minWidth: 0,
           padding: "0 0",
-          background: "rgba(24,29,49,0.72)",
+          background: "var(--card-bg)",
           display: "flex",
           flexDirection: "column",
-          borderRadius: "0 24px 24px 0",
+          borderRadius: "0 var(--container-radius,36px) var(--container-radius,36px) 0",
         }}>
         <Content />
       </div>
