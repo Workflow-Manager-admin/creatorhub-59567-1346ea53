@@ -1,7 +1,7 @@
-// SmallToolCard.js
 import React, { useState } from "react";
 import Modal from "./Modal";
 import Card from "./Card";
+import GeminiInsightsModal from "./GeminiInsightsModal";
 
 // Helper: Consistent Icon Placeholder for SmallToolCard
 function SmallToolCardIconPlaceholder({ iconType = "lottie" }) {
@@ -46,8 +46,6 @@ function SmallToolCardIconPlaceholder({ iconType = "lottie" }) {
     );
   }
 }
-
-import GeminiInsightsModal from "./GeminiInsightsModal";
 
 // PUBLIC_INTERFACE
 /**
@@ -100,7 +98,6 @@ function SmallToolCard({
       tabIndex={0}
       aria-label={`Learn more about ${title}`}
     >
-      {/* Book/info icon */}
       <span aria-hidden="true" style={{ display: "inline-flex", alignItems: "center", marginRight: 6, fontSize: "1.11em" }}>
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 4C3 3.44772 3.44772 3 4 3H14C14.5523 3 15 3.44772 15 4V16C15 16.5523 14.5523 17 14 17H4C3.44772 17 3 16.5523 3 16V4Z" stroke="#fff" strokeWidth="1.6" /><path d="M5 6H13" stroke="#fff" strokeWidth="1.2" strokeLinecap="round" /></svg>
       </span>
