@@ -660,40 +660,55 @@ body.dark-mode {
   }
 }
 
-/* Modern modal: frosted, floating, animated */
+/*
+ * Modal & Backdrop Overlay
+ * Ensures overlay blur/dim effects only apply when modal is rendered.
+ * No global or app-wide blur/dimming is present.
+ */
+
+/* Modal backdrop overlay (shown ONLY when modal is rendered) */
 .ch-modal-backdrop {
   position: fixed;
+  inset: 0;
   z-index: 190;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(19,25,34,.87);
   display: flex;
   align-items: center;
   justify-content: center;
+  background: rgba(19, 25, 34, 0.87); /* Dim background behind modal */
   backdrop-filter: blur(16px) saturate(140%);
   animation: modal-fade-in 0.39s cubic-bezier(.55,.08,.68,.65);
+  /* The backdrop only exists in DOM when modal is open; no persistence. */
 }
-/* No .ch-modal-backdrop[hidden] is required because the backdrop is unmounted when modal is not open */
+
+/* Fade-in animation for overlay */
 @keyframes modal-fade-in {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
+
+/* Modal content styles (glass, shadow, always above overlay) */
 .ch-modal {
   background: var(--modal-bg);
   backdrop-filter: blur(30px) saturate(140%);
   border-radius: 26px;
-  padding: 39px 32px 28px 32px;
+  box-shadow: var(--shadow-modal);
   color: var(--text-color);
   min-width: 340px;
-  box-shadow: var(--shadow-modal);
   position: relative;
+  padding: 39px 32px 28px 32px;
   transform: translateY(-7px) scale(0.988);
   animation: modal-zoom-in 0.27s cubic-bezier(.31,1.18,.67,1.03);
   transition: var(--transition-fast);
+  z-index: 194;
 }
+
+/* Gentle modal pop/zoom effect */
 @keyframes modal-zoom-in {
-  from { transform: scale(0.92); opacity: 0.91;}
-  to   { transform: translateY(-7px) scale(0.988); opacity: 1;}
+  from { transform: scale(0.92); opacity: 0.91; }
+  to   { transform: translateY(-7px) scale(0.988); opacity: 1; }
 }
+
+/* Modal close button */
 .ch-modal-close {
   margin-top: 19px;
   margin-bottom: 0;
@@ -701,6 +716,21 @@ body.dark-mode {
   float: right;
   min-width: 60px;
 }
+
+/* Prevent persistent/global blur or dim outside modal context */
+body.ch-modal-blur,
+body.ch-modal-dim,
+.app-shell.ch-blur,
+.app-shell.ch-dim,
+.ch-main-container.ch-blur,
+.ch-main-container.ch-dim
+{
+  filter: none !important;
+  backdrop-filter: none !important;
+  background: inherit !important;
+}
+
+/* No modal effects are set global/persistent — only .ch-modal-backdrop creates overlay/dim/blur */
 
 /* Minimal floating sidebar hamburger for mobile */
 .ch-sidebar-toggle {
