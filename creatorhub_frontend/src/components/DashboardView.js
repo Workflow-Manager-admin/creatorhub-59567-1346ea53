@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import GeminiInsightsModal from "./GeminiInsightsModal";
 import Card from "./Card";
 import SkeletonLoader from "./SkeletonLoader";
-import FilterBar from "./FilterBar";
 import DashboardQuickCards from "./DashboardQuickCards";
 import { fetchYoutubeContent } from "../api/youtube";
 import { fetchDevToContent } from "../api/devto";
@@ -10,19 +9,14 @@ import { fetchGeminiContent } from "../api/gemini";
 
 // PUBLIC_INTERFACE
 /**
- * DashboardView – displays dashboard widgets, tool cards, and quick access generators.
- * Every card (including quick access tools) now includes a 'Learn More' button which triggers
- * the GeminiInsightsModal, with modal state, handlers, and event propagation managed at this level.
+ * DashboardView – displays dashboard carousels for guides and tools, plus quick tool cards.
+ * Filter/search bar is removed. Two horizontally-scrollable carousels (Guides, Tools) show 3 cards at a time
+ * with navigation arrows and smoothly scrollable, visually accessible layout and styling.
  */
 function DashboardView({ user = { name: "Alex" } }) {
   // ----- State for tools fetched from APIs -----
   const [toolCards, setToolCards] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // Search/filter state for tools
-  const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("all");
-  const [allCategories, setAllCategories] = useState([{ label: "All", value: "all" }]);
 
   // ----- Modal state for Gemini Insights -----
   const [insightsModal, setInsightsModal] = useState({
@@ -31,7 +25,7 @@ function DashboardView({ user = { name: "Alex" } }) {
     category: "Other"
   });
 
-  // ----- Fetch API tools/resources on mount -----
+  // Fetch API tools/resources on mount
   useEffect(() => {
     let isMounted = true;
     setLoading(true);
@@ -110,97 +104,179 @@ function DashboardView({ user = { name: "Alex" } }) {
       }
 
       setToolCards(result);
-      // Collect unique tags/categories if present for filter (stub logic)
-      setAllCategories([{ label: "All", value: "all" }]);
       setLoading(false);
     });
     return () => { isMounted = false; };
   }, []);
 
-  // ----- Filtering logic -----
-  const filteredTools = useMemo(() => {
-    let tools = toolCards;
-    if (category && category !== "all") {
-      // No actual tag support in mock, but ready for future
-      tools = tools.filter(t => t.accent === category);
-    }
-    if (search && search.trim()) {
-      const lower = search.trim().toLowerCase();
-      tools = tools.filter(t =>
-        (t.title && t.title.toLowerCase().includes(lower)) ||
-        (t.desc && t.desc.toLowerCase().includes(lower))
-      );
-    }
-    return tools;
-  }, [toolCards, search, category]);
+  // ----- Carousel section helpers -----
+  function CarouselSection({ title, items, CardComp, accent }) {
+    // Carousel scroll index state
+    const [scrollIdx, setScrollIdx] = useState(0);
+    const rowRef = useRef();
+    const CARDS_VISIBLE = 3;
+    const canScrollLeft = scrollIdx > 0;
+    const canScrollRight = scrollIdx + CARDS_VISIBLE < items.length;
 
-  // ----- Gemini modal handlers at DashboardView level -----
-  // PUBLIC_INTERFACE
-  const handleOpenInsightsModal = (toolName, cat) => {
-    setInsightsModal({
-      open: true,
-      toolName,
-      category: cat || "Other",
-    });
-  };
-  // PUBLIC_INTERFACE
-  const handleCloseInsightsModal = () => {
-    setInsightsModal(cur => ({ ...cur, open: false }));
-  };
+    function scrollTo(newIdx) {
+      setScrollIdx(newIdx);
+      if (rowRef.current) {
+        const node = rowRef.current.children[newIdx];
+        if (node?.scrollIntoView) {
+          node.scrollIntoView({ behavior: "smooth", inline: "start" });
+        }
+      }
+    }
 
-  // ----- Card implementations -----
-  // Inline Icon/Lottie placeholder (glassmorphic)
-  function IconLottiePlaceholder({ type = "lottie", size = 48 }) {
+    function handleLeft() {
+      if (canScrollLeft) scrollTo(scrollIdx - 1);
+    }
+    function handleRight() {
+      if (canScrollRight) scrollTo(scrollIdx + 1);
+    }
+
     return (
-      <div
-        style={{
-          width: size,
-          height: size,
-          borderRadius: size / 2,
-          background: "radial-gradient(circle at 65% 15%, #333be0 20%, #232845 95%)",
-          boxShadow: "0 2px 16px #20225333",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          marginRight: 20,
-          marginBottom: 10,
-        }}
-        aria-label="Animated illustration placeholder"
-      >
-        {type === "lottie" ? (
+      <div style={{ width: "100%", margin: "0 0 30px 0", maxWidth: 1200 }}>
+        <div style={{ display: "flex", alignItems: "center", marginBottom: 9 }}>
           <div style={{
-            width: 26, height: 26, borderRadius: 13,
-            background: "linear-gradient(135deg,#1E90FF 60%,#FF7E5F 110%)",
-            filter: "blur(1px) brightness(1.1)",
-            opacity: 0.93,
-            animation: "bounce 1.6s infinite alternate"
-          }} />
-        ) : (
-          <svg width={size - 22} height={size - 22} viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="12" r="10" stroke="#FF7E5F" strokeWidth="3" />
-          </svg>
-        )}
-        <style>
-          {`@keyframes bounce {
-              0% {transform: scale(0.93);}
-              70% {transform: scale(1.08);}
-              100% {transform: scale(1.0);}
-            }`
-          }
-        </style>
+            fontWeight: 800,
+            fontSize: "1.22rem",
+            color: accent === "guide" ? "var(--accent)" : accent === "tool" ? "#FF7E5F" : "var(--accent)",
+            flex: 1,
+            letterSpacing: "-0.02em"
+          }}>
+            {title}
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
+            <button
+              aria-label={`Scroll ${title} left`}
+              onClick={handleLeft}
+              disabled={!canScrollLeft}
+              style={{
+                background: "none",
+                border: "none",
+                color: canScrollLeft ? "var(--accent)" : "#8889",
+                cursor: canScrollLeft ? "pointer" : "default",
+                fontSize: "2.1rem",
+                transition: "color 0.13s",
+                outline: canScrollLeft ? "var(--focus-outline)" : "none",
+                marginRight: 2
+              }}
+              tabIndex={0}
+              type="button"
+            >
+              <svg width={33} height={33} viewBox="0 0 28 28" fill="none"><path d="M17.4 19.15 12.23 14c-.13-.13-.2-.26-.2-.41 0-.15.07-.28.2-.41l5.17-5.16a.58.58 0 0 0 0-.82.594.594 0 0 0-.82 0L10.6 13.18a.58.58 0 0 0 0 .82l5.99 5.98a.594.594 0 0 0 .82 0 .58.58 0 0 0 0-.82Z" fill="currentColor"/></svg>
+            </button>
+            <button
+              aria-label={`Scroll ${title} right`}
+              onClick={handleRight}
+              disabled={!canScrollRight}
+              style={{
+                background: "none",
+                border: "none",
+                color: canScrollRight ? "var(--accent)" : "#8889",
+                cursor: canScrollRight ? "pointer" : "default",
+                fontSize: "2.1rem",
+                transition: "color 0.13s",
+                outline: canScrollRight ? "var(--focus-outline)" : "none"
+              }}
+              tabIndex={0}
+              type="button"
+            >
+              <svg width={33} height={33} viewBox="0 0 28 28" fill="none"><path d="M10.6 8.85 15.77 14c.13.13.2.26.2.41 0 .15-.07.28-.2.41l-5.17 5.16a.58.58 0 0 0 0 .82c.23.23.6.23.82 0l5.99-5.98a.58.58 0 0 0 0-.82l-5.99-5.98a.594.594 0 0 0-.82 0 .58.58 0 0 0 0 .82Z" fill="currentColor"/></svg>
+            </button>
+          </div>
+        </div>
+        <div
+          style={{
+            overflowX: "auto",
+            scrollbarWidth: "none",
+            WebkitOverflowScrolling: "touch",
+            position: "relative",
+            paddingBottom: 7
+          }}
+          tabIndex={0}
+        >
+          <div
+            ref={rowRef}
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              gap: 28,
+              transition: "transform 0.33s cubic-bezier(.47, .12, .18, 1.1)",
+              willChange: "transform",
+              transform: `translateX(-${scrollIdx * 340}px)`,
+              minHeight: 176
+            }}
+          >
+            {items.map((item, idx) => (
+              <div key={item.id || item.title || idx} style={{ minWidth: 340, maxWidth: 340, flex: "0 0 340px" }}>
+                <CardComp {...item} />
+              </div>
+            ))}
+            {items.length < CARDS_VISIBLE &&
+              Array.from({ length: CARDS_VISIBLE - items.length }).map((_, idx) => (
+                <div key={"pad" + idx} style={{ minWidth: 340, maxWidth: 340, flex: "0 0 340px" }} />
+              ))
+            }
+          </div>
+        </div>
       </div>
     );
   }
 
-  // ToolCard – canonical for dashboard fetched cards (guides/tools)
+  // ToolCard
   function ToolCard({ title, desc, accent, loading, Button, iconType, onLearnMore }) {
     let geminiCategory = "Other";
     if (accent === "guide") geminiCategory = "Guide";
     if (accent === "tool") geminiCategory = "Tool";
 
+    // Minimalist icon/graphic
+    function IconLottiePlaceholder({ type = "lottie", size = 48 }) {
+      return (
+        <div
+          style={{
+            width: size,
+            height: size,
+            borderRadius: size / 2,
+            background: "radial-gradient(circle at 65% 15%, #333be0 20%, #232845 95%)",
+            boxShadow: "0 2px 16px #20225333",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginRight: 20,
+            marginBottom: 10,
+          }}
+          aria-label="Animated illustration placeholder"
+        >
+          {type === "lottie" ? (
+            <div style={{
+              width: 26, height: 26, borderRadius: 13,
+              background: "linear-gradient(135deg,#1E90FF 60%,#FF7E5F 110%)",
+              filter: "blur(1px) brightness(1.1)",
+              opacity: 0.93,
+              animation: "bounce 1.6s infinite alternate"
+            }} />
+          ) : (
+            <svg width={size - 22} height={size - 22} viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="#FF7E5F" strokeWidth="3" />
+            </svg>
+          )}
+          <style>
+            {`@keyframes bounce {
+                0% {transform: scale(0.93);}
+                70% {transform: scale(1.08);}
+                100% {transform: scale(1.0);}
+              }`
+            }
+          </style>
+        </div>
+      );
+    }
+
     return (
       <Card title={title}>
-        <div style={{ display: "flex", alignItems: "flex-start" }}>
+        <div style={{ display: "flex", alignItems: "flex-start", position: "relative" }}>
           {loading ? (
             <SkeletonLoader width={48} height={48} />
           ) : (
@@ -212,7 +288,6 @@ function DashboardView({ user = { name: "Alex" } }) {
             </div>
             <div style={{ marginTop: 10, display: "flex", flexWrap: "wrap", gap: 7 }}>
               {Button ? Button : null}
-              {/* ---REPLACED 'Learn More' button with grey info icon button (accessible, bottom right)--- */}
               <button
                 className="dashboard-card-info-icon"
                 style={{
@@ -268,47 +343,28 @@ function DashboardView({ user = { name: "Alex" } }) {
                   />
                 </svg>
               </button>
-              {/* --Original button kept below for revert (commented out):-- */}
-              {/*
-              <button
-                className="ch-info-btn"
-                style={{
-                  background: "var(--btn-gradient-orange-red-focus)",
-                  color: "#fff",
-                  fontWeight: 700,
-                  minWidth: 95,
-                }}
-                type="button"
-                onClick={e => {
-                  e.preventDefault();
-                  onLearnMore && onLearnMore(title, geminiCategory);
-                }}
-                tabIndex={0}
-                aria-label={`Learn more about ${title}`}
-              >
-                <span
-                  aria-hidden="true"
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    marginRight: 6,
-                    fontSize: "1.11em"
-                  }}
-                >
-                  <svg width="19" height="19" viewBox="0 0 20 20" fill="none">
-                    <path d="M3 4C3 3.44772 3.44772 3 4 3H14C14.5523 3 15 3.44772 15 4V16C15 16.5523 14.5523 17 14 17H4C3.44772 17 3 16.5523 3 16V4Z" stroke="#fff" strokeWidth="1.6" />
-                    <path d="M5 6H13" stroke="#fff" strokeWidth="1.2" strokeLinecap="round" />
-                  </svg>
-                </span>
-                Learn More
-              </button>
-              */}
             </div>
           </div>
         </div>
       </Card>
     );
   }
+
+  // Classify dashboard cards for "Guides" and "Tools" carousels
+  const guides = toolCards.filter(card => card.accent === "guide");
+  const tools = toolCards.filter(card => card.accent === "tool");
+
+  // Modal handler
+  const handleOpenInsightsModal = (toolName, cat) => {
+    setInsightsModal({
+      open: true,
+      toolName,
+      category: cat || "Other",
+    });
+  };
+  const handleCloseInsightsModal = () => {
+    setInsightsModal(cur => ({ ...cur, open: false }));
+  };
 
   // ----- Render -----
   return (
@@ -349,111 +405,72 @@ function DashboardView({ user = { name: "Alex" } }) {
       >
         Your creative toolbox: Explore, learn, and build.
       </div>
-      {/* Filters */}
-      <FilterBar
-        filters={[
-          <select
-            key="category"
-            value={category}
-            onChange={e => setCategory(e.target.value)}
-            aria-label="Filter by category"
-          >
-            {allCategories.map(cat =>
-              <option key={cat.value} value={cat.value}>
-                {cat.label}
-              </option>
+      {/* Carousels */}
+      {loading ? (
+        <>
+          <div style={{ width: "100%", maxWidth: 1200 }}>
+            <div style={{ fontWeight: 800, fontSize: "1.22rem", color: "var(--accent)", marginBottom: 9 }}>Guides</div>
+            <div style={{ display: "flex", gap: 28 }}>
+              {[1, 2, 3].map(idx => (
+                <div key={"sk-gd-" + idx} style={{ minWidth: 340, maxWidth: 340, flex: "0 0 340px" }}>
+                  <Card title={<SkeletonLoader width={120} />}>
+                    <SkeletonLoader width="96%" height={46} style={{ marginBottom: 13 }} />
+                    <SkeletonLoader width="100%" height={22} />
+                  </Card>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div style={{ width: "100%", maxWidth: 1200, marginTop: 20 }}>
+            <div style={{ fontWeight: 800, fontSize: "1.22rem", color: "#FD3A69", marginBottom: 9 }}>Tools</div>
+            <div style={{ display: "flex", gap: 28 }}>
+              {[1, 2, 3].map(idx => (
+                <div key={"sk-tl-" + idx} style={{ minWidth: 340, maxWidth: 340, flex: "0 0 340px" }}>
+                  <Card title={<SkeletonLoader width={110} />}>
+                    <SkeletonLoader width="80%" height={32} />
+                    <SkeletonLoader width="70%" height={26} />
+                  </Card>
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
+      ) : (
+        <>
+          <CarouselSection
+            title="Guides"
+            items={guides}
+            CardComp={props => (
+              <ToolCard
+                {...props}
+                accent="guide"
+                onLearnMore={handleOpenInsightsModal}
+                loading={false}
+              />
             )}
-          </select>,
-          <input
-            key="search"
-            type="text"
-            aria-label="Search tools"
-            placeholder="Search tools…"
-            maxLength={64}
-            className="ch-search"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            autoComplete="off"
+            accent="guide"
           />
-        ]}
-        style={{ marginBottom: 20, width: "100%" }}
-      />
-
-      {/* Loader when fetching */}
-      {loading && (
-        <div className="dashboard-tool-card-grid"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))",
-            gap: 32,
-            alignItems: "stretch",
-            justifyContent: "center",
-            maxWidth: 1100,
-            width: "100%",
-            margin: "0 auto",
-            padding: "0 12px"
-          }}
-        >
-          {[1, 2, 3].map(idx => (
-            <Card title={<SkeletonLoader width={120} />} key={"sk-" + idx}>
-              <SkeletonLoader width="96%" height={46} style={{ marginBottom: 13 }} />
-              <SkeletonLoader width="100%" height={22} />
-              <SkeletonLoader width="80%" height={19} />
-              <div style={{ marginTop: 14 }}>
-                <SkeletonLoader width={66} height={21} />
-                <SkeletonLoader width={39} height={21} style={{ display: "inline-block", marginLeft: 8 }} />
-              </div>
-            </Card>
-          ))}
-        </div>
+          <CarouselSection
+            title="Tools"
+            items={tools}
+            CardComp={props => (
+              <ToolCard
+                {...props}
+                accent="tool"
+                onLearnMore={handleOpenInsightsModal}
+                loading={false}
+              />
+            )}
+            accent="tool"
+          />
+        </>
       )}
-
-      {/* No results */}
-      {!loading && filteredTools.length === 0 && (
-        <div style={{ color: "#E87A41", fontWeight: 500, margin: "34px 0" }}>
-          No tools found. Try adjusting your search or filters.
-        </div>
-      )}
-
-      {/* Main tool/resource cards (all include 'Learn More') */}
-      {!loading && filteredTools.length > 0 && (
-        <div
-          className="dashboard-tool-card-grid"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))",
-            gap: 32,
-            alignItems: "stretch",
-            justifyContent: "center",
-            maxWidth: 1100,
-            width: "100%",
-            margin: "0 auto",
-            padding: "0 12px",
-            marginBottom: 27,
-          }}
-        >
-          {filteredTools.map(tool => (
-            <ToolCard
-              key={tool.id || tool.title}
-              title={tool.title}
-              desc={tool.desc}
-              accent={tool.accent}
-              loading={false}
-              Button={tool.Button}
-              iconType={tool.iconType}
-              onLearnMore={handleOpenInsightsModal}
-            />
-          ))}
-        </div>
-      )}
-
-      {/* Quick access tool cards (Hashtag/Caption/Hook Generators) – pass modal control */}
+      {/* Quick access tool cards in grid below carousels */}
       {!loading && (
-        <DashboardQuickCards
-          onLearnMore={handleOpenInsightsModal}
-        />
+        <div style={{ width: "100%", maxWidth: 1200, marginBottom: 40 }}>
+          <DashboardQuickCards onLearnMore={handleOpenInsightsModal} />
+        </div>
       )}
-
       {/* Central Gemini InsightsModal for any card */}
       {insightsModal.open && (
         <GeminiInsightsModal
