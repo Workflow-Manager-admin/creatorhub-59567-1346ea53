@@ -106,8 +106,6 @@ function ToolsPage() {
                 className="ch-info-btn"
                 tabIndex={0}
                 aria-label={`Open ${tool.title}`}
-                // DO NOT assign style/variant here; Modal/SmallToolCard ensure style/structure.
-                // All modal overlays are managed in SmallToolCard using Modal.js for consistency.
                 onClick={e => {
                   e.preventDefault();
                 }}
@@ -116,7 +114,6 @@ function ToolsPage() {
               </a>
             }
             toolContent={tool.toolContent}
-            // infoIconButton below will always use same styling, letting SmallToolCard's unified modal pattern control appearance and behavior.
             infoIconButton={
               <button
                 className="dashboard-card-info-icon"
@@ -134,10 +131,6 @@ function ToolsPage() {
                 type="button"
                 onClick={e => {
                   e.preventDefault();
-                  // All modals (primary and info) are managed via Modal.js in SmallToolCard,
-                  // so this just triggers the true modal structure used everywhere.
-                  // Info logic is handled in SmallToolCard using its consistent modal style.
-                  // Leave this as a stub, unified UX managed above.
                 }}
                 tabIndex={0}
                 aria-label={`Show AI insights for ${tool.title}`}

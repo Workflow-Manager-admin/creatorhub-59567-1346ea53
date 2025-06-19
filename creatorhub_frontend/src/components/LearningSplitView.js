@@ -78,9 +78,11 @@ function LearningSplitView({
         aria-label="Chapters navigation"
       >
         <div style={{
-          fontWeight: 700,
-          color: "var(--accent)",
-          fontSize: "1.08em",
+          fontWeight: 800,
+          color: "var(--card-modal-title-color)",
+          fontSize: "1.19em",
+          letterSpacing: "-0.01em",
+          textShadow: "0 2px 11px rgba(201, 178, 45, 0.44)",
           marginBottom: 17,
           marginLeft: 27,
         }}>

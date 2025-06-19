@@ -185,7 +185,18 @@ function SmallToolCard({
   */
 
   return (
-    <Card title={<span style={{ color: '#FF0000' }}>{title}</span>}>
+    <Card title={
+      <span
+        className="ch-card-title"
+        style={{
+          color: "var(--card-modal-title-color)",
+          textShadow: "0 2px 11px rgba(201, 178, 45, 0.44)",
+          fontWeight: 800
+        }}
+      >
+        {title}
+      </span>
+    }>
       <div style={{ display: "flex", alignItems: "flex-start", position: "relative" }}>
         <SmallToolCardIconPlaceholder iconType={iconType} />
         <div style={{ flex: 1 }}>
