@@ -1,62 +1,111 @@
 import React, { useState } from "react";
+import { GoogleGenerativeAI } from "@google/generative-ai"; // Import Gemini SDK
 
 // PUBLIC_INTERFACE
 /**
- * HashtagGenerator
- * - Accepts topic/niche text input
- * - Generates grouped hashtags (High Engagement, Trending, Evergreen)
- * - Provides "Copy" and "Regenerate" actions
- * - Uses simple deterministic stub logic for hashtag generation (no API integration)
- * Group styles and card layout native to CreatorHub theme
+ * HashtagGenerator - generates grouped hashtags using the Gemini API.
  */
 function HashtagGenerator() {
   const [topic, setTopic] = useState("");
-  const [groups, setGroups] = useState(generateDefaultHashtags(""));
+  // Initial state for groups will be empty; populate after Gemini call
+  const [groups, setGroups] = useState({
+    "High Engagement": [],
+    "Trending": [],
+    "Evergreen": [],
+  });
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [error, setError] = useState(null); // Added error state
 
-  // Hashtag group presets (stub logic can be replaced with Gemini/OpenAI later)
-  function generateDefaultHashtags(t) {
-    // Normalizes and picks hashtags based on topic; returns {group: [tags]}
-    const norm = (t || "").trim().toLowerCase();
-    const base = norm.replace(/\s+/g, "");
-    // Hardcoded for stub/demo purposes
-    return {
-      "High Engagement": [
-        `#${base || "inspo"}`,
-        `#${base ? base + "life" : "contentlife"}`,
-        `#${base ? base + "community" : "creators"}`,
-        "#viral",
-        "#engagement",
-      ],
-      Trending: [
-        "#trendingnow",
-        "#explorepage",
-        "#foryou",
-        `#${base ? "trending" + base : "trendsetters"}`,
-        "#featureme",
-      ],
-      Evergreen: [
-        "#motivation",
-        "#growth",
-        "#mindset",
-        "#creativity",
-        "#contentcreator",
-      ],
-    };
-  }
+  // --- Gemini API Configuration ---
+  // IMPORTANT: Replace 'YOUR_GEMINI_API_HERE' with your actual API key.
+  // For production, consider storing this securely (e.g., environment variables)
+  // and routing API calls through a backend to avoid exposing it client-side.
+  const GEMINI_API_KEY = 'AIzaSyACx37UXHYLpnkMw0wZbWuYKECWU8negfo';
+  const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-pro-latest' }); // Using a capable model
 
-  function handleGenerate(e) {
-    e && e.preventDefault();
+  // Function to call Gemini API for hashtags
+  async function generateHashtags() { // Renamed from handleGenerate
+    if (!topic.trim()) {
+      setError("Please enter a topic or niche to generate hashtags.");
+      return;
+    }
     setLoading(true);
-    setTimeout(() => {
-      setGroups(generateDefaultHashtags(topic));
+    setError(null);
+    setGroups({ "High Engagement": [], "Trending": [], "Evergreen": [] }); // Clear previous groups
+
+    try {
+      // --- Construct the Prompt for Hashtag Generation ---
+      // This prompt explicitly asks for grouped hashtags
+      let prompt = `Generate social media hashtags for a topic about: "${topic}".
+      Please categorize them into three groups:
+      1. High Engagement: 5 hashtags that drive interaction.
+      2. Trending: 5 currently popular hashtags.
+      3. Evergreen: 5 timeless and always relevant hashtags.
+
+      Format the output clearly, with each group name followed by its hashtags,
+      e.g.,
+      High Engagement: #tag1 #tag2 #tag3 #tag4 #tag5
+      Trending: #tagA #tagB #tagC #tagD #tagE
+      Evergreen: #tagX #tagY #tagZ #tagAA #tagBB`;
+
+
+      const result = await model.generateContent({
+        contents: [{ role: 'user', parts: [{ text: prompt }] }],
+        generationConfig: {
+          temperature: 0.7, // Keep it moderate for relevant tags
+          maxOutputTokens: 250, // Enough tokens for ~15 hashtags + categories
+        },
+      });
+
+      const response = await result.response;
+      const generatedText = response.text();
+
+      if (generatedText) {
+        // --- Complex Parsing for Grouped Hashtags ---
+        const newGroups = {
+          "High Engagement": [],
+          "Trending": [],
+          "Evergreen": [],
+        };
+
+        const lines = generatedText.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+        let currentGroup = "";
+
+        lines.forEach(line => {
+          if (line.toLowerCase().startsWith("high engagement:")) {
+            currentGroup = "High Engagement";
+            newGroups[currentGroup] = line.substring("High Engagement:".length).split(' ').filter(tag => tag.startsWith('#') && tag.length > 1);
+          } else if (line.toLowerCase().startsWith("trending:")) {
+            currentGroup = "Trending";
+            newGroups[currentGroup] = line.substring("Trending:".length).split(' ').filter(tag => tag.startsWith('#') && tag.length > 1);
+          } else if (line.toLowerCase().startsWith("evergreen:")) {
+            currentGroup = "Evergreen";
+            newGroups[currentGroup] = line.substring("Evergreen:".length).split(' ').filter(tag => tag.startsWith('#') && tag.length > 1);
+          } else if (currentGroup && line.startsWith('#')) {
+            // If the line starts with # and we are in a group context (for multi-line outputs)
+            newGroups[currentGroup].push(...line.split(' ').filter(tag => tag.startsWith('#') && tag.length > 1));
+          }
+        });
+        setGroups(newGroups);
+
+      } else {
+        setGroups({
+          "High Engagement": [],
+          "Trending": [],
+          "Evergreen": [],
+        });
+      }
+    } catch (err) {
+      console.error('Error generating hashtags with Gemini API:', err);
+      setError(`Failed to generate hashtags: ${err.message || 'An unknown error occurred.'}`);
+    } finally {
       setLoading(false);
-    }, 600); // Simulate delay
+    }
   }
 
   function handleCopy() {
-    // Flattens all tags and copies to clipboard
     const allTags = Object.values(groups).flat().join(" ");
     navigator.clipboard.writeText(allTags).then(() => {
       setCopied(true);
@@ -65,13 +114,16 @@ function HashtagGenerator() {
   }
 
   function handleRegenerate() {
-    handleGenerate();
+    generateHashtags(); // Call the Gemini-powered function
     setCopied(false);
   }
 
+  // Ensure topic is not empty before allowing generation
+  const isGenerateDisabled = loading || !topic.trim();
+
   return (
     <div
-      className="ch-card"
+      className="ch-card" // Assuming this is your card styling class
       style={{
         maxWidth: 490,
         margin: "0 auto",
@@ -91,10 +143,10 @@ function HashtagGenerator() {
           textShadow: "0 2px 11px #a178df1b",
         }}
       >
-        Hashtag Generator
+        Hashtag Generator (Gemini AI)
       </div>
       <form
-        onSubmit={handleGenerate}
+        onSubmit={(e) => { e.preventDefault(); generateHashtags(); }} // Changed onSubmit handler
         style={{ display: "flex", flexDirection: "column", gap: 13, marginBottom: 14 }}
       >
         <label htmlFor="hashtag-topic" style={{ fontSize: ".98em", color: "var(--text-secondary)" }}>
@@ -105,8 +157,8 @@ function HashtagGenerator() {
           type="text"
           value={topic}
           placeholder="e.g. Fitness, AI, Travel"
-          maxLength={32}
-          className="ch-search"
+          maxLength={60} // Increased max length for better prompts
+          className="ch-search" // Assuming this is your input style class
           style={{
             background: "#181d26",
             color: "var(--text-color)",
@@ -120,8 +172,8 @@ function HashtagGenerator() {
         />
         <button
           type="submit"
-          className="ch-info-btn"
-          disabled={loading}
+          className="ch-info-btn" // Assuming this is your button style class
+          disabled={isGenerateDisabled}
           style={{
             marginTop: 2,
             fontWeight: 700,
@@ -134,6 +186,9 @@ function HashtagGenerator() {
           {loading ? "Generating..." : "Generate"}
         </button>
       </form>
+      
+      {error && <div style={{ color: "var(--danger)", margin: "8px 0" }}>{error}</div>}
+
       <div>
         {loading ? (
           <div className="ch-loader" style={{ marginTop: 12, marginBottom: 15 }}>Generating hashtags...</div>
@@ -172,28 +227,37 @@ function HashtagGenerator() {
                 {groupName}
               </div>
               <div>
-                {groups[groupName].map((tag, idx) => (
-                  <span
-                    key={tag}
-                    className="ch-card-tag"
-                    style={{
-                      marginRight: 8,
-                      background:
-                        groupName === "Trending"
-                          ? "var(--accent-gradient)"
+                {groups[groupName].length > 0 ? (
+                  groups[groupName].map((tag, idx) => (
+                    <span
+                      key={`${groupName}-${idx}-${tag}`} // Unique key
+                      className="ch-card-tag"
+                      style={{
+                        marginRight: 8,
+                        background:
+                          groupName === "Trending"
+                            ? "var(--accent-gradient)"
+                            : groupName === "High Engagement"
+                              ? "var(--success-bg)"
+                              : "rgba(48,54,81,0.92)",
+                        color: groupName === "Trending"
+                          ? "#fff"
                           : groupName === "High Engagement"
-                            ? "var(--success-bg)"
-                            : "rgba(48,54,81,0.92)",
-                      color: groupName === "Trending"
-                        ? "#fff"
-                        : groupName === "High Engagement"
-                          ? "var(--success)"
-                          : "var(--text-color)"
-                    }}
-                  >
-                    {tag}
-                  </span>
-                ))}
+                            ? "var(--success)"
+                            : "var(--text-color)",
+                        display: 'inline-block', // Ensure tags wrap correctly
+                        marginBottom: '5px', // Spacing between tags if they wrap
+                        padding: '4px 8px', // Adjust padding for better look
+                        borderRadius: '6px', // Rounded corners for tags
+                        fontSize: '.85em', // Smaller font size for tags
+                      }}
+                    >
+                      {tag}
+                    </span>
+                  ))
+                ) : (
+                  <span style={{ color: "var(--text-secondary)", fontSize: '.85em' }}>No hashtags generated for this group.</span>
+                )}
               </div>
             </div>
           ))
@@ -212,7 +276,7 @@ function HashtagGenerator() {
             boxShadow: "0 1.1px 9px #ce6d8740",
           }}
           onClick={handleCopy}
-          disabled={loading}
+          disabled={loading || Object.values(groups).flat().length === 0} // Disable if loading or no tags
           aria-label="Copy all hashtags"
         >
           {copied ? "Copied!" : "Copy"}
@@ -228,7 +292,7 @@ function HashtagGenerator() {
             boxShadow: "0 1.1px 8px #82C4EC20",
           }}
           onClick={handleRegenerate}
-          disabled={loading}
+          disabled={isGenerateDisabled} // Use the same disabled logic as generate button
           aria-label="Regenerate hashtags"
         >
           Regenerate
