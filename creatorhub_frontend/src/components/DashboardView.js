@@ -7,6 +7,7 @@ import HashtagGenerator from "./HashtagGenerator";
 import CaptionGenerator from "./CaptionGenerator";
 import HookGenerator from "./HookGenerator";
 import SmallToolCard from "./SmallToolCard";
+import DashboardQuickCards from "./DashboardQuickCards";
 import { fetchYoutubeContent } from "../api/youtube";
 import { fetchDevToContent } from "../api/devto";
 import { fetchGeminiContent } from "../api/gemini";
@@ -323,87 +324,7 @@ function DashboardView({ user = { name: "Alex" } }) {
       )}
       {/* Tool cards */}
       {!loading && (
-        <div
-          className="dashboard-tool-card-grid"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))",
-            gap: 32,
-            alignItems: "stretch",
-            justifyContent: "center",
-            maxWidth: 1100,
-            width: "100%",
-            margin: "0 auto",
-            padding: "0 12px"
-          }}
-        >
-          {/* Quick Access Tools as peer cards - unified small card layout WITH LEARN MORE */}
-          <SmallToolCard
-            title="Hashtag Generator"
-            desc="Suggested hashtags for engagement & trending topics. Enter your niche!"
-            iconType="lottie"
-            Button={
-              <a
-                href="#"
-                className="ch-info-btn"
-                onClick={e => { e.preventDefault(); }}
-                tabIndex={0}
-                aria-label="Open Hashtag Generator"
-              >
-                Open Tool
-              </a>
-            }
-            toolContent={<HashtagGenerator />}
-          />
-          <SmallToolCard
-            title="Caption Generator"
-            desc="Type a topic and pick a tone for fresh caption ideas."
-            iconType="icon"
-            Button={
-              <a
-                href="#"
-                className="ch-info-btn"
-                onClick={e => { e.preventDefault(); }}
-                tabIndex={0}
-                aria-label="Open Caption Generator"
-              >
-                Open Tool
-              </a>
-            }
-            toolContent={<CaptionGenerator />}
-          />
-          <SmallToolCard
-            title="Hook Generator"
-            desc="Get attention-grabbing hooks for Reels, Shorts, TikToks, and more."
-            iconType="lottie"
-            Button={
-              <a
-                href="#"
-                className="ch-info-btn"
-                onClick={e => { e.preventDefault(); }}
-                tabIndex={0}
-                aria-label="Open Hook Generator"
-              >
-                Open Tool
-              </a>
-            }
-            toolContent={<HookGenerator />}
-          />
-          {/* Resource Tool Cards */}
-          {filteredTools.length > 0 ? (
-            filteredTools.map(tool =>
-              <ToolCard
-                key={tool.id}
-                title={tool.title}
-                desc={tool.desc}
-                accent={tool.accent}
-                loading={tool.loading}
-                Button={tool.Button}
-                iconType={tool.iconType}
-              />
-            )
-          ) : null}
-        </div>
+        <DashboardQuickCards />
       )}
     </section>
   );

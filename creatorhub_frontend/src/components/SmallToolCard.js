@@ -47,10 +47,10 @@ function SmallToolCardIconPlaceholder({ iconType = "lottie" }) {
   }
 }
 
-// PUBLIC_INTERFACE
 /**
  * SmallToolCard - dashboard/tools grid card; launches modal overlay above all content, always centered.
  * Now supports "Learn More" (Gemini Insights) button and modal.
+ * Accepts optional 'learnMoreBtn' to render a custom Gemini Insights button/modal handler for greater state control.
  */
 function SmallToolCard({
   title,
@@ -58,7 +58,8 @@ function SmallToolCard({
   // tags,
   iconType = "lottie",
   Button,
-  toolContent
+  toolContent,
+  learnMoreBtn, // custom Gemini 'Learn More' button (for DashboardQuickCards state)
 }) {
   // Logic for core tool modal (e.g. open tool UI)
   const [modalOpen, setModalOpen] = useState(false);
@@ -78,8 +79,7 @@ function SmallToolCard({
     });
   }
 
-  // Learn More (Gemini) button
-  const learnMoreBtn = (
+  const builtinLearnMoreBtn = (
     <button
       className="ch-info-btn"
       style={{
@@ -120,7 +120,8 @@ function SmallToolCard({
           <div style={{ marginTop: 9, marginBottom: 10 }} />
           <div style={{ display: "flex", gap: 7 }}>
             {LaunchButton}
-            {learnMoreBtn}
+            {/* Use provided learnMoreBtn OR fallback to default in-card state */}
+            {learnMoreBtn ? learnMoreBtn : builtinLearnMoreBtn}
           </div>
         </div>
       </div>
@@ -130,8 +131,8 @@ function SmallToolCard({
           {toolContent}
         </Modal>
       )}
-      {/* Gemini Insights modal */}
-      {insightsOpen && (
+      {/* Gemini Insights modal (only if using builtin state, else parent manages with prop) */}
+      {!learnMoreBtn && insightsOpen && (
         <GeminiInsightsModal
           open={insightsOpen}
           onClose={() => setInsightsOpen(false)}
