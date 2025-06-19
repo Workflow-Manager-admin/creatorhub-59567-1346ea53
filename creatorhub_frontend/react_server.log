@@ -21,14 +21,44 @@ cacheable modules 1.39 MiB
     modules by path ./.ve/*.js 10.6 KiB 2 modules
     modules by path ./.ve/*.css 2.93 KiB 2 modules
     ./.ve/EditorOverlay.jsx 1.58 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 1577 ms
+webpack 5.99.9 compiled successfully in 1660 ms
 assets by status 649 bytes [cached] 1 asset
-assets by path *.js 1.6 MiB
-  asset bundle.js 1.56 MiB [emitted] (name: main)
-  asset main.f47c902ed0dc282bbded.hot-update.js 39.9 KiB [emitted] [immutable] [hmr] (name: main)
-asset main.f47c902ed0dc282bbded.hot-update.json 28 bytes [emitted] [immutable] [hmr]
-Entrypoint main 1.6 MiB = bundle.js 1.56 MiB main.f47c902ed0dc282bbded.hot-update.js 39.9 KiB
+assets by path *.js 1.54 MiB
+  asset bundle.js 1.53 MiB [emitted] (name: main)
+  asset main.c6f52691cd707da1ade0.hot-update.js 2.77 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.c6f52691cd707da1ade0.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.54 MiB = bundle.js 1.53 MiB main.c6f52691cd707da1ade0.hot-update.js 2.77 KiB
 cached modules 1.36 MiB [cached] 61 modules
 runtime modules 27.5 KiB 14 modules
-./src/components/DashboardView.js 29.9 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 103 ms
+./node_modules/css-loader/dist/cjs.js!./src/App.css 426 bytes [built] [code generated]
+webpack 5.99.9 compiled successfully in 50 ms
+assets by status 649 bytes [cached] 1 asset
+assets by path *.js 1.54 MiB
+  asset bundle.js 1.53 MiB [emitted] (name: main)
+  asset main.436ed3d8b0747c9a52d2.hot-update.js 1.69 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.436ed3d8b0747c9a52d2.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.54 MiB = bundle.js 1.53 MiB main.436ed3d8b0747c9a52d2.hot-update.js 1.69 KiB
+cached modules 1.36 MiB [cached] 60 modules
+runtime modules 27.5 KiB 14 modules
+javascript modules 2.26 KiB
+  ./src/App.css 2.22 KiB [code generated]
+  ./node_modules/css-loader/dist/cjs.js!./src/App.css 39 bytes [built] [code generated] [1 error]
+
+ERROR in ./src/App.css (./node_modules/css-loader/dist/cjs.js!./src/App.css)
+Module build failed (from ./node_modules/css-loader/dist/cjs.js):
+
+SyntaxError
+
+(236090:2) /home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/src/App.css At-rule without name
+
+  236088 |     box-sizing: border-box;
+  236089 |   }
+> 236090 | }@/* Large Tutorials Button: visually prominent, always visible, responsive */
+         |  ^
+  236091 | .tutorials-btn {
+  236092 |   background: var(--kavia-orange, #E87A41) !important;
+ @ ./src/App.css 8:6-97 20:17-24 24:7-21 50:25-39 51:36-47 51:50-64 55:6-65:7 56:54-65 56:68-82 62:42-53 62:56-70 64:21-28 75:0-67 75:0-67 76:22-29 76:33-47 76:50-64 53:4-66:5
+ @ ./src/App.js 2:0-19
+ @ ./src/index.js 5:0-24 11:32-35
+
+webpack 5.99.9 compiled with 1 error in 1157 ms
