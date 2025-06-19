@@ -50,7 +50,7 @@ function MainContainer({ children }) {
           author: article.author,
           url: article.url,
           published_at: article.published_at,
-          tags: article.tags
+          // tags: article.tags // REMOVED tags from here
         })
       );
     }
@@ -71,7 +71,7 @@ function MainContainer({ children }) {
     return cards;
   }, [ytData, devtoData, geminiData]); // Removed rapidData from dependency array
 
-  // All tags (flat uniq, for filter option)
+  // All tags (flat uniq, for filter option) - This can likely be removed if tags are not used for filtering
   const allTags = useMemo(() => {
     const tags = new Set();
     if (devtoData && devtoData.length) {
@@ -88,7 +88,7 @@ function MainContainer({ children }) {
       if (["youtube", "devto", "gemini"].includes(filter)) { // Removed "rapidapi"
         cards = cards.filter(c => c.source === filter);
       } else {
-        // treat as tag filter
+        // treat as tag filter - This block will not be hit if allTags is empty
         cards = cards.filter(c => c.tags && c.tags.includes(filter));
       }
     }
@@ -99,8 +99,8 @@ function MainContainer({ children }) {
           (c.title && c.title.toLowerCase().includes(lower)) ||
           (c.description && c.description.toLowerCase().includes(lower)) ||
           (c.author && c.author.toLowerCase().includes(lower)) ||
-          (c.channel && c.channel.toLowerCase().includes(lower)) ||
-          (c.tags && c.tags.some(tag => tag.toLowerCase().includes(lower))) // Added tag filtering for text search
+          (c.channel && c.channel.toLowerCase().includes(lower))
+          // || (c.tags && c.tags.some(tag => tag.toLowerCase().includes(lower))) // Removed tag filtering for text search
       );
     }
     return cards;
@@ -127,12 +127,13 @@ function MainContainer({ children }) {
         {src.charAt(0).toUpperCase() + src.slice(1)}
       </button>
     )),
+    // REMOVED TAG SELECTOR - allTags.length will be 0 now
+    /*
     ...(allTags.length > 0
       ? [
           <select
             key="tag-filter"
             onChange={e => setFilter(e.target.value)}
-            // Removed redundant inline styles as they are now handled by app.css
             value={["youtube", "devto", "gemini"].includes(filter) ? "all" : filter} // Removed "rapidapi"
           >
             <option value="all">Tags</option>
@@ -142,11 +143,11 @@ function MainContainer({ children }) {
           </select>
         ]
       : []),
+    */
     <input
       key="search"
       type="text"
       placeholder="Filter by title/author..."
-      // Removed redundant inline styles as they are now handled by app.css
       className="ch-search" // Apply existing search class
       value={textFilter}
       onChange={e => setTextFilter(e.target.value)}
@@ -254,6 +255,8 @@ function MainContainer({ children }) {
                     style={{ color: "var(--accent)" }}>
                     View article
                   </a>
+                  {/* REMOVED TAG RENDERING HERE */}
+                  {/*
                   <div style={{ marginTop: 5 }}>
                     {card.tags &&
                       card.tags.map(tag => (
@@ -262,6 +265,7 @@ function MainContainer({ children }) {
                         </span>
                       ))}
                   </div>
+                  */}
                 </div>
               </Card>
             );

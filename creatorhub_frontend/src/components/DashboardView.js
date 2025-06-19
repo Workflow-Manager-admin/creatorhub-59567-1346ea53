@@ -14,7 +14,8 @@ import { fetchYoutubeContent } from "../api/youtube";
 import { fetchDevToContent } from "../api/devto";
 import { fetchGeminiContent } from "../api/gemini";
 
-// Helper: Tag badge
+// Helper: Tag badge - COMMENTING OUT THIS ENTIRE COMPONENT
+/*
 function CategoryTag({ children, accent }) {
   // accent: ("tool"|"guide"|"new"|...)
   let style = {}; // Start with an empty style object
@@ -37,6 +38,7 @@ function CategoryTag({ children, accent }) {
     <span className="ch-card-tag" style={style}>{children}</span>
   );
 }
+*/
 // Placeholder for icon/lottie
 function IconLottiePlaceholder({ type = "lottie", size = 48 }) {
   return (
@@ -68,7 +70,7 @@ function IconLottiePlaceholder({ type = "lottie", size = 48 }) {
   );
 }
 // Single glassmorphic tool card
-function ToolCard({ title, desc, tags, accent, loading, Button, iconType, onClick }) {
+function ToolCard({ title, desc, /* tags, REMOVED */ accent, loading, Button, iconType, onClick }) {
   return (
     <Card title={title}>
       <div style={{ display: "flex", alignItems: "flex-start" }}>
@@ -81,6 +83,8 @@ function ToolCard({ title, desc, tags, accent, loading, Button, iconType, onClic
           <div style={{ marginBottom: 4, color: "var(--text-secondary)", fontSize: "1.065em" }}>
             {desc}
           </div>
+          {/* REMOVED THE TAG RENDERING BLOCK */}
+          {/*
           <div style={{ marginTop: 10, marginBottom: 12 }}>
             {tags &&
               tags.map(tag => (
@@ -89,6 +93,7 @@ function ToolCard({ title, desc, tags, accent, loading, Button, iconType, onClic
                 </CategoryTag>
               ))}
           </div>
+          */}
           {/* Button is passed as a React element, its styles should be handled by its own className */}
           {Button ? Button : null}
         </div>
@@ -133,13 +138,12 @@ function DashboardView({ user = { name: "Alex" } }) {
           accent: "guide",
           title: yt[0].title,
           desc: yt[0].description,
-          tags: [{ label: "YouTube", accent: "guide" }],
+          // tags: [{ label: "YouTube", accent: "guide" }], // REMOVED
           iconType: "lottie",
           Button: (
             <a
               href={yt[0].url}
               className="ch-info-btn"
-              // Removed redundant inline styles for background and color, relies on ch-info-btn
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -155,21 +159,19 @@ function DashboardView({ user = { name: "Alex" } }) {
             accent: "guide",
             title: article.title,
             desc: article.author ? `By ${article.author}` : "Dev.to Article",
-            tags: [
-              { label: "DevTo", accent: "guide" },
-              ...(article.tags || []).map(t => ({ label: t, accent: "guide" }))
-            ],
+            // tags: [ // REMOVED
+            //   { label: "DevTo", accent: "guide" },
+            //   ...(article.tags || []).map(t => ({ label: t, accent: "guide" }))
+            // ],
             iconType: "icon",
             Button: (
               <a
-                // Always use official Dev.to article link fallback to homepage if invalid
                 href={
                   article.url && /^https:\/\/dev\.to\//.test(article.url)
                     ? article.url
                     : "https://dev.to/"
                 }
                 className="ch-info-btn"
-                // Removed redundant inline styles for background and color, relies on ch-info-btn
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -186,12 +188,11 @@ function DashboardView({ user = { name: "Alex" } }) {
             accent: "tool",
             title: res.title,
             desc: res.result || "Generative AI",
-            tags: [ { label: "AI", accent: "tool" } ],
+            // tags: [ { label: "AI", accent: "tool" } ], // REMOVED
             iconType: "lottie",
             Button: (
               <button
                 className="ch-info-btn"
-                // Removed redundant inline styles for background and color, relies on ch-info-btn
                 disabled
               >
                 Demo
@@ -201,7 +202,7 @@ function DashboardView({ user = { name: "Alex" } }) {
         );
       }
       setTools(compiledTools);
-      // Flatten tags
+      // Flatten tags - This can also be removed if tags are not used for filtering anymore
       const cats = [
         ...new Set([
           ...compiledTools.flatMap(tool =>
@@ -215,10 +216,14 @@ function DashboardView({ user = { name: "Alex" } }) {
     return () => { mounted = false; };
   }, []);
 
-  // Filtered tools per search and category
+  // Filtered tools per search and category - Adjusted to remove tag filtering
   const filteredTools = useMemo(() => {
     let out = tools;
     if (category && category !== "all") {
+      // If you're no longer using tags, this category filtering logic might need adjustment
+      // to filter by source type (youtube, devto, gemini) if desired.
+      // For now, I'm keeping it as is, assuming 'category' might still refer to source.
+      // If categories were solely based on "tags", this part will need a re-think if tags are gone.
       out = out.filter(t =>
         t.tags &&
         t.tags.map(tt => tt.label.toLowerCase()).includes(category.toLowerCase())
@@ -229,8 +234,8 @@ function DashboardView({ user = { name: "Alex" } }) {
       out = out.filter(
         t =>
           (t.title && t.title.toLowerCase().includes(lower)) ||
-          (t.desc && t.desc.toLowerCase().includes(lower)) ||
-          (t.tags && t.tags.some(tt => tt.label.toLowerCase().includes(lower)))
+          (t.desc && t.desc.toLowerCase().includes(lower))
+          // || (t.tags && t.tags.some(tt => tt.label.toLowerCase().includes(lower))) // REMOVED tag filtering from text search
       );
     }
     return out;
@@ -278,7 +283,6 @@ function DashboardView({ user = { name: "Alex" } }) {
             key="category"
             value={category}
             onChange={e => setCategory(e.target.value)}
-            // Removed redundant inline styles for select as they are handled by app.css
             aria-label="Filter by category"
           >
             {allCategories.map(cat =>
@@ -295,7 +299,6 @@ function DashboardView({ user = { name: "Alex" } }) {
             maxLength={64}
             className="ch-search"
             value={search}
-            // Removed redundant inline styles for input as they are handled by app.css
             onChange={e => setSearch(e.target.value)}
             autoComplete="off"
           />
@@ -350,13 +353,12 @@ function DashboardView({ user = { name: "Alex" } }) {
           <SmallToolCard
             title="Hashtag Generator"
             desc="Suggested hashtags for engagement & trending topics. Enter your niche!"
-            tags={[{ label: "Generator", accent: "tool" }]}
+            // tags={[{ label: "Generator", accent: "tool" }]} // REMOVED
             iconType="lottie"
             Button={
               <a
                 href="#"
                 className="ch-info-btn"
-                // Removed redundant inline styles here, rely on ch-info-btn
                 onClick={e => { e.preventDefault(); }}
                 tabIndex={0}
                 aria-label="Open Hashtag Generator"
@@ -369,13 +371,12 @@ function DashboardView({ user = { name: "Alex" } }) {
           <SmallToolCard
             title="Caption Generator"
             desc="Type a topic and pick a tone for fresh caption ideas."
-            tags={[{ label: "Generator", accent: "tool" }]}
+            // tags={[{ label: "Generator", accent: "tool" }]} // REMOVED
             iconType="icon"
             Button={
               <a
                 href="#"
                 className="ch-info-btn"
-                // Removed redundant inline styles here, rely on ch-info-btn
                 onClick={e => { e.preventDefault(); }}
                 tabIndex={0}
                 aria-label="Open Caption Generator"
@@ -388,13 +389,12 @@ function DashboardView({ user = { name: "Alex" } }) {
           <SmallToolCard
             title="Hook Generator"
             desc="Get attention-grabbing hooks for Reels, Shorts, TikToks, and more."
-            tags={[{ label: "Generator", accent: "tool" }]}
+            // tags={[{ label: "Generator", accent: "tool" }]} // REMOVED
             iconType="lottie"
             Button={
               <a
                 href="#"
                 className="ch-info-btn"
-                // Removed redundant inline styles here, rely on ch-info-btn
                 onClick={e => { e.preventDefault(); }}
                 tabIndex={0}
                 aria-label="Open Hook Generator"
@@ -411,7 +411,7 @@ function DashboardView({ user = { name: "Alex" } }) {
                 key={tool.id}
                 title={tool.title}
                 desc={tool.desc}
-                tags={tool.tags}
+                // tags={tool.tags} // REMOVED
                 accent={tool.accent}
                 loading={tool.loading}
                 Button={tool.Button}
