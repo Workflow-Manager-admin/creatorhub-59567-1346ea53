@@ -113,31 +113,40 @@ function DashboardView({ user = { name: "Alex" } }) {
   function CarouselSection({ title, items, CardComp, accent }) {
     // Carousel scroll index state
     const [scrollIdx, setScrollIdx] = useState(0);
-    const rowRef = useRef();
     const CARDS_VISIBLE = 3;
+
+    // Clamp scrollIdx so we never go out of bounds
+    useEffect(() => {
+      if (scrollIdx > Math.max(0, items.length - CARDS_VISIBLE)) {
+        setScrollIdx(Math.max(0, items.length - CARDS_VISIBLE));
+      }
+    }, [items.length, scrollIdx]);
+
     const canScrollLeft = scrollIdx > 0;
     const canScrollRight = scrollIdx + CARDS_VISIBLE < items.length;
 
-    function scrollTo(newIdx) {
-      setScrollIdx(newIdx);
-      if (rowRef.current) {
-        const node = rowRef.current.children[newIdx];
-        if (node?.scrollIntoView) {
-          node.scrollIntoView({ behavior: "smooth", inline: "start" });
-        }
-      }
-    }
-
     function handleLeft() {
-      if (canScrollLeft) scrollTo(scrollIdx - 1);
+      if (canScrollLeft) setScrollIdx(scrollIdx - 1);
     }
     function handleRight() {
-      if (canScrollRight) scrollTo(scrollIdx + 1);
+      if (canScrollRight) setScrollIdx(scrollIdx + 1);
     }
 
+    // Only render the visible cards, but keep grid widths for animation and accessibility
+    function getVisibleItems() {
+      return items.slice(scrollIdx, scrollIdx + CARDS_VISIBLE);
+    }
+
+    // Carousel container: hides overflow and animates horizontal scrolling
+    // Arrow navigation remains visually at section title row (top-right), as required.
     return (
       <div style={{ width: "100%", margin: "0 0 30px 0", maxWidth: 1200 }}>
-        <div style={{ display: "flex", alignItems: "center", marginBottom: 9 }}>
+        <div style={{
+          display: "flex",
+          alignItems: "center",
+          marginBottom: 9,
+          justifyContent: "space-between"
+        }}>
           <div style={{
             fontWeight: 800,
             fontSize: "1.22rem",
@@ -147,7 +156,7 @@ function DashboardView({ user = { name: "Alex" } }) {
           }}>
             {title}
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 9, marginLeft: 13 }}>
             <button
               aria-label={`Scroll ${title} left`}
               onClick={handleLeft}
@@ -189,31 +198,41 @@ function DashboardView({ user = { name: "Alex" } }) {
         </div>
         <div
           style={{
-            overflowX: "auto",
-            scrollbarWidth: "none",
-            WebkitOverflowScrolling: "touch",
+            overflow: "hidden",
             position: "relative",
-            paddingBottom: 7
+            paddingBottom: 7,
+            width: 340 * CARDS_VISIBLE,
+            maxWidth: "100%",
+            margin: "0 auto"
           }}
-          tabIndex={0}
         >
           <div
-            ref={rowRef}
             style={{
               display: "flex",
               flexDirection: "row",
               gap: 28,
               transition: "transform 0.33s cubic-bezier(.47, .12, .18, 1.1)",
               willChange: "transform",
-              transform: `translateX(-${scrollIdx * 340}px)`,
-              minHeight: 176
+              // If we want smooth shifting, animate translateX
+              transform: `translateX(-${scrollIdx * (340 + 28)}px)`,
+              minHeight: 176,
+              width: Math.max(items.length, CARDS_VISIBLE) * (340 + 28),
+              boxSizing: "content-box"
             }}
           >
             {items.map((item, idx) => (
-              <div key={item.id || item.title || idx} style={{ minWidth: 340, maxWidth: 340, flex: "0 0 340px" }}>
+              <div
+                key={item.id || item.title || idx}
+                style={{
+                  minWidth: 340,
+                  maxWidth: 340,
+                  flex: "0 0 340px"
+                }}
+              >
                 <CardComp {...item} />
               </div>
             ))}
+            {/* Padding for empty spaces if less than 3 */}
             {items.length < CARDS_VISIBLE &&
               Array.from({ length: CARDS_VISIBLE - items.length }).map((_, idx) => (
                 <div key={"pad" + idx} style={{ minWidth: 340, maxWidth: 340, flex: "0 0 340px" }} />
