@@ -168,17 +168,17 @@ function MainContainer({ children }) {
     />,
     <button
       key="modal-demo"
-      style={{
-        background: "var(--accent)",
-        color: "var(--primary)",
-        border: "none", borderRadius: 4,
-        padding: "7px 14px", fontWeight: 600, marginLeft: 8,
-        cursor: "pointer"
-      }}
-      onClick={() => setModalOpen(true)}
+      className="ch-info-btn"
+      type="button"
+      tabIndex={0}
       aria-label="Open info modal"
+      onClick={() => setModalOpen(true)}
     >
-      ℹ️ Info
+      {/* Inline SVG icon for an info button, for crisp modern look */}
+      <span aria-hidden="true" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", marginRight: "5px" }}>
+        <svg height="1.14em" width="1.14em" viewBox="0 0 20 20" fill="none" focusable="false" aria-hidden="true"><circle cx="10" cy="10" r="8.7" stroke="currentColor" strokeWidth="2.1" opacity="0.77"/><rect x="9.3" y="8.35" width="1.4" height="5.2" rx=".7" fill="currentColor"/><rect x="9.3" y="5.1" width="1.4" height="1.4" rx=".7" fill="currentColor"/></svg>
+      </span>
+      Info
     </button>
   ];
 

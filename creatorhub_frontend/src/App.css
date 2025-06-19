@@ -7,6 +7,15 @@
   --accent-secondary: #e87a41;
   --accent-gradient: linear-gradient(93deg, #f9b221 15%, #e87a41 100%);
   --accent-gradient-focus: linear-gradient(90deg, #ffc700 0%, #ef943d 100%);
+  --icon-btn-gradient: linear-gradient(94deg, #ffe897 18%, #f9b221 54%, #e87a41 97%);
+  --success: #20dba2;
+  --info: #41abeb;
+  --warning: #ffd234;
+  --danger: #fe7349;
+  --success-bg: rgba(32,219,162,0.07);
+  --info-bg: rgba(65,171,235,0.10);
+  --warning-bg: rgba(255,210,52,0.12);
+  --danger-bg: rgba(254,115,73,0.08);
   --text-color: #f7f6f4;
   --text-secondary: rgba(247, 246, 244, 0.74);
   --border-color: rgba(255,255,255,0.11);
@@ -25,6 +34,65 @@
   --scrollbar-bg: rgba(44,53,80,0.18);
   --scrollbar-thumb: rgba(245,179,33,0.23);
 }
+
+/* Dynamic accent states for bg and text */
+.ch-accent-success { background: var(--success-bg) !important; color: var(--success) !important; }
+.ch-accent-info { background: var(--info-bg) !important; color: var(--info) !important; }
+.ch-accent-warning { background: var(--warning-bg) !important; color: var(--warning) !important; }
+.ch-accent-danger { background: var(--danger-bg) !important; color: var(--danger) !important; }
+.ch-accent-success-text { color: var(--success) !important; }
+.ch-accent-info-text { color: var(--info) !important; }
+.ch-accent-warning-text { color: var(--warning) !important; }
+.ch-accent-danger-text { color: var(--danger) !important; }
+
+/* Minimalist icon button utility, for info, actions */
+.ch-info-btn {
+  display: inline-flex;
+  align-items: center;
+  background: var(--icon-btn-gradient, var(--accent-gradient));
+  color: #1a182a;
+  font-weight: 700;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  font-size: 1.07rem;
+  line-height: 1.11;
+  padding: 8px 19px 8px 14px;
+  box-shadow: 0 2.5px 12px 0 rgba(249,178,33,0.08), 0 0.8px 3px rgba(230,122,65,.10);
+  transition: 
+    background 0.27s, color 0.18s, filter 0.16s, 
+    box-shadow 0.34s cubic-bezier(.57,0.47,.58,1),
+    transform 0.18s cubic-bezier(.58,1.21,.69,1.06);
+  outline: none;
+  gap: 7px;
+  margin: 0 0 0 5px;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.ch-info-btn svg { color: #d47102; opacity: 0.82; transition: color 0.16s; }
+.ch-info-btn:focus-visible {
+  outline: var(--focus-outline);
+  box-shadow: 0 1.5px 15px var(--accent-secondary), 0 0 0 2px #f7b221a0;
+}
+.ch-info-btn:hover,
+.ch-info-btn:active {
+  background: var(--accent-gradient-focus);
+  color: #191c27;
+  box-shadow: 0 7px 14px var(--accent-secondary), 0 2.1px 8px #ef943d33;
+  transform: translateY(-2px) scale(1.04) rotate(-0.5deg);
+}
+.ch-info-btn:active {
+  filter: brightness(1.06) drop-shadow(0 2px 7px #eca51260);
+  transform: scale(0.97) translateY(2px);
+}
+.ch-info-btn svg { color: var(--accent-secondary); }
+
+.ch-filterbar-item {
+  display: flex;
+  align-items: center;
+}
+
 
 /* Modern minimalist scrollbars */
 body, *::-webkit-scrollbar {
