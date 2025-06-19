@@ -1,4 +1,7 @@
+/* app.css */
+
 :root {
+  /* Existing variables or new ones */
   --primary: #A178DF;
   --accent: #CE6D87;
   --accent-secondary: #A6567B;
@@ -43,6 +46,12 @@
 
   /* Skeleton background - ensure this is dark */
   --skeleton-bg: #2a2e47;
+
+  /* --- NEW CUSTOM COLORS FOR CARD TITLES AND BUTTONS --- */
+  --card-modal-title-color: #C9B22D; /* Dark Yellow for all card titles, including modals */
+  --button-blaze-orange: #FF5C00;   /* Neon Orange / Blaze Orange for all buttons */
+  --button-blaze-orange-hover: #E04D00; /* Slightly darker for hover */
+  /* --- END NEW CUSTOM COLORS --- */
 }
 
 /* Dynamic accent states for bg and text */
@@ -86,7 +95,8 @@
 .ch-info-btn {
   display: inline-flex;
   align-items: center;
-  background: var(--btn-gradient-orange-red);
+  /* UPDATED: Use new button color variable */
+  background: var(--button-blaze-orange);
   color: var(--palette-primary) !important;
   font-weight: 700;
   border: none;
@@ -95,7 +105,8 @@
   font-size: 1.07rem;
   line-height: 1.11;
   padding: 8px 19px 8px 14px;
-  box-shadow: 0 2.5px 12px 0 rgba(249, 178, 33, 0.08), 0 0.8px 3px rgba(230, 122, 65, .10);
+  /* UPDATED: Adjust box-shadow to match new button color */
+  box-shadow: 0 2.5px 12px 0 rgba(255, 92, 0, 0.08), 0 0.8px 3px rgba(255, 92, 0, .10);
   transition:
     background 0.27s, color 0.18s, filter 0.16s,
     box-shadow 0.34s cubic-bezier(.57, 0.47, .58, 1),
@@ -116,19 +127,23 @@
 
 .ch-info-btn:focus-visible {
   outline: var(--focus-outline);
-  box-shadow: 0 1.5px 15px var(--accent-secondary), 0 0 0 2px #f7b221a0;
+  /* UPDATED: Adjust focus box-shadow to new button color */
+  box-shadow: 0 1.5px 15px var(--button-blaze-orange), 0 0 0 2px #FF5C00a0;
 }
 
 .ch-info-btn:hover,
 .ch-info-btn:active {
-  background: var(--btn-gradient-orange-red-focus);
+  /* UPDATED: Use new button hover color variable */
+  background: var(--button-blaze-orange-hover);
   color: var(--palette-secondary) !important;
-  box-shadow: 0 7px 14px rgba(239, 106, 106, 0.5), 0 2.1px 8px rgba(239, 106, 106, .33);
+  /* UPDATED: Adjust box-shadow to match new button color */
+  box-shadow: 0 7px 14px rgba(255, 92, 0, 0.5), 0 2.1px 8px rgba(255, 92, 0, .33);
   transform: translateY(-2px) scale(1.04) rotate(-0.5deg);
 }
 
 .ch-info-btn:active {
-  filter: brightness(1.08) drop-shadow(0 2px 7px rgba(239, 106, 106, 0.6));
+  /* UPDATED: Adjust filter for active state to new button color */
+  filter: brightness(1.08) drop-shadow(0 2px 7px rgba(255, 92, 0, 0.6));
   transform: scale(0.97) translateY(2px);
 }
 
@@ -337,13 +352,15 @@ body.dark-mode {
   min-width: 64px;
   font-weight: 700;
   color: var(--palette-primary);
-  background: var(--btn-gradient-orange-red);
+  /* UPDATED: Use new button color variable */
+  background: var(--button-blaze-orange);
   border: none;
   border-radius: 99px;
   cursor: pointer;
   transition: background 0.27s, color 0.18s, filter 0.13s;
-  box-shadow: 0 2.5px 11px 0 rgba(255, 126, 95, 0.07),
-    0 0.6px 3px rgba(239, 106, 106, .05);
+  /* UPDATED: Adjust box-shadow to new button color */
+  box-shadow: 0 2.5px 11px 0 rgba(255, 92, 0, 0.07),
+    0 0.6px 3px rgba(255, 92, 0, .05);
   font-size: 1.11rem;
   padding: 9px 18px;
   letter-spacing: 0.015em;
@@ -388,9 +405,10 @@ body.dark-mode {
 .ch-dark-toggle:hover,
 .ch-sidebar-toggle:hover,
 .ch-modal-close:hover {
-  filter: brightness(1.07) drop-shadow(0 4px 16px rgba(239, 106, 106, 0.5));
+  /* UPDATED: Adjust filter and background to new button hover color */
+  filter: brightness(1.07) drop-shadow(0 4px 16px rgba(255, 92, 0, 0.5));
   color: var(--palette-secondary);
-  background: var(--btn-gradient-orange-red-focus);
+  background: var(--button-blaze-orange-hover);
 }
 
 /* Main area */
@@ -516,8 +534,10 @@ body.dark-mode {
   font-size: 1.29rem;
   letter-spacing: -.02em;
   margin-bottom: 11px;
-  color: var(--accent);
-  text-shadow: 0 2px 11px #ef943d44;
+  /* UPDATED: Use new card title color variable */
+  color: var(--card-modal-title-color);
+  /* UPDATED: Adjust text-shadow to new card title color for a subtle effect */
+  text-shadow: 0 2px 11px rgba(201, 178, 45, 0.44);
 }
 
 .ch-card-tag {
@@ -538,15 +558,18 @@ body.dark-mode {
 .ch-card-tag[style*="gradient"],
 .ch-card-tag.gradient,
 .ch-card-tag.ch-gradient {
-  background: var(--btn-gradient-orange-red) !important;
+  /* UPDATED: Use new button color for tags if they are meant to follow button style */
+  background: var(--button-blaze-orange) !important;
   color: #fff !important;
 }
 
 .ch-card:hover .ch-card-tag,
 .ch-card:focus-within .ch-card-tag {
-  background: var(--btn-gradient-orange-red-focus) !important;
+  /* UPDATED: Use new button hover color for tags on hover */
+  background: var(--button-blaze-orange-hover) !important;
   color: #fff !important;
-  box-shadow: 0 2.5px 10px rgba(239, 106, 106, 0.3);
+  /* UPDATED: Adjust box-shadow to new button color */
+  box-shadow: 0 2.5px 10px rgba(255, 92, 0, 0.3);
 }
 
 .ch-card:hover,
@@ -814,13 +837,15 @@ body.dark-mode {
   margin-left: 0;
   float: right;
   min-width: 60px;
-  background: var(--btn-gradient-orange-red);
+  /* UPDATED: Use new button color variable */
+  background: var(--button-blaze-orange);
   color: var(--palette-primary);
   /* Ensure the common button styles in app.css apply or override these if needed */
 }
 
 .ch-modal-close:hover {
-  background: var(--btn-gradient-orange-red-focus);
+  /* UPDATED: Use new button hover color variable */
+  background: var(--button-blaze-orange-hover);
   color: var(--palette-secondary);
 }
 
@@ -843,7 +868,8 @@ body.ch-modal-dim,
 .ch-sidebar-toggle {
   display: none;
   margin-left: 9px;
-  background: var(--btn-gradient-orange-red);
+  /* UPDATED: Use new button color variable */
+  background: var(--button-blaze-orange);
   color: var(--palette-primary);
   border-radius: 99px;
   border: none;
@@ -851,7 +877,8 @@ body.ch-modal-dim,
   font-weight: 700;
   font-size: 1.02rem;
   letter-spacing: .02em;
-  box-shadow: 0 1.5px 10px rgba(44, 62, 112, 0.16);
+  /* UPDATED: Adjust box-shadow to new button color */
+  box-shadow: 0 1.5px 10px rgba(255, 92, 0, 0.16);
   cursor: pointer;
   z-index: 211;
   outline: none;
@@ -859,7 +886,8 @@ body.ch-modal-dim,
 }
 
 .ch-sidebar-toggle:hover {
-  background: var(--btn-gradient-orange-red-focus);
+  /* UPDATED: Use new button hover color variable */
+  background: var(--button-blaze-orange-hover);
   color: var(--palette-secondary);
 }
 
@@ -1016,7 +1044,8 @@ a:hover {
 }
 
 .dashboard-tool-card-grid .ch-card .ch-card-title {
-  color: var(--accent-secondary);
+  /* UPDATED: Apply the new card title color variable */
+  color: var(--card-modal-title-color);
 }
 
 .dashboard-tool-card-grid .ch-card-tag {
@@ -1029,18 +1058,21 @@ a:hover {
 .dashboard-tool-card-grid .ch-info-btn {
   border-radius: 99px !important;
   font-weight: 700;
-  box-shadow: 0 2.5px 11px 0 rgba(253, 58, 105, 0.07);
+  /* UPDATED: Adjust box-shadow to new button color */
+  box-shadow: 0 2.5px 11px 0 rgba(255, 92, 0, 0.07);
   margin-top: 8px;
   letter-spacing: .02em;
   font-size: 1.03em;
   color: var(--palette-primary);
-  background: var(--btn-gradient-orange-red);
+  /* UPDATED: Use new button color variable */
+  background: var(--button-blaze-orange);
 }
 
 .dashboard-tool-card-grid .ch-info-btn:hover,
 .dashboard-tool-card-grid .ch-info-btn:focus {
   color: var(--palette-secondary);
-  background: var(--btn-gradient-orange-red-focus);
+  /* UPDATED: Use new button hover color variable */
+  background: var(--button-blaze-orange-hover);
 }
 
 @media (max-width: 800px) {
@@ -1103,13 +1135,25 @@ a:hover {
 /* Example CSS for animations - add these to your app.css or relevant stylesheet */
 
 @keyframes modal-fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes modal-zoom-in {
-  from { transform: scale(0.9); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 /* Ensure your existing modal CSS is compatible with these changes.
@@ -1122,23 +1166,25 @@ a:hover {
 /* Example of what your .ch-modal and .ch-modal-close CSS might look like now: */
 
 .ch-modal {
-    background: var(--background-secondary); /* Assuming this variable exists */
-    border-radius: 12px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-    padding: 30px 40px; /* Adjust as per your design */
-    /* Other styles as defined in inline, but remove any positioning that conflicts */
+  background: var(--background-secondary); /* Assuming this variable exists */
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  padding: 30px 40px; /* Adjust as per your design */
+  /* Other styles as defined in inline, but remove any positioning that conflicts */
 }
 
 .ch-modal-close {
-    /* Existing styles for your close button */
-    background: none;
-    border: none;
-    font-size: 1em; /* Adjust size if 2.2em was too big previously */
-    color: var(--text-secondary); /* Assuming this variable exists */
-    cursor: pointer;
-    /* Other styles as defined inline */
+  /* Existing styles for your close button */
+  background: none;
+  border: none;
+  font-size: 1em;
+  /* Adjust size if 2.2em was too big previously */
+  color: var(--text-secondary);
+  /* Assuming this variable exists */
+  cursor: pointer;
+  /* Other styles as defined inline */
 }
 
 .ch-modal-close:hover {
-    color: var(--accent); /* Assuming this variable exists */
+  color: var(--accent); /* Assuming this variable exists */
 }
