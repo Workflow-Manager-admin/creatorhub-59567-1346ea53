@@ -1,12 +1,8 @@
 import React from "react";
-import DarkModeToggle from "./DarkModeToggle";
-import useDarkMode from "../hooks/useDarkMode";
 
 // PUBLIC_INTERFACE
 function Topbar() {
-  /** Top navigation bar: fixed at top, always visible for mobile and desktop, includes dark mode toggle */
-  const [dark, toggleDark] = useDarkMode();
-
+  /** Top navigation bar: fixed at top, always visible for mobile and desktop, login button on the right */
   return (
     <header className="ch-topbar" style={{ position: "fixed", top: 0, width: "100vw", zIndex: 120 }}>
       <div className="ch-logo">CreatorHub</div>
@@ -16,7 +12,6 @@ function Topbar() {
         placeholder="Search tools or tutorials..."
       />
       <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-        <DarkModeToggle checked={dark} onToggle={toggleDark} />
         <button className="ch-login-btn">Login</button>
       </div>
     </header>

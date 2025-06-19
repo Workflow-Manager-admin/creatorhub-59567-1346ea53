@@ -23,3 +23,45 @@ cacheable modules 1.3 MiB
     modules by path ./.ve/*.css 2.93 KiB 2 modules
     ./.ve/EditorOverlay.jsx 1.58 KiB [built] [code generated]
 webpack 5.99.9 compiled successfully in 1462 ms
+assets by status 1.98 KiB [cached] 1 asset
+assets by path *.js 1.45 MiB
+  asset bundle.js 1.45 MiB [emitted] (name: main)
+  asset main.ebe87d49057562b01acf.hot-update.js 4.01 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.ebe87d49057562b01acf.hot-update.json 64 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.45 MiB = bundle.js 1.45 MiB main.ebe87d49057562b01acf.hot-update.js 4.01 KiB
+cached modules 1.3 MiB [cached] 56 modules
+runtime modules 27.5 KiB 14 modules
+./src/components/Topbar.js 1.48 KiB [code generated]
+
+ERROR in ./src/components/Topbar.js 2:0-46
+Module not found: Error: Can't resolve './DarkModeToggle' in '/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/src/components'
+resolve './DarkModeToggle' in '/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/src/components'
+  using description file: /home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/package.json (relative path: ./src/components)
+    Field 'browser' doesn't contain a valid alias configuration
+    using description file: /home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/package.json (relative path: ./src/components/DarkModeToggle)
+      no extension
+        Field 'browser' doesn't contain a valid alias configuration
+        /home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/src/components/DarkModeToggle doesn't exist
+      .js
+        Field 'browser' doesn't contain a valid alias configuration
+        /home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/src/components/DarkModeToggle.js doesn't exist
+      .jsx
+        Field 'browser' doesn't contain a valid alias configuration
+        /home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/src/components/DarkModeToggle.jsx doesn't exist
+      as directory
+        /home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/src/components/DarkModeToggle doesn't exist
+ @ ./src/components/Layout.js 2:0-30 15:33-39
+ @ ./src/App.js 3:0-41 16:32-38
+ @ ./src/index.js 5:0-24 11:32-35
+
+webpack 5.99.9 compiled with 1 error in 89 ms
+assets by status 1.98 KiB [cached] 1 asset
+assets by path *.js 1.45 MiB
+  asset bundle.js 1.44 MiB [emitted] (name: main)
+  asset main.f111a0747d4b40981a18.hot-update.js 3.27 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.f111a0747d4b40981a18.hot-update.json 56 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.45 MiB = bundle.js 1.44 MiB main.f111a0747d4b40981a18.hot-update.js 3.27 KiB
+cached modules 1.3 MiB [cached] 55 modules
+runtime modules 27.5 KiB 14 modules
+./src/components/Topbar.js 1.19 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 60 ms
