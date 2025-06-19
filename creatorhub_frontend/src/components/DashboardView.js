@@ -1,6 +1,12 @@
-import React from "react";
+// PUBLIC_INTERFACE
+import React, { useState, useEffect, useMemo } from "react";
 import Card from "./Card";
 import SkeletonLoader from "./SkeletonLoader";
+import FilterBar from "./FilterBar";
+import { fetchYoutubeContent } from "../api/youtube";
+import { fetchDevToContent } from "../api/devto";
+import { fetchRapidAPIContent } from "../api/rapidapi";
+import { fetchGeminiContent } from "../api/gemini";
 
 // Helper: Tag badge
 function CategoryTag({ children, accent }) {
@@ -94,48 +100,168 @@ function ToolCard({ title, desc, tags, accent, loading, Button, iconType, onClic
   );
 }
 
-// PUBLIC_INTERFACE
 /**
  * The new main dashboard view for CreatorHub: Centered greeting, vibrant tool cards, glassmorphic design, microinteractions.
+ * Now with dynamic tool discovery, integrated search, filtering by category/tag, and loader state.
  */
-function DashboardView({ user = { name: "Alex" }, loading = false, tools = [] }) {
-  // Demo card data if empty
-  if (!tools || tools.length < 1) {
-    tools = [
-      {
-        id: "tool-ai",
-        accent: "tool",
-        title: "AI Text Generator",
-        desc: "Generate content instantly with AI.",
-        tags: [{ label: "Tool", accent: "tool" }, { label: "New", accent: "new" }],
-        Button: <button className="ch-info-btn" style={{ background: "var(--accent-gradient)", marginTop: 10, color: "var(--palette-primary)" }}>Launch</button>,
-        iconType: "lottie"
-      },
-      {
-        id: "tool-tutorial",
-        accent: "guide",
-        title: "React Mastery Guide",
-        desc: "Level up with interactive chapters and code labs.",
-        tags: [{ label: "Guide", accent: "guide" }],
-        Button: <button className="ch-info-btn" style={{ background: "linear-gradient(90deg,#1E90FF,#FD3A69)", marginTop: 10, color: "var(--palette-primary)" }}>Start</button>,
-        iconType: "icon"
-      },
-      {
-        id: "tool-api",
-        accent: "tool",
-        title: "API Playground",
-        desc: "Explore live API endpoints with docs.",
-        tags: [{ label: "Tool", accent: "tool" }, { label: "Beta", accent: "new" }],
-        Button: <button className="ch-info-btn" style={{ background: "var(--accent-gradient)", marginTop: 10, color: "var(--palette-primary)" }}>Try Demo</button>,
-        iconType: "icon"
+function DashboardView({ user = { name: "Alex" } }) {
+  // --- API data and loader state
+  const [tools, setTools] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Search and filter states
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("all"); // category/tag
+
+  // Category/tag options
+  const [allCategories, setAllCategories] = useState([
+    { label: "All", value: "all" }
+  ]);
+
+  // Fetch tool data and form cards
+  useEffect(() => {
+    let mounted = true;
+    setLoading(true);
+    Promise.all([
+      fetchYoutubeContent(),
+      fetchDevToContent(),
+      fetchRapidAPIContent(),
+      fetchGeminiContent()
+    ]).then(([yt, devto, rapid, gemini]) => {
+      if (!mounted) return;
+      // Flatten all sources to "tools" cards array
+      const compiledTools = [];
+      if (yt && yt[0]) {
+        compiledTools.push({
+          id: yt[0].id,
+          accent: "guide",
+          title: yt[0].title,
+          desc: yt[0].description,
+          tags: [{ label: "YouTube", accent: "guide" }],
+          iconType: "lottie",
+          Button: (
+            <a
+              href={yt[0].url}
+              className="ch-info-btn"
+              style={{ background: "linear-gradient(90deg,#1E90FF,#FD3A69)", marginTop: 10, color: "var(--palette-primary)" }}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Watch
+            </a>
+          )
+        });
       }
-    ];
-    // Loading shimmer
-    if (loading) {
-      tools = tools.map(x => ({ ...x, loading: true }));
+      if (devto && devto.length) {
+        devto.forEach(article =>
+          compiledTools.push({
+            id: article.id,
+            accent: "guide",
+            title: article.title,
+            desc: article.author ? `By ${article.author}` : "Dev.to Article",
+            tags: [
+              { label: "DevTo", accent: "guide" },
+              ...(article.tags || []).map(t => ({ label: t, accent: "guide" }))
+            ],
+            iconType: "icon",
+            Button: (
+              <a
+                href={article.url}
+                className="ch-info-btn"
+                style={{ background: "linear-gradient(90deg,#1E90FF,#FD3A69)", marginTop: 10, color: "var(--palette-primary)" }}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Read
+              </a>
+            )
+          })
+        );
+      }
+      if (rapid && rapid.length) {
+        rapid.forEach(api =>
+          compiledTools.push({
+            id: api.id,
+            accent: "tool",
+            title: api.title,
+            desc: api.description,
+            tags: [
+              { label: "API", accent: "tool" },
+              ...((api.category && [ { label: api.category, accent: "tool" } ]) || [])
+            ],
+            iconType: "icon",
+            Button: (
+              <a
+                href={api.url}
+                className="ch-info-btn"
+                style={{ background: "var(--accent-gradient)", marginTop: 10, color: "var(--palette-primary)" }}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Explore
+              </a>
+            )
+          })
+        );
+      }
+      if (gemini && gemini.length) {
+        gemini.forEach(res =>
+          compiledTools.push({
+            id: res.id,
+            accent: "tool",
+            title: res.title,
+            desc: res.result || "Generative AI",
+            tags: [ { label: "AI", accent: "tool" } ],
+            iconType: "lottie",
+            Button: (
+              <button
+                className="ch-info-btn"
+                style={{ background: "var(--accent-gradient)", marginTop: 10, color: "var(--palette-primary)" }}
+                disabled
+              >
+                Demo
+              </button>
+            )
+          })
+        );
+      }
+      setTools(compiledTools);
+      // Flatten tags
+      const cats = [
+        ...new Set([
+          ...compiledTools.flatMap(tool =>
+            (tool.tags || []).map(t => t.label)
+          )
+        ])
+      ];
+      setAllCategories([{ label: "All", value: "all" }, ...cats.map(c => ({ label: c, value: c }))]);
+      setLoading(false);
+    });
+    return () => { mounted = false; };
+  }, []);
+
+  // Filtered tools per search and category
+  const filteredTools = useMemo(() => {
+    let out = tools;
+    if (category && category !== "all") {
+      out = out.filter(t =>
+        t.tags &&
+        t.tags.map(tt => tt.label.toLowerCase()).includes(category.toLowerCase())
+      );
     }
-  }
-  // Responsive grid: 1/2/3 cols
+    if (search && search.trim()) {
+      const lower = search.trim().toLowerCase();
+      out = out.filter(
+        t =>
+          (t.title && t.title.toLowerCase().includes(lower)) ||
+          (t.desc && t.desc.toLowerCase().includes(lower)) ||
+          (t.tags && t.tags.some(tt => tt.label.toLowerCase().includes(lower)))
+      );
+    }
+    return out;
+  }, [tools, search, category]);
+
+  // Render
   return (
     <section style={{
       display: "flex",
@@ -165,39 +291,109 @@ function DashboardView({ user = { name: "Alex" }, loading = false, tools = [] })
           fontSize: "1.22em",
           color: "var(--text-secondary)",
           fontWeight: 400,
-          marginBottom: 28,
+          marginBottom: 18,
           textAlign: "center"
         }}>
         Your creative toolbox: Explore, learn, and build.
       </div>
-      {/* Tool cards */}
-      <div
-        className="dashboard-tool-card-grid"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))",
-          gap: 32,
-          alignItems: "stretch",
-          justifyContent: "center",
-          maxWidth: 1100,
-          width: "100%",
-          margin: "0 auto",
-          padding: "0 12px"
-        }}
-      >
-        {tools.map(tool =>
-          <ToolCard
-            key={tool.id}
-            title={tool.title}
-            desc={tool.desc}
-            tags={tool.tags}
-            accent={tool.accent}
-            loading={tool.loading}
-            Button={tool.Button}
-            iconType={tool.iconType}
+      {/* Filter/search bar */}
+      <FilterBar
+        filters={[
+          <select
+            key="category"
+            value={category}
+            onChange={e => setCategory(e.target.value)}
+            style={{
+              background: "var(--background-secondary,#242b46)",
+              color: "var(--accent)",
+              fontWeight: 600,
+              padding: "7px 16px",
+              borderRadius: 16,
+              border: "1.1px solid var(--border-color)",
+              marginRight: 9,
+              minWidth: 96
+            }}
+            aria-label="Filter by category"
+          >
+            {allCategories.map(cat =>
+              <option key={cat.value} value={cat.value}>
+                {cat.label}
+              </option>
+            )}
+          </select>,
+          <input
+            key="search"
+            type="text"
+            aria-label="Search tools"
+            placeholder="Search tools…"
+            maxLength={64}
+            className="ch-search"
+            value={search}
+            style={{ background: "#1b2435", borderRadius: 18, minWidth: 178, fontSize: ".98em", marginRight: 7 }}
+            onChange={e => setSearch(e.target.value)}
+            autoComplete="off"
           />
-        )}
-      </div>
+        ]}
+        style={{ marginBottom: 20, width: "100%" }}
+      />
+      {/* Loader state */}
+      {loading && (
+        <div className="dashboard-tool-card-grid"
+          style={{
+            display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))", gap: 32,
+            alignItems: "stretch", justifyContent: "center", maxWidth: 1100, width: "100%",
+            margin: "0 auto", padding: "0 12px"
+          }}
+        >
+          {[1,2,3].map(idx => (
+            <Card title={<SkeletonLoader width={120} />} key={"sk-"+idx}>
+              <SkeletonLoader width="96%" height={46} style={{ marginBottom: 13 }} />
+              <SkeletonLoader width="100%" height={22} />
+              <SkeletonLoader width="80%" height={19} />
+              <div style={{ marginTop: 14 }}>
+                <SkeletonLoader width={66} height={21} />
+                <SkeletonLoader width={39} height={21} style={{ display: "inline-block", marginLeft: 8 }} />
+              </div>
+            </Card>
+          ))}
+        </div>
+      )}
+      {/* No results */}
+      {!loading && filteredTools.length === 0 && (
+        <div style={{ color: "#E87A41", fontWeight: 500, margin: "34px 0" }}>
+          No tools found. Try adjusting your search or filters.
+        </div>
+      )}
+      {/* Tool cards */}
+      {!loading && filteredTools.length > 0 && (
+        <div
+          className="dashboard-tool-card-grid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))",
+            gap: 32,
+            alignItems: "stretch",
+            justifyContent: "center",
+            maxWidth: 1100,
+            width: "100%",
+            margin: "0 auto",
+            padding: "0 12px"
+          }}
+        >
+          {filteredTools.map(tool =>
+            <ToolCard
+              key={tool.id}
+              title={tool.title}
+              desc={tool.desc}
+              tags={tool.tags}
+              accent={tool.accent}
+              loading={tool.loading}
+              Button={tool.Button}
+              iconType={tool.iconType}
+            />
+          )}
+        </div>
+      )}
     </section>
   );
 }
