@@ -1099,3 +1099,46 @@ a:hover {
     border-radius: 0 0 20px 20px;
   }
 }
+
+/* Example CSS for animations - add these to your app.css or relevant stylesheet */
+
+@keyframes modal-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modal-zoom-in {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Ensure your existing modal CSS is compatible with these changes.
+   Specifically, remove any 'position: fixed', 'top', 'left', 'transform'
+   from `.ch-modal` if they are meant to center the modal, as the parent
+   `.ch-modal-backdrop` (which is `position: fixed` and using flexbox)
+   is now handling the centering.
+*/
+
+/* Example of what your .ch-modal and .ch-modal-close CSS might look like now: */
+
+.ch-modal {
+    background: var(--background-secondary); /* Assuming this variable exists */
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    padding: 30px 40px; /* Adjust as per your design */
+    /* Other styles as defined in inline, but remove any positioning that conflicts */
+}
+
+.ch-modal-close {
+    /* Existing styles for your close button */
+    background: none;
+    border: none;
+    font-size: 1em; /* Adjust size if 2.2em was too big previously */
+    color: var(--text-secondary); /* Assuming this variable exists */
+    cursor: pointer;
+    /* Other styles as defined inline */
+}
+
+.ch-modal-close:hover {
+    color: var(--accent); /* Assuming this variable exists */
+}
