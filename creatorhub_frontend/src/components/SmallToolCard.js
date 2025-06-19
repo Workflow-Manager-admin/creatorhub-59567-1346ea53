@@ -1,3 +1,4 @@
+// SmallToolCard.js
 import React, { useState } from "react";
 import Modal from "./Modal";
 import Card from "./Card";
@@ -53,7 +54,7 @@ function SmallToolCardIconPlaceholder({ iconType = "lottie" }) {
 function SmallToolCard({
   title,
   desc,
-  tags,
+  // tags, // <--- YOU CAN REMOVE THIS PROP IF YOU DON'T PASS IT ANYWHERE ELSE EITHER
   iconType = "lottie",
   Button,
   toolContent
@@ -71,22 +72,14 @@ function SmallToolCard({
         if (e && e.preventDefault) e.preventDefault();
         setModalOpen(true);
       },
-      // Ensure the button itself does not have conflicting inline styles if the Button prop
-      // already has a className like "ch-info-btn". Rely on CSS for these.
-      style: {
-        // Only keep truly unique or overriding styles here if necessary,
-        // otherwise let the Button's className control its appearance.
-        // The original inline styles here are often redundant with ch-info-btn
-        // For instance, background, margin-top, color are handled by ch-info-btn.
-        // Remove 'background', 'marginTop', 'color' from here if ch-info-btn is the sole source of truth.
-      }
+      style: {} // Keep this empty if styles are handled by className
     });
   }
 
   return (
     <Card title={title}>
       <div style={{ display: "flex", alignItems: "flex-start" }}>
-        <SmallToolCardIconPlaceholder iconType={iconType} /> {/* Use the new helper component */}
+        <SmallToolCardIconPlaceholder iconType={iconType} />
         <div style={{ flex: 1 }}>
           <div style={{
             marginBottom: 4,
@@ -96,18 +89,18 @@ function SmallToolCard({
             {desc}
           </div>
           <div style={{ marginTop: 9, marginBottom: 10 }}>
+            {/* REMOVE OR COMMENT OUT THIS WHOLE BLOCK TO GET RID OF THE TAGS */}
+            {/*
             {tags && tags.map(tag =>
               <span
                 className="ch-card-tag"
                 key={tag.label}
                 style={{
-                  // Only apply accent specific background/color, rest handled by .ch-card-tag
-                  background: tag.accent === "tool" ? "var(--accent-gradient)" : "var(--background-secondary)", // Use CSS var for default bg
-                  color: tag.accent === "tool" ? "var(--palette-primary)" : "var(--accent)", // Use CSS var for default color
-                  // Removed other redundant styles like borderRadius, fontSize, marginRight, fontWeight, verticalAlign
-                  // as they are handled by .ch-card-tag
+                  background: tag.accent === "tool" ? "var(--accent-gradient)" : "var(--background-secondary)",
+                  color: tag.accent === "tool" ? "var(--palette-primary)" : "var(--accent)",
                 }}>#{tag.label}</span>
             )}
+            */}
           </div>
           {LaunchButton}
         </div>
