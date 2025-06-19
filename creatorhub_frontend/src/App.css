@@ -48,8 +48,8 @@
   --skeleton-bg: #2a2e47;
 
   /* --- NEW CUSTOM COLORS FOR CARD TITLES AND BUTTONS --- */
-  --card-modal-title-color: #C9B22D; /* Dark Yellow for all card titles, including modals */
-  --button-blaze-orange: #FF5C00;   /* Neon Orange / Blaze Orange for all buttons */
+  --card-modal-title-color: #F6BE00; /* Dark Yellow for all card titles, including modals */
+  --button-blaze-orange: #FF8200;   /* Neon Orange / Blaze Orange for all buttons */
   --button-blaze-orange-hover: #E04D00; /* Slightly darker for hover */
   /* --- END NEW CUSTOM COLORS --- */
 }
@@ -449,14 +449,14 @@ body.dark-mode {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: var(--text-secondary);
+  color: var(--button-blaze-orange);
   transition: color 0.19s, background 0.13s;
 }
 
 .ch-sidebar li[aria-current],
 .ch-sidebar li.active,
 .ch-sidebar li.sidebar-link.active {
-  background: var(--accent-gradient);
+  background: var(--button-blaze-orange);
   color: #fff !important;
   font-weight: 700;
   box-shadow: 0 3px 18px #fd3a6927;
@@ -576,7 +576,7 @@ body.dark-mode {
 .ch-card:focus-within {
   box-shadow: var(--shadow-hover);
   transform: translateY(-7px) scale(1.027);
-  border-color: var(--accent-secondary);
+  border-color: var(--button-blaze-orange);
   outline: none;
   z-index: 3;
   background: rgba(44, 48, 80, 0.95);
