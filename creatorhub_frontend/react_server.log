@@ -21,18 +21,24 @@ cacheable modules 1.39 MiB
     modules by path ./.ve/*.js 10.6 KiB 2 modules
     modules by path ./.ve/*.css 2.93 KiB 2 modules
     ./.ve/EditorOverlay.jsx 1.58 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 1540 ms
+webpack 5.99.9 compiled successfully in 1576 ms
 assets by status 649 bytes [cached] 1 asset
-assets by path *.js 1.58 MiB
+assets by path *.js 1.56 MiB
   asset bundle.js 1.56 MiB [emitted] (name: main)
-  asset main.cc7d71bf4bade5898d90.hot-update.js 13.8 KiB [emitted] [immutable] [hmr] (name: main)
-asset main.cc7d71bf4bade5898d90.hot-update.json 28 bytes [emitted] [immutable] [hmr]
-Entrypoint main 1.58 MiB = bundle.js 1.56 MiB main.cc7d71bf4bade5898d90.hot-update.js 13.8 KiB
+  asset main.00b1b7a468d001b596b0.hot-update.js 854 bytes [emitted] [immutable] [hmr] (name: main)
+asset main.00b1b7a468d001b596b0.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.56 MiB = bundle.js 1.56 MiB main.00b1b7a468d001b596b0.hot-update.js 854 bytes
 cached modules 1.38 MiB [cached] 61 modules
 runtime modules 27.5 KiB 14 modules
-./src/components/SmallToolCard.js 9.92 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 61 ms
-assets by status 1.56 MiB [cached] 2 assets
-cached modules 1.39 MiB (javascript) 27.5 KiB (runtime) [cached] 75 modules
-./src/components/ToolsPage.js 6.18 KiB [built]
-webpack 5.99.9 compiled successfully in 34 ms
+./src/components/SmallToolCard.js 9.92 KiB [built]
+webpack 5.99.9 compiled successfully in 56 ms
+assets by status 649 bytes [cached] 1 asset
+assets by path *.js 1.57 MiB
+  asset bundle.js 1.56 MiB [emitted] (name: main)
+  asset main.622932fee4583ed7476c.hot-update.js 8.04 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.622932fee4583ed7476c.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.57 MiB = bundle.js 1.56 MiB main.622932fee4583ed7476c.hot-update.js 8.04 KiB
+cached modules 1.39 MiB [cached] 61 modules
+runtime modules 27.5 KiB 14 modules
+./src/components/ToolsPage.js 4.53 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 69 ms
