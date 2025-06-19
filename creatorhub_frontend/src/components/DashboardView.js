@@ -20,16 +20,18 @@ function CategoryTag({ children, accent }) {
   let style = {}; // Start with an empty style object
   // These styles are handled by .ch-card-tag. Only accent-specific overrides remain.
   if (accent === "guide") {
-    style.background = "linear-gradient(89deg,#1E90FF20,#1E90FF55)";
-    style.color = "var(--palette-primary)";
+    // Updated to bright red and vibrant gradient
+    style.background = "linear-gradient(89deg, #FF634720, #FF634755)"; // Tomato red gradient
+    style.color = "#FF6347"; // Tomato red
   }
   if (accent === "tool") {
-    style.background = "linear-gradient(90deg,#FF7E5F88,#FD3A6942)";
-    style.color = "var(--palette-primary)";
+    // Updated to bright red and vibrant gradient
+    style.background = "linear-gradient(90deg, #FF450088, #CD5C5C42)"; // OrangeRed to IndianRed gradient
+    style.color = "#FF4500"; // OrangeRed
   }
   if (accent === "new") {
-    style.background = "var(--accent-gradient)";
-    style.color = "var(--palette-primary)";
+    style.background = "var(--accent-gradient)"; // Keep original accent gradient
+    style.color = "#FF0000"; // Bright Red
   }
   return (
     <span className="ch-card-tag" style={style}>{children}</span>
@@ -252,7 +254,7 @@ function DashboardView({ user = { name: "Alex" } }) {
           fontSize: "2.07rem",
           fontWeight: 800,
           marginBottom: 12,
-          color: "var(--palette-primary)",
+          color: "#FF0000", // Changed to bright red
           letterSpacing: "-0.01em",
           textAlign: "center",
           textShadow: "0 2px 40px #1e90ff54,0 1px 8px #fd3a6921"

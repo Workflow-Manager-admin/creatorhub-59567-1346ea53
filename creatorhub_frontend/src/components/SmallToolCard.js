@@ -77,7 +77,9 @@ function SmallToolCard({
   }
 
   return (
-    <Card title={title}>
+    // Assuming Card component takes a `titleStyle` prop or similar, otherwise Card.js needs to be updated.
+    // If Card directly renders `props.title`, we can wrap it in a span with the desired style.
+    <Card title={<span style={{ color: '#FF0000' }}>{title}</span>}> {/* Applied bright red to the title */}
       <div style={{ display: "flex", alignItems: "flex-start" }}>
         <SmallToolCardIconPlaceholder iconType={iconType} />
         <div style={{ flex: 1 }}>
