@@ -16,7 +16,7 @@
 
   --background-main: #12131A;
   --background-secondary: #1C1D25;
-  --base-dark: #12131A; /* ADDED: Defined --base-dark, this was likely missing and causing issues */
+  --base-dark: #12131A; 
   --card-bg: rgba(36, 38, 50, 0.98); 
   --modal-bg: rgba(28, 29, 37, 0.98); 
   --glass-blur: blur(16px) saturate(145%); 
@@ -145,7 +145,7 @@ body.dark-mode {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: inherit;
+  background: transparent; /* CHANGED: Ensuring app-shell background is transparent */
   width: 100vw;
   transition: background 0.23s;
 }
@@ -885,7 +885,7 @@ a:hover {
 .learning-split-root {
   background: linear-gradient(108deg, #181d31 45%, #181d31 100%);
   border-radius: var(--container-radius,36px);
-  box-shadow: 0 7px 38px 0 rgba(38,54,111,0.17);
+  box-shadow: 0 7px 38px 0 rgba(38,54,112,0.17);
 }
 .learning-split-root nav {
   backdrop-filter: blur(14px) saturate(130%);
