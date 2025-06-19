@@ -169,12 +169,52 @@ body.dark-mode {
   transition: var(--transition-fast);
 }
 
-/* Layouts */
-.ch-layout {
+/* Modern AppShell layout */
+.app-shell {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   background: inherit;
+  width: 100vw;
+  transition: background 0.23s;
+}
+.app-shell-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  margin-top: 63px; /* Height of Topbar */
+  transition: var(--transition-fast);
+}
+.main-content {
+  flex: 1 1 0;
+  background: transparent;
+  min-height: 96vh;
+  border-radius: 0 0 32px 0;
+  padding: 52px 30px 38px 30px;
+  transition: var(--transition-fast);
+  scroll-behavior: smooth;
+  position: relative;
+  z-index: 11;
+  box-shadow: 0 2.5px 18px #1918271A;
+  will-change: box-shadow,transform;
+}
+
+.app-shell.sidebar-collapsed .modern-sidebar,
+.modern-sidebar.sidebar-collapsed {
+  min-width: 58px !important;
+  width: 60px !important;
+}
+.app-shell.sidebar-collapsed .main-content {
+  padding-left: 36px;
+}
+@media (max-width: 800px) {
+  .app-shell-body {
+    flex-direction: column;
+    margin-top: 63px;
+  }
+  .main-content {
+    padding: 18px 6vw 25px 6vw;
+  }
 }
 
 /* Topbar frost-glass and iconography */
@@ -186,8 +226,8 @@ body.dark-mode {
   color: var(--text-color);
   padding: 0 20px;
   border-bottom: var(--frost-border);
-  justify-content: space-between;
-  gap: 1rem;
+  justify-content: flex-start;
+  gap: 1.34rem;
   transition: var(--transition-fast);
   position: fixed;
   top: 0;
