@@ -672,6 +672,7 @@ body.dark-mode {
   backdrop-filter: blur(16px) saturate(140%);
   animation: modal-fade-in 0.39s cubic-bezier(.55,.08,.68,.65);
 }
+/* No .ch-modal-backdrop[hidden] is required because the backdrop is unmounted when modal is not open */
 @keyframes modal-fade-in {
   from { opacity: 0; }
   to   { opacity: 1; }
