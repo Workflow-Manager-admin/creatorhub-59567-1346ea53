@@ -1,73 +1,29 @@
 :root {
-  /* Custom theming for CreatorHub modern dashboard & learning */
-  --electric-blue: #1E90FF;
-  --coral: #FF7E5F;
-  --coral-2: #FD3A69;
-  --navy-bg: #111827;
-  --gray-bg: #1F2937;
-
-  /* Palette for consistent contrast: high-contrast text on accents */
-  --palette-primary: #fff;             /* Bright for accent bg */
-  --palette-secondary: #191c27;        /* Deep navy for accent text on pale bg */
-
-  /* New theme overrides: */
-  --primary: #1E90FF;
-  --accent: #FF7E5F;
-  --accent-secondary: #FD3A69;
-  --accent-gradient: linear-gradient(90deg, #FF7E5F 8%, #FD3A69 92%);
-  --accent-gradient-focus: linear-gradient(92deg, #FF7E5F 0%, #FD3A69 100%);
-  --icon-btn-gradient: linear-gradient(96deg, #1E90FF 18%, #FF7E5F 60%, #FD3A69 97%);
-
-  --background-main: #111827;
-  --background-secondary: #1F2937;
-  --background-frost: rgba(44,48,80,0.72);
-  --glass-blur: blur(16px) saturate(135%);
-  --card-bg: rgba(44,48,80,0.70);
-  --card-backdrop: blur(16px) saturate(135%);
-  --gray-frost: rgba(61,69,112,0.14);
-
-  --text-color: #fff;
-  --text-secondary: #E5E7EB;
-  --text-inverse: #181a2e; /* Use for text on very light backgrounds */
-
-  --border-color: rgba(255,255,255,0.121);
-  --card-radius: 28px;
-  --container-radius: 36px;
-
-  --skeleton-bg: #242944;
-  --shadow-card: 0 7px 32px 0 rgba(44,62,112,0.18), 0 3px 12px rgba(32,52,92,0.10);
-  --shadow-hover: 0 13px 43px 0 rgba(51,71,145,0.29), 0 2.5px 13px 0 rgba(50,70,144,0.18);
-
-  /* Kept legacy accent for reference (do not remove, code fallback compatibility) */
-  --base-light: #00ffff;
-  --base-dark: #06071a;
-  --secondary: #171826;
-  --frost-border: 1.4px solid rgba(255,255,255,0.13);
-  --success: #20dba2;
-  --info: #41abeb;
-  --warning: #ffd234;
-  --danger: #fe7349;
-  --success-bg: rgba(32,219,162,0.07);
-  --info-bg: rgba(65,171,235,0.10);
-  --warning-bg: rgba(255,210,52,0.12);
-  --danger-bg: rgba(254,115,73,0.08);
-  --text-color: #f7f6f4;
-  --text-secondary: rgba(247, 246, 244, 0.74);
-  --border-color: rgba(255,255,255,0.11);
-  --card-bg: rgba(33, 38, 58, 0.92);
-  --card-backdrop: blur(8px) saturate(120%);
-  --elevated-bg: rgba(32,36,51, 0.77);
-  --skeleton-bg: #242944;
-  --frost-border: 1.4px solid rgba(255,255,255,0.13);
-  --shadow-main: 0 9px 56px 0 rgba(45, 56, 120, 0.17), 0 1.5px 7px rgba(32,52,92,0.11);
-  --shadow-card: 0 7px 32px 0 rgba(44,62,112,0.15), 0 2.5px 12px rgba(32,52,92,0.16);
-  --shadow-hover: 0 15px 56px 0 rgba(51,71,145,0.27), 0 2.5px 12px 0 rgba(50,70,144,0.17);
-  --shadow-modal: 0 22px 65px 0 rgba(40, 53, 134, 0.39), 0 1.5px 7px rgba(32,40,67,0.16);
-  --transition-fast: background 0.33s cubic-bezier(0.32,1,0.68,1), color 0.19s cubic-bezier(0.33,1,0.68,1), box-shadow 0.3s cubic-bezier(0.53,0.59,0.89,1.28), border 0.22s, transform 0.17s;
-  --focus-outline: 0 0 0 3px var(--accent-secondary);
-  --modal-bg: rgba(24,28,39,0.84);
-  --scrollbar-bg: rgba(44,53,80,0.18);
-  --scrollbar-thumb: rgba(245,179,33,0.23);
+  --primary: #A178DF;
+  --accent: #CE6D87;
+  --accent-secondary: #A6567B;
+  --accent-gradient: linear-gradient(90deg, #A178DF 0%, #CE6D87 100%);
+  --accent-gradient-focus: linear-gradient(92deg, #CE6D87 0%, #A178DF 100%);
+  --icon-btn-gradient: linear-gradient(96deg, #A178DF 10%, #CE6D87 90%);
+  --background-main: #12131A;
+  --background-secondary: #1C1D25;
+  --card-bg: rgba(36, 38, 50, 0.92);
+  --modal-bg: rgba(28, 29, 37, 0.92);
+  --glass-blur: blur(18px) saturate(135%);
+  --frost-border: 1.4px solid rgba(255, 255, 255, 0.08);
+  --text-color: #F0EFF4;
+  --text-secondary: rgba(240, 239, 244, 0.68);
+  --text-inverse: #16141C;
+  --shadow-card: 0 6px 30px rgba(22, 21, 30, 0.28);
+  --shadow-hover: 0 12px 32px rgba(46, 43, 72, 0.42);
+  --success: #58D89A;
+  --info: #82C4EC;
+  --warning: #F0C86F;
+  --danger: #EF6A6A;
+  --success-bg: rgba(88, 216, 154, 0.08);
+  --info-bg: rgba(130, 196, 236, 0.1);
+  --warning-bg: rgba(240, 200, 111, 0.08);
+  --danger-bg: rgba(239, 106, 106, 0.09);
 }
 
 /* Dynamic accent states for bg and text */
