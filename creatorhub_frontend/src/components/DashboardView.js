@@ -394,6 +394,26 @@ function DashboardView({ user = { name: "Alex" } }) {
         });
       }
 
+      // Instagram guide (manual static card)
+      fetchedGuides.push({
+        id: "instagram-creator-guide",
+        accent: "guide",
+        title: "Instagram Best Practices for Creators",
+        desc: "Boost your reach, engage your audience, and master Instagram features.",
+        iconType: "icon",
+        Button: (
+          <a
+            href="https://help.instagram.com/366992426735657"
+            className="ch-info-btn"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram Creator Guide Help Center"
+          >
+            Visit Guide
+          </a>
+        ),
+      });
+
       // Dev.to articles (guides)
       if (devtoArr && devtoArr.length) {
         devtoArr.forEach(article => {
