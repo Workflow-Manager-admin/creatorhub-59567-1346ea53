@@ -21,24 +21,38 @@ cacheable modules 1.4 MiB
     modules by path ./.ve/*.js 10.6 KiB 2 modules
     modules by path ./.ve/*.css 2.93 KiB 2 modules
     ./.ve/EditorOverlay.jsx 1.58 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 1569 ms
+webpack 5.99.9 compiled successfully in 1631 ms
 assets by status 620 bytes [cached] 1 asset
 assets by path *.js 1.58 MiB
   asset bundle.js 1.57 MiB [emitted] (name: main)
-  asset main.203c72af667a4fb2ba6e.hot-update.js 7.8 KiB [emitted] [immutable] [hmr] (name: main)
-asset main.203c72af667a4fb2ba6e.hot-update.json 28 bytes [emitted] [immutable] [hmr]
-Entrypoint main 1.58 MiB = bundle.js 1.57 MiB main.203c72af667a4fb2ba6e.hot-update.js 7.8 KiB
+  asset main.6b34f8369dcf95856db4.hot-update.js 8.06 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.6b34f8369dcf95856db4.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.58 MiB = bundle.js 1.57 MiB main.6b34f8369dcf95856db4.hot-update.js 8.06 KiB
 cached modules 1.4 MiB [cached] 59 modules
 runtime modules 27.5 KiB 14 modules
-./src/components/LearningSplitView.js 5.05 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 109 ms
+./src/components/LearningSplitView.js 5.31 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 50 ms
 assets by status 620 bytes [cached] 1 asset
 assets by path *.js 1.58 MiB
   asset bundle.js 1.57 MiB [emitted] (name: main)
-  asset main.98ca7584b023c8d21964.hot-update.js 7.97 KiB [emitted] [immutable] [hmr] (name: main)
-asset main.98ca7584b023c8d21964.hot-update.json 28 bytes [emitted] [immutable] [hmr]
-Entrypoint main 1.58 MiB = bundle.js 1.57 MiB main.98ca7584b023c8d21964.hot-update.js 7.97 KiB
+  asset main.a314eec0440896e5953d.hot-update.js 8.15 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.a314eec0440896e5953d.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.58 MiB = bundle.js 1.57 MiB main.a314eec0440896e5953d.hot-update.js 8.15 KiB
 cached modules 1.4 MiB [cached] 59 modules
 runtime modules 27.5 KiB 14 modules
-./src/components/LearningSplitView.js 5.22 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 60 ms
+./src/components/LearningSplitView.js 5.39 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 45 ms
+assets by status 620 bytes [cached] 1 asset
+assets by path *.js 1.58 MiB
+  asset bundle.js 1.57 MiB [emitted] (name: main)
+  asset main.9ae5e33eda636e065b42.hot-update.js 8.15 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.9ae5e33eda636e065b42.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.58 MiB = bundle.js 1.57 MiB main.9ae5e33eda636e065b42.hot-update.js 8.15 KiB
+cached modules 1.4 MiB [cached] 59 modules
+runtime modules 27.5 KiB 14 modules
+./src/components/LearningSplitView.js 5.39 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 82 ms
+assets by status 1.57 MiB [cached] 2 assets
+cached modules 1.4 MiB (javascript) 27.5 KiB (runtime) [cached] 73 modules
+./src/components/LearningSplitView.js 5.39 KiB [built]
+webpack 5.99.9 compiled successfully in 51 ms

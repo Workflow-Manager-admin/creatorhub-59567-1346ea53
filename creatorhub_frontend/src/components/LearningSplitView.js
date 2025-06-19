@@ -38,7 +38,8 @@ function LearningSplitView({
           borderRadius: 20,
           margin: "40px 0 0 0",
           maxWidth: 400,
-          filter: "drop-shadow(0 1.5px 17px #CE6D8740)"
+          // Use --shadow-hover, not hardcoded shadow color
+          filter: "var(--shadow-hover, drop-shadow(0 7px 14px var(--accent-secondary)))"
         }}
       >
         Try the interactive exercise!
@@ -55,7 +56,8 @@ function LearningSplitView({
         minHeight: "78vh",
         background: "var(--background-main)",
         borderRadius: "var(--container-radius, 36px)",
-        boxShadow: "0 7px 32px 0 rgba(44,62,112,0.14)",
+        // Use CSS variable for shadow if available, else fallback:
+        boxShadow: "var(--shadow-card, 0 7px 32px 0 rgba(44,62,112,0.14))",
         marginTop: 30,
         overflow: "hidden",
       }}
@@ -66,7 +68,7 @@ function LearningSplitView({
           flex: "0 0 260px",
           minWidth: 150,
           maxWidth: 310,
-          background: "var(--background-secondary, rgba(36,38,50,0.93))",
+          background: "var(--background-secondary)",
           borderRight: "1.4px solid var(--border-color)",
           padding: "30px 0 20px 0",
           display: "flex",
@@ -99,7 +101,7 @@ function LearningSplitView({
                 padding: "11px 23px 11px 29px",
                 borderRadius: "18px 0 0 18px",
                 margin: "0 0 6px 0",
-                boxShadow: i === selected ? "0 1.5px 12px #A178DF36" : "none",
+                boxShadow: i === selected ? "var(--shadow-hover, 0 1.5px 12px #A178DF36)" : "none",
                 cursor: "pointer",
                 transition: "background .15s, color .12s, font-weight .09s, box-shadow .22s",
                 outline: "none",
