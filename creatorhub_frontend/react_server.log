@@ -21,4 +21,34 @@ cacheable modules 1.4 MiB
     modules by path ./.ve/*.js 10.6 KiB 2 modules
     modules by path ./.ve/*.css 2.93 KiB 2 modules
     ./.ve/EditorOverlay.jsx 1.58 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 1571 ms
+webpack 5.99.9 compiled successfully in 1518 ms
+assets by status 620 bytes [cached] 1 asset
+assets by path *.js 1.59 MiB
+  asset bundle.js 1.57 MiB [emitted] (name: main)
+  asset main.c6fa80aa1448f856c1e0.hot-update.js 22.8 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.c6fa80aa1448f856c1e0.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.59 MiB = bundle.js 1.57 MiB main.c6fa80aa1448f856c1e0.hot-update.js 22.8 KiB
+cached modules 1.38 MiB [cached] 59 modules
+runtime modules 27.5 KiB 14 modules
+./src/components/DashboardView.js 16.3 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 71 ms
+assets by status 620 bytes [cached] 1 asset
+assets by path *.js 1.6 MiB
+  asset bundle.js 1.57 MiB [emitted] (name: main)
+  asset main.100d3848dc880ea3b366.hot-update.js 28.4 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.100d3848dc880ea3b366.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.6 MiB = bundle.js 1.57 MiB main.100d3848dc880ea3b366.hot-update.js 28.4 KiB
+cached modules 1.38 MiB [cached] 59 modules
+runtime modules 27.5 KiB 14 modules
+./src/components/DashboardView.js 20.7 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 199 ms
+assets by status 620 bytes [cached] 1 asset
+assets by path *.js 1.6 MiB
+  asset bundle.js 1.57 MiB [emitted] (name: main)
+  asset main.c6758369812fe7b9eaba.hot-update.js 28.6 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.c6758369812fe7b9eaba.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.6 MiB = bundle.js 1.57 MiB main.c6758369812fe7b9eaba.hot-update.js 28.6 KiB
+cached modules 1.38 MiB [cached] 59 modules
+runtime modules 27.5 KiB 14 modules
+./src/components/DashboardView.js 20.9 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 95 ms

@@ -1,8 +1,14 @@
-// PUBLIC_INTERFACE
+/**
+ * PUBLIC_INTERFACE
+ * DashboardView – displays dashboard widgets, tool cards, and quick access generators for core CreatorHub tools.
+ */
 import React, { useState, useEffect, useMemo } from "react";
 import Card from "./Card";
 import SkeletonLoader from "./SkeletonLoader";
 import FilterBar from "./FilterBar";
+import HashtagGenerator from "./HashtagGenerator";
+import CaptionGenerator from "./CaptionGenerator";
+import HookGenerator from "./HookGenerator";
 import { fetchYoutubeContent } from "../api/youtube";
 import { fetchDevToContent } from "../api/devto";
 import { fetchRapidAPIContent } from "../api/rapidapi";
@@ -166,7 +172,7 @@ function DashboardView({ user = { name: "Alex" } }) {
             iconType: "icon",
             Button: (
               <a
-                href={article.url}
+                href={/^https:\/\/dev\.to\//.test(article.url) ? article.url : `https://dev.to/${article.url}`}
                 className="ch-info-btn"
                 style={{ background: "linear-gradient(90deg,#1E90FF,#FD3A69)", marginTop: 10, color: "var(--palette-primary)" }}
                 target="_blank"
@@ -192,7 +198,7 @@ function DashboardView({ user = { name: "Alex" } }) {
             iconType: "icon",
             Button: (
               <a
-                href={api.url}
+                href={/^https:\/\/rapidapi\.com\//.test(api.url) ? api.url : `https://rapidapi.com/${api.url.replace(/^https?:\/\/(www\.)?rapidapi\.com\/?/, "")}`}
                 className="ch-info-btn"
                 style={{ background: "var(--accent-gradient)", marginTop: 10, color: "var(--palette-primary)" }}
                 target="_blank"
@@ -295,6 +301,41 @@ function DashboardView({ user = { name: "Alex" } }) {
           textAlign: "center"
         }}>
         Your creative toolbox: Explore, learn, and build.
+      </div>
+      {/* Quick Access: Tool Cards */}
+      <div
+        className="dashboard-tool-card-grid"
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(330px, 1fr))",
+          gap: 28,
+          width: "100%",
+          maxWidth: 1100,
+          margin: "0 auto 22px",
+          alignItems: "stretch",
+        }}
+      >
+        <div className="ch-card" style={{ marginBottom: 0, minHeight: 0, borderRadius: 28, background: "var(--card-bg,rgba(44,48,80,0.96))", boxShadow: "var(--shadow-card)" }}>
+          <div className="ch-card-title" style={{ fontWeight: 800, fontSize: "1.14em", color: "var(--accent)", marginBottom: 5 }}>Hashtag Generator</div>
+          <div style={{ color: "var(--text-secondary)", fontSize: ".97em", marginBottom: 11 }}>Suggested hashtags for engagement & trending topics. Enter your niche!</div>
+          <div style={{ marginBottom: 11 }}>
+            <HashtagGenerator />
+          </div>
+        </div>
+        <div className="ch-card" style={{ marginBottom: 0, minHeight: 0, borderRadius: 28, background: "var(--card-bg,rgba(44,48,80,0.96))", boxShadow: "var(--shadow-card)" }}>
+          <div className="ch-card-title" style={{ fontWeight: 800, fontSize: "1.14em", color: "var(--accent)", marginBottom: 5 }}>Caption Generator</div>
+          <div style={{ color: "var(--text-secondary)", fontSize: ".97em", marginBottom: 11 }}>Type a topic and pick a tone for fresh caption ideas.</div>
+          <div style={{ marginBottom: 11 }}>
+            <CaptionGenerator />
+          </div>
+        </div>
+        <div className="ch-card" style={{ marginBottom: 0, minHeight: 0, borderRadius: 28, background: "var(--card-bg,rgba(44,48,80,0.96))", boxShadow: "var(--shadow-card)" }}>
+          <div className="ch-card-title" style={{ fontWeight: 800, fontSize: "1.14em", color: "var(--accent)", marginBottom: 5 }}>Hook Generator</div>
+          <div style={{ color: "var(--text-secondary)", fontSize: ".97em", marginBottom: 11 }}>Get attention-grabbing hooks for Reels, Shorts, TikToks, and more.</div>
+          <div style={{ marginBottom: 11 }}>
+            <HookGenerator />
+          </div>
+        </div>
       </div>
       {/* Filter/search bar */}
       <FilterBar
