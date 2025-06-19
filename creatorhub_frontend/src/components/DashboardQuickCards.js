@@ -3,27 +3,13 @@ import SmallToolCard from "./SmallToolCard";
 import HashtagGenerator from "./HashtagGenerator";
 import CaptionGenerator from "./CaptionGenerator";
 import HookGenerator from "./HookGenerator";
-import GeminiInsightsModal from "./GeminiInsightsModal";
 
 /**
  * DashboardQuickCards – renders the set of three core quick access tool cards,
- * each with "Open Tool" and "Learn More" buttons, with its own GeminiInsightsModal.
+ * each with "Open Tool" and "Learn More" buttons, now using centralized modal control.
  */
-function DashboardQuickCards() {
-  // For modal state: control which tool (if any) has its Gemini modal open.
-  const [insightsModal, setInsightsModal] = useState({
-    open: false,
-    toolName: "",
-  });
-
-  // Handler: open GeminiInsightsModal for a tool
-  const handleOpenInsights = (toolName) => {
-    setInsightsModal({ open: true, toolName });
-  };
-  const handleCloseInsights = () => {
-    setInsightsModal({ open: false, toolName: "" });
-  };
-
+// PUBLIC_INTERFACE
+function DashboardQuickCards({ onLearnMore }) {
   // The three core tools for dashboard quick access
   const cards = [
     {
@@ -79,44 +65,10 @@ function DashboardQuickCards() {
             </a>
           }
           toolContent={toolContent}
-          // Pass custom Learn More button as needed to open modal
-          learnMoreBtn={
-            <button
-              className="ch-info-btn"
-              style={{
-                background: "var(--btn-gradient-orange-red-focus)",
-                color: "#fff",
-                fontWeight: 700,
-                minWidth: 98,
-                marginLeft: 8,
-                marginTop: 10
-              }}
-              onClick={e => {
-                e.preventDefault();
-                handleOpenInsights(title);
-              }}
-              type="button"
-              tabIndex={0}
-              aria-label={`Learn more about ${title}`}
-            >
-              <span aria-hidden="true" style={{ display: "inline-flex", alignItems: "center", marginRight: 6, fontSize: "1.11em" }}>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 4C3 3.44772 3.44772 3 4 3H14C14.5523 3 15 3.44772 15 4V16C15 16.5523 14.5523 17 14 17H4C3.44772 17 3 16.5523 3 16V4Z" stroke="#fff" strokeWidth="1.6" /><path d="M5 6H13" stroke="#fff" strokeWidth="1.2" strokeLinecap="round" /></svg>
-              </span>
-              Learn More
-            </button>
-          }
+          onLearnMore={onLearnMore}
+          accent="tool"
         />
       ))}
-
-      {/* Render Gemini InsightsModal if needed */}
-      {insightsModal.open && (
-        <GeminiInsightsModal
-          open={insightsModal.open}
-          onClose={handleCloseInsights}
-          toolName={insightsModal.toolName}
-          category="Tool"
-        />
-      )}
     </div>
   );
 }

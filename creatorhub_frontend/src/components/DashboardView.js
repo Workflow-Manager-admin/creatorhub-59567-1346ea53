@@ -220,19 +220,22 @@ function DashboardView({ user = { name: "Alex" } }) {
     return out;
   }, [tools, search, category]);
 
-  // Gemini Insights modal state for tool cards (at DashboardView level)
+  // Gemini Insights modal state handled at DashboardView level
   const [insightsModal, setInsightsModal] = useState({
     open: false,
     toolName: "",
     category: "Other",
   });
 
-  // Handler for "Learn More" on any ToolCard (including mapping correct category)
+  // PUBLIC_INTERFACE
+  /** Handler for opening the GeminiInsightsModal with tool info */
   const handleOpenInsightsModal = (toolName, category) => {
     setInsightsModal({ open: true, toolName, category });
   };
+  // PUBLIC_INTERFACE
+  /** Handler for closing the modal */
   const handleCloseInsightsModal = () => {
-    setInsightsModal({ ...insightsModal, open: false });
+    setInsightsModal((cur) => ({ ...cur, open: false }));
   };
 
   // Render
@@ -358,9 +361,13 @@ function DashboardView({ user = { name: "Alex" } }) {
           ))}
         </div>
       )}
-      {/* DashboardQuickCards still below, for quick access tools */}
-      {!loading && <DashboardQuickCards />}
-      {/* GeminiInsightsModal shown if any tool card "Learn More" is active */}
+      {/* DashboardQuickCards still below, for quick access tools - now passes modal control */}
+      {!loading && (
+        <DashboardQuickCards
+          onLearnMore={handleOpenInsightsModal}
+        />
+      )}
+      {/* Central GeminiInsightsModal shown if triggered by any tool card/quick card */}
       {insightsModal.open && (
         <GeminiInsightsModal
           open={insightsModal.open}

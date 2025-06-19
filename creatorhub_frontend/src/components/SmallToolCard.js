@@ -55,15 +55,15 @@ function SmallToolCardIconPlaceholder({ iconType = "lottie" }) {
 function SmallToolCard({
   title,
   desc,
-  // tags,
   iconType = "lottie",
   Button,
   toolContent,
-  learnMoreBtn, // custom Gemini 'Learn More' button (for DashboardQuickCards state)
+  learnMoreBtn, // optional: parent-provided custom button
+  onLearnMore, // optional: parent-level handler for Learn More (e.g. for DashboardView central modal)
+  accent = "tool",
 }) {
-  // Logic for core tool modal (e.g. open tool UI)
   const [modalOpen, setModalOpen] = useState(false);
-  // State for Gemini Insights modal
+  // Gemini modal state is only local if NOT provided from above
   const [insightsOpen, setInsightsOpen] = useState(false);
 
   // Intercept Button clicks and propagate correct modal logic everywhere
@@ -79,31 +79,63 @@ function SmallToolCard({
     });
   }
 
-  const builtinLearnMoreBtn = (
-    <button
-      className="ch-info-btn"
-      style={{
-        background: "var(--btn-gradient-orange-red-focus)",
-        color: "#fff",
-        fontWeight: 700,
-        marginLeft: 8,
-        minWidth: 98,
-        marginTop: 10
-      }}
-      onClick={e => {
-        e.preventDefault();
-        setInsightsOpen(true);
-      }}
-      type="button"
-      tabIndex={0}
-      aria-label={`Learn more about ${title}`}
-    >
-      <span aria-hidden="true" style={{ display: "inline-flex", alignItems: "center", marginRight: 6, fontSize: "1.11em" }}>
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 4C3 3.44772 3.44772 3 4 3H14C14.5523 3 15 3.44772 15 4V16C15 16.5523 14.5523 17 14 17H4C3.44772 17 3 16.5523 3 16V4Z" stroke="#fff" strokeWidth="1.6" /><path d="M5 6H13" stroke="#fff" strokeWidth="1.2" strokeLinecap="round" /></svg>
-      </span>
-      Learn More
-    </button>
-  );
+  // Calculate category for modal
+  let geminiCategory = "Tool";
+  if (accent === "guide") geminiCategory = "Guide";
+  if (accent === "tool") geminiCategory = "Tool";
+
+  // If parent provided a handler, "Learn More" is delegated up
+  const mergedLearnMoreBtn =
+    learnMoreBtn ||
+    (onLearnMore ? (
+      <button
+        className="ch-info-btn"
+        style={{
+          background: "var(--btn-gradient-orange-red-focus)",
+          color: "#fff",
+          fontWeight: 700,
+          marginLeft: 8,
+          minWidth: 98,
+          marginTop: 10,
+        }}
+        onClick={e => {
+          e.preventDefault();
+          onLearnMore(title, geminiCategory);
+        }}
+        type="button"
+        tabIndex={0}
+        aria-label={`Learn more about ${title}`}
+      >
+        <span aria-hidden="true" style={{ display: "inline-flex", alignItems: "center", marginRight: 6, fontSize: "1.11em" }}>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 4C3 3.44772 3.44772 3 4 3H14C14.5523 3 15 3.44772 15 4V16C15 16.5523 14.5523 17 14 17H4C3.44772 17 3 16.5523 3 16V4Z" stroke="#fff" strokeWidth="1.6" /><path d="M5 6H13" stroke="#fff" strokeWidth="1.2" strokeLinecap="round" /></svg>
+        </span>
+        Learn More
+      </button>
+    ) : (
+      <button
+        className="ch-info-btn"
+        style={{
+          background: "var(--btn-gradient-orange-red-focus)",
+          color: "#fff",
+          fontWeight: 700,
+          marginLeft: 8,
+          minWidth: 98,
+          marginTop: 10,
+        }}
+        onClick={e => {
+          e.preventDefault();
+          setInsightsOpen(true);
+        }}
+        type="button"
+        tabIndex={0}
+        aria-label={`Learn more about ${title}`}
+      >
+        <span aria-hidden="true" style={{ display: "inline-flex", alignItems: "center", marginRight: 6, fontSize: "1.11em" }}>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 4C3 3.44772 3.44772 3 4 3H14C14.5523 3 15 3.44772 15 4V16C15 16.5523 14.5523 17 14 17H4C3.44772 17 3 16.5523 3 16V4Z" stroke="#fff" strokeWidth="1.6" /><path d="M5 6H13" stroke="#fff" strokeWidth="1.2" strokeLinecap="round" /></svg>
+        </span>
+        Learn More
+      </button>
+    ));
 
   return (
     <Card title={<span style={{ color: '#FF0000' }}>{title}</span>}>
@@ -120,8 +152,8 @@ function SmallToolCard({
           <div style={{ marginTop: 9, marginBottom: 10 }} />
           <div style={{ display: "flex", gap: 7 }}>
             {LaunchButton}
-            {/* Use provided learnMoreBtn OR fallback to default in-card state */}
-            {learnMoreBtn ? learnMoreBtn : builtinLearnMoreBtn}
+            {/* "Learn More" button always present, handler delegated if parent controls */}
+            {mergedLearnMoreBtn}
           </div>
         </div>
       </div>
@@ -131,13 +163,13 @@ function SmallToolCard({
           {toolContent}
         </Modal>
       )}
-      {/* Gemini Insights modal (only if using builtin state, else parent manages with prop) */}
-      {!learnMoreBtn && insightsOpen && (
+      {/* Gemini Insights modal: only if *not* delegated to parent */}
+      {!onLearnMore && !learnMoreBtn && insightsOpen && (
         <GeminiInsightsModal
           open={insightsOpen}
           onClose={() => setInsightsOpen(false)}
           toolName={title}
-          category={"Tool"}
+          category={geminiCategory}
         />
       )}
     </Card>
