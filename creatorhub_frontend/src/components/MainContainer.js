@@ -206,9 +206,11 @@ function MainContainer({ children }) {
       {/* FilterBar: shows all filter controls, also demo modal open */}
       <FilterBar filters={filterButtons} />
       {/* Modal overlay demo, closes by click-outside or button */}
-      <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
-        {modalContent}
-      </Modal>
+      {modalOpen && (
+        <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
+          {modalContent}
+        </Modal>
+      )}
       {/* All cards, filtered, show skeleton or loaders during fetch */}
       {isAnyLoading && (
         <>
