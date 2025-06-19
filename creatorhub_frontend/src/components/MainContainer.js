@@ -124,12 +124,7 @@ function MainContainer({ children }) {
   const filterButtons = [
     <button
       onClick={() => setFilter("all")}
-      style={{
-        background: filter === "all" ? "var(--accent)" : "var(--primary)",
-        color: filter === "all" ? "#181821" : "var(--text-color)",
-        border: "none", borderRadius: 4,
-        padding: "7px 12px", minWidth: 54, fontWeight: 500, cursor: "pointer"
-      }}
+      className={filter === "all" ? "active" : ""}
       key="all"
     >
       All
@@ -138,12 +133,7 @@ function MainContainer({ children }) {
       <button
         key={src}
         onClick={() => setFilter(src)}
-        style={{
-          background: filter === src ? "var(--accent)" : "var(--primary)",
-          color: filter === src ? "#181821" : "var(--text-color)",
-          border: "none", borderRadius: 4,
-          padding: "7px 12px", minWidth: 54, fontWeight: 500, cursor: "pointer"
-        }}
+        className={filter === src ? "active" : ""}
       >
         {src.charAt(0).toUpperCase() + src.slice(1)}
       </button>
@@ -172,7 +162,7 @@ function MainContainer({ children }) {
       key="search"
       type="text"
       placeholder="Filter by title/author..."
-      style={{ border: "1px solid var(--border-color)", borderRadius: 4, background: "#181d26", color: "var(--text-color)", padding: "7px 10px", minWidth: 120 }}
+      style={{ border: "1px solid var(--border-color)", borderRadius: 20, background: "#181d26", color: "var(--text-color)", padding: "7px 10px", minWidth: 120 }}
       value={textFilter}
       onChange={e => setTextFilter(e.target.value)}
     />,
@@ -275,20 +265,11 @@ function MainContainer({ children }) {
                   <div style={{ marginTop: 5 }}>
                     {card.tags &&
                       card.tags.map(tag => (
-                        <span
-                          key={tag}
-                          style={{
-                            background: "#2b3446",
-                            color: "#F1E77F",
-                            borderRadius: 5,
-                            fontSize: "0.88em",
-                            marginRight: 8,
-                            padding: "2px 8px"
-                          }}
-                        >
+                        <span className="ch-card-tag" key={tag}>
                           #{tag}
                         </span>
-                      ))}
+                      ))
+                    }
                   </div>
                 </div>
               </Card>
