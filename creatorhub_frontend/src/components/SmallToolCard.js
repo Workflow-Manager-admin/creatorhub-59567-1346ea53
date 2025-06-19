@@ -4,8 +4,7 @@ import Card from "./Card";
 
 // PUBLIC_INTERFACE
 /**
- * SmallToolCard - dashboard/tools grid peer card with unified modal overlay handling.
- * Always launches modal as fixed, centered, full-viewport overlay.
+ * SmallToolCard - dashboard/tools grid card; launches modal overlay above all content, always centered.
  */
 function SmallToolCard({
   title,
@@ -17,6 +16,19 @@ function SmallToolCard({
 }) {
   // Track modal open/close for this tool
   const [modalOpen, setModalOpen] = useState(false);
+
+  // Intercept Button clicks and propagate correct modal logic everywhere, even if generic Button passed
+  let LaunchButton = null;
+  if (Button) {
+    // Force modal-open and disable navigation
+    LaunchButton = React.cloneElement(Button, {
+      onClick: e => {
+        if (Button.props.onClick) Button.props.onClick(e);
+        if (e && e.preventDefault) e.preventDefault();
+        setModalOpen(true);
+      }
+    });
+  }
 
   return (
     <Card title={title}>
@@ -66,18 +78,10 @@ function SmallToolCard({
               }}>#{tag.label}</span>
             )}
           </div>
-          {Button
-            ? React.cloneElement(Button, {
-              onClick: e => {
-                if (Button.props.onClick) Button.props.onClick(e);
-                if (e && e.preventDefault) e.preventDefault();
-                setModalOpen(true);
-              }
-            })
-            : null}
+          {LaunchButton}
         </div>
       </div>
-      {/* Modal overlay - fixed and disables page scroll */}
+      {/* Modal overlay - floating/centered/guaranteed */}
       {modalOpen && (
         <Modal open={modalOpen} onClose={() => setModalOpen(false)} blur={true}>
           {toolContent}

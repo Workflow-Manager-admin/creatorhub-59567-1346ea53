@@ -12,7 +12,6 @@ import HookGenerator from "./HookGenerator";
 import SmallToolCard from "./SmallToolCard";
 import { fetchYoutubeContent } from "../api/youtube";
 import { fetchDevToContent } from "../api/devto";
-import { fetchRapidAPIContent } from "../api/rapidapi";
 import { fetchGeminiContent } from "../api/gemini";
 
 // Helper: Tag badge
@@ -132,9 +131,8 @@ function DashboardView({ user = { name: "Alex" } }) {
     Promise.all([
       fetchYoutubeContent(),
       fetchDevToContent(),
-      fetchRapidAPIContent(),
       fetchGeminiContent()
-    ]).then(([yt, devto, rapid, gemini]) => {
+    ]).then(([yt, devto, gemini]) => {
       if (!mounted) return;
       // Flatten all sources to "tools" cards array
       const compiledTools = [];
@@ -185,37 +183,6 @@ function DashboardView({ user = { name: "Alex" } }) {
                 rel="noopener noreferrer"
               >
                 Read
-              </a>
-            )
-          })
-        );
-      }
-      if (rapid && rapid.length) {
-        rapid.forEach(api =>
-          compiledTools.push({
-            id: api.id,
-            accent: "tool",
-            title: api.title,
-            desc: api.description,
-            tags: [
-              { label: "API", accent: "tool" },
-              ...((api.category && [ { label: api.category, accent: "tool" } ]) || [])
-            ],
-            iconType: "icon",
-            Button: (
-              <a
-                // Always use direct RapidAPI directory link; fallback to API directory home if invalid
-                href={
-                  api.url && /^https:\/\/rapidapi\.com\//.test(api.url)
-                    ? api.url
-                    : "https://rapidapi.com/collection/popular-apis"
-                }
-                className="ch-info-btn"
-                style={{ background: "var(--accent-gradient)", marginTop: 10, color: "var(--palette-primary)" }}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Explore
               </a>
             )
           })

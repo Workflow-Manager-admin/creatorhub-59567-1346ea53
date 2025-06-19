@@ -7,7 +7,6 @@ import FilterBar from "./FilterBar";
 import useFetchWithSkeleton from "../hooks/useFetchWithSkeleton";
 import { fetchYoutubeContent } from "../api/youtube";
 import { fetchDevToContent } from "../api/devto";
-import { fetchRapidAPIContent } from "../api/rapidapi";
 import { fetchGeminiContent } from "../api/gemini";
 
 // PUBLIC_INTERFACE
@@ -20,7 +19,6 @@ function MainContainer({ children }) {
   // Load stub APIs
   const [ytData, ytLoading, ytError] = useFetchWithSkeleton(fetchYoutubeContent, []);
   const [devtoData, devtoLoading, devtoError] = useFetchWithSkeleton(fetchDevToContent, []);
-  const [rapidData, rapidLoading, rapidError] = useFetchWithSkeleton(fetchRapidAPIContent, []);
   const [geminiData, geminiLoading, geminiError] = useFetchWithSkeleton(fetchGeminiContent, []);
   // Modal state demo
   const [modalOpen, setModalOpen] = useState(false);
@@ -56,18 +54,7 @@ function MainContainer({ children }) {
         })
       );
     }
-    if (rapidData && rapidData.length) {
-      rapidData.forEach(item =>
-        cards.push({
-          id: item.id,
-          source: "rapidapi",
-          title: item.title,
-          description: item.description,
-          url: item.url,
-          category: item.category
-        })
-      );
-    }
+    // rapidapi content loading is now replaced by direct API component use (see DashboardView and tools)
     if (geminiData && geminiData.length) {
       geminiData.forEach(item =>
         cards.push({
