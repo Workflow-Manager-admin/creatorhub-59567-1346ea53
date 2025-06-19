@@ -312,41 +312,6 @@ function DashboardView({ user = { name: "Alex" } }) {
         }}>
         Your creative toolbox: Explore, learn, and build.
       </div>
-      {/* Quick Access: Tool Cards */}
-      <div
-        className="dashboard-tool-card-grid"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(330px, 1fr))",
-          gap: 28,
-          width: "100%",
-          maxWidth: 1100,
-          margin: "0 auto 22px",
-          alignItems: "stretch",
-        }}
-      >
-        <div className="ch-card" style={{ marginBottom: 0, minHeight: 0, borderRadius: 28, background: "var(--card-bg,rgba(44,48,80,0.96))", boxShadow: "var(--shadow-card)" }}>
-          <div className="ch-card-title" style={{ fontWeight: 800, fontSize: "1.14em", color: "var(--accent)", marginBottom: 5 }}>Hashtag Generator</div>
-          <div style={{ color: "var(--text-secondary)", fontSize: ".97em", marginBottom: 11 }}>Suggested hashtags for engagement & trending topics. Enter your niche!</div>
-          <div style={{ marginBottom: 11 }}>
-            <HashtagGenerator />
-          </div>
-        </div>
-        <div className="ch-card" style={{ marginBottom: 0, minHeight: 0, borderRadius: 28, background: "var(--card-bg,rgba(44,48,80,0.96))", boxShadow: "var(--shadow-card)" }}>
-          <div className="ch-card-title" style={{ fontWeight: 800, fontSize: "1.14em", color: "var(--accent)", marginBottom: 5 }}>Caption Generator</div>
-          <div style={{ color: "var(--text-secondary)", fontSize: ".97em", marginBottom: 11 }}>Type a topic and pick a tone for fresh caption ideas.</div>
-          <div style={{ marginBottom: 11 }}>
-            <CaptionGenerator />
-          </div>
-        </div>
-        <div className="ch-card" style={{ marginBottom: 0, minHeight: 0, borderRadius: 28, background: "var(--card-bg,rgba(44,48,80,0.96))", boxShadow: "var(--shadow-card)" }}>
-          <div className="ch-card-title" style={{ fontWeight: 800, fontSize: "1.14em", color: "var(--accent)", marginBottom: 5 }}>Hook Generator</div>
-          <div style={{ color: "var(--text-secondary)", fontSize: ".97em", marginBottom: 11 }}>Get attention-grabbing hooks for Reels, Shorts, TikToks, and more.</div>
-          <div style={{ marginBottom: 11 }}>
-            <HookGenerator />
-          </div>
-        </div>
-      </div>
       {/* Filter/search bar */}
       <FilterBar
         filters={[
@@ -416,7 +381,7 @@ function DashboardView({ user = { name: "Alex" } }) {
         </div>
       )}
       {/* Tool cards */}
-      {!loading && filteredTools.length > 0 && (
+      {!loading && (
         <div
           className="dashboard-tool-card-grid"
           style={{
@@ -431,18 +396,43 @@ function DashboardView({ user = { name: "Alex" } }) {
             padding: "0 12px"
           }}
         >
-          {filteredTools.map(tool =>
-            <ToolCard
-              key={tool.id}
-              title={tool.title}
-              desc={tool.desc}
-              tags={tool.tags}
-              accent={tool.accent}
-              loading={tool.loading}
-              Button={tool.Button}
-              iconType={tool.iconType}
-            />
-          )}
+          {/* Quick Access Tools as peer cards */}
+          <div className="ch-card" style={{ marginBottom: 0, minHeight: 0, borderRadius: 28, background: "var(--card-bg,rgba(44,48,80,0.96))", boxShadow: "var(--shadow-card)" }}>
+            <div className="ch-card-title" style={{ fontWeight: 800, fontSize: "1.14em", color: "var(--accent)", marginBottom: 5 }}>Hashtag Generator</div>
+            <div style={{ color: "var(--text-secondary)", fontSize: ".97em", marginBottom: 11 }}>Suggested hashtags for engagement & trending topics. Enter your niche!</div>
+            <div style={{ marginBottom: 11 }}>
+              <HashtagGenerator />
+            </div>
+          </div>
+          <div className="ch-card" style={{ marginBottom: 0, minHeight: 0, borderRadius: 28, background: "var(--card-bg,rgba(44,48,80,0.96))", boxShadow: "var(--shadow-card)" }}>
+            <div className="ch-card-title" style={{ fontWeight: 800, fontSize: "1.14em", color: "var(--accent)", marginBottom: 5 }}>Caption Generator</div>
+            <div style={{ color: "var(--text-secondary)", fontSize: ".97em", marginBottom: 11 }}>Type a topic and pick a tone for fresh caption ideas.</div>
+            <div style={{ marginBottom: 11 }}>
+              <CaptionGenerator />
+            </div>
+          </div>
+          <div className="ch-card" style={{ marginBottom: 0, minHeight: 0, borderRadius: 28, background: "var(--card-bg,rgba(44,48,80,0.96))", boxShadow: "var(--shadow-card)" }}>
+            <div className="ch-card-title" style={{ fontWeight: 800, fontSize: "1.14em", color: "var(--accent)", marginBottom: 5 }}>Hook Generator</div>
+            <div style={{ color: "var(--text-secondary)", fontSize: ".97em", marginBottom: 11 }}>Get attention-grabbing hooks for Reels, Shorts, TikToks, and more.</div>
+            <div style={{ marginBottom: 11 }}>
+              <HookGenerator />
+            </div>
+          </div>
+          {/* Resource Tool Cards */}
+          {filteredTools.length > 0 ? (
+            filteredTools.map(tool =>
+              <ToolCard
+                key={tool.id}
+                title={tool.title}
+                desc={tool.desc}
+                tags={tool.tags}
+                accent={tool.accent}
+                loading={tool.loading}
+                Button={tool.Button}
+                iconType={tool.iconType}
+              />
+            )
+          ) : null}
         </div>
       )}
     </section>

@@ -10,9 +10,9 @@ Injecting EditorRootWrapper import: ../.ve/EditorRootWrapper
 asset bundle.js 1.57 MiB [emitted] (name: main)
 asset index.html 620 bytes [emitted]
 runtime modules 27.5 KiB 14 modules
-cacheable modules 1.4 MiB
+cacheable modules 1.41 MiB
   modules by path ./node_modules/ 1.24 MiB 31 modules
-  modules by path ./src/ 154 KiB
+  modules by path ./src/ 155 KiB
     modules by path ./src/components/*.js 121 KiB 14 modules
     modules by path ./src/*.css 28.8 KiB 4 modules
     modules by path ./src/api/*.js 3.11 KiB 4 modules
@@ -21,14 +21,24 @@ cacheable modules 1.4 MiB
     modules by path ./.ve/*.js 10.6 KiB 2 modules
     modules by path ./.ve/*.css 2.93 KiB 2 modules
     ./.ve/EditorOverlay.jsx 1.58 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 1588 ms
+webpack 5.99.9 compiled successfully in 1627 ms
+assets by status 620 bytes [cached] 1 asset
+assets by path *.js 1.59 MiB
+  asset bundle.js 1.57 MiB [emitted] (name: main)
+  asset main.19baf733aab7ddff3d5a.hot-update.js 23.2 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.19baf733aab7ddff3d5a.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.59 MiB = bundle.js 1.57 MiB main.19baf733aab7ddff3d5a.hot-update.js 23.2 KiB
+cached modules 1.38 MiB [cached] 59 modules
+runtime modules 27.5 KiB 14 modules
+./src/components/DashboardView.js 16.7 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 179 ms
 assets by status 620 bytes [cached] 1 asset
 assets by path *.js 1.6 MiB
   asset bundle.js 1.57 MiB [emitted] (name: main)
-  asset main.de54dde79eeb9f492abd.hot-update.js 28.7 KiB [emitted] [immutable] [hmr] (name: main)
-asset main.de54dde79eeb9f492abd.hot-update.json 28 bytes [emitted] [immutable] [hmr]
-Entrypoint main 1.6 MiB = bundle.js 1.57 MiB main.de54dde79eeb9f492abd.hot-update.js 28.7 KiB
+  asset main.3f1a653ee28b8091c7bd.hot-update.js 28.3 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.3f1a653ee28b8091c7bd.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.6 MiB = bundle.js 1.57 MiB main.3f1a653ee28b8091c7bd.hot-update.js 28.3 KiB
 cached modules 1.38 MiB [cached] 59 modules
 runtime modules 27.5 KiB 14 modules
-./src/components/DashboardView.js 21 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 162 ms
+./src/components/DashboardView.js 20.6 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 120 ms
