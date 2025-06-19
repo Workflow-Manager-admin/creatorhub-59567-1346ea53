@@ -509,7 +509,7 @@ function DashboardView({ user = { name: "Alex" } }) {
           fontSize: "2.07rem",
           fontWeight: 800,
           marginBottom: 12,
-          color: "#FF0000",
+          color: "#FF8200",
           letterSpacing: "-0.01em",
           textAlign: "center",
           textShadow: "0 2px 40px #1e90ff54,0 1px 8px #fd3a6921"
