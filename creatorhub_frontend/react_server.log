@@ -216,3 +216,36 @@ assets by status 3.51 MiB [cached] 2 assets
 cached modules 3.18 MiB (javascript) 27.5 KiB (runtime) [cached] 99 modules
 ./src/firebaseAuthService.js 5.63 KiB [built]
 webpack 5.99.9 compiled successfully in 67 ms
+assets by status 649 bytes [cached] 1 asset
+assets by path *.js 3.52 MiB
+  asset bundle.js 3.51 MiB [emitted] (name: main)
+  asset main.a8d40d1afbd3998f67e1.hot-update.js 11.3 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.a8d40d1afbd3998f67e1.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 3.52 MiB = bundle.js 3.51 MiB main.a8d40d1afbd3998f67e1.hot-update.js 11.3 KiB
+cached modules 3.17 MiB [cached] 82 modules
+runtime modules 27.5 KiB 14 modules
+javascript modules 22.7 KiB
+  modules by path ./src/*.js 12.4 KiB
+    ./src/App.js 5 KiB [code generated]
+    ./src/firebaseAuthService.js 7.45 KiB [built] [code generated]
+  modules by path ./src/components/*.js 10.2 KiB
+    ./src/components/AuthForm.js 6.47 KiB [code generated]
+    ./src/components/UserContentList.js 3.74 KiB [code generated]
+
+WARNING in ./src/components/UserContentList.js 13:27-43
+export 'fetchUserContent' (imported as 'fetchUserContent') was not found in '../firebaseAuthService' (possible exports: deleteUserContent, getUserProfile, logout, saveUserContent, signIn, signUp, subscribeToAuthChanges, subscribeToUserContent, updateUserContent)
+ @ ./src/components/DashboardView.js 13:0-48 837:34-49
+ @ ./src/App.js 6:0-55 73:34-47 86:34-47
+ @ ./src/index.js 5:0-24 11:32-35
+
+webpack 5.99.9 compiled with 1 warning in 82 ms
+assets by status 649 bytes [cached] 1 asset
+assets by path *.js 3.52 MiB
+  asset bundle.js 3.51 MiB [emitted] (name: main)
+  asset main.66600613dcfcf4d7b116.hot-update.js 9.67 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.66600613dcfcf4d7b116.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 3.52 MiB = bundle.js 3.51 MiB main.66600613dcfcf4d7b116.hot-update.js 9.67 KiB
+cached modules 3.18 MiB [cached] 85 modules
+runtime modules 27.5 KiB 14 modules
+./src/components/UserContentList.js 6.49 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 59 ms

@@ -5,9 +5,11 @@ import {
   signOut,
   onAuthStateChanged
 } from "firebase/auth";
-// IMPORTANT: Ensure 'query', 'where', and 'getDocs' are imported for fetching content
-import { doc, setDoc, collection, addDoc, getDoc, query, where, getDocs } from "firebase/firestore"; // <--- ADD query, where, getDocs here
-import { auth, db } from "./firebaseConfig"; // Import auth and db instances
+// IMPORTANT: Ensure 'onSnapshot' and 'deleteDoc' are imported
+import { doc, setDoc, collection, addDoc, getDoc, query, where, getDocs, onSnapshot, updateDoc, deleteDoc } from "firebase/firestore"; // <--- ADD onSnapshot, updateDoc, deleteDoc
+import { auth, db } from "./firebaseConfig";
+
+// ... (your existing signUp, signIn, logout, subscribeToAuthChanges, saveUserContent, getUserProfile functions) ...
 
 /**
  * Registers a new user with email and password and saves basic user data to Firestore.
@@ -134,36 +136,89 @@ const getUserProfile = async (uid = auth.currentUser?.uid) => {
 };
 
 /**
- * Fetches all content documents belonging to the currently logged-in user.
- * @returns {Promise<Array<object>>} - An array of content documents, each with an 'id' field.
+ * Subscribes to real-time updates for all content documents belonging to the currently logged-in user.
+ * @param {function(Array<object>)} callback - Function to call with the updated array of content documents.
+ * @returns {function()} - An unsubscribe function to stop listening for updates.
  */
-const fetchUserContent = async () => {
+const subscribeToUserContent = (callback) => {
   if (!auth.currentUser) {
-    console.error("No user logged in to fetch content.");
-    return []; // Return empty array if no user
+    console.warn("No user logged in to subscribe to content.");
+    callback([]); // Call callback with empty array immediately
+    return () => {}; // Return a no-op unsubscribe function
+  }
+
+  const userUid = auth.currentUser.uid;
+  const q = query(collection(db, "content"), where("userId", "==", userUid));
+
+  // onSnapshot returns an unsubscribe function
+  const unsubscribe = onSnapshot(q, (querySnapshot) => {
+    const userContent = [];
+    querySnapshot.forEach((doc) => {
+      userContent.push({ id: doc.id, ...doc.data() });
+    });
+    console.log("Real-time user content update:", userContent);
+    callback(userContent); // Pass the updated data to the provided callback
+  }, (error) => {
+    console.error("Error subscribing to user content:", error);
+    // You might want to handle this error in your UI as well
+  });
+
+  return unsubscribe; // Return the unsubscribe function
+};
+
+/**
+ * Updates an existing content item in Firestore.
+ * @param {string} contentId - The ID of the content document to update.
+ * @param {object} newData - The data to update (e.g., { title: "New Title" }).
+ * @returns {Promise<void>}
+ */
+const updateUserContent = async (contentId, newData) => {
+  if (!auth.currentUser) {
+    console.error("No user logged in to update content.");
+    throw new Error("Authentication required to update content.");
   }
 
   try {
-    const userUid = auth.currentUser.uid;
-    // Create a query against the 'content' collection
-    // where the 'userId' field matches the current user's UID
-    const q = query(collection(db, "content"), where("userId", "==", userUid));
-
-    const querySnapshot = await getDocs(q);
-    const userContent = [];
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      userContent.push({ id: doc.id, ...doc.data() });
-    });
-
-    console.log("Fetched user content:", userContent);
-    return userContent;
+    const contentRef = doc(db, "content", contentId);
+    await updateDoc(contentRef, newData);
+    console.log(`Content document with ID: ${contentId} updated successfully.`);
   } catch (error) {
-    console.error("Error fetching user content:", error);
+    console.error("Error updating user content:", error);
+    throw error;
+  }
+};
+
+/**
+ * Deletes a content item from Firestore.
+ * @param {string} contentId - The ID of the content document to delete.
+ * @returns {Promise<void>}
+ */
+const deleteUserContent = async (contentId) => {
+  if (!auth.currentUser) {
+    console.error("No user logged in to delete content.");
+    throw new Error("Authentication required to delete content.");
+  }
+
+  try {
+    const contentRef = doc(db, "content", contentId);
+    await deleteDoc(contentRef);
+    console.log(`Content document with ID: ${contentId} deleted successfully.`);
+  } catch (error) {
+    console.error("Error deleting user content:", error);
     throw error;
   }
 };
 
 
-// Export all the functions, including the new one: fetchUserContent
-export { signUp, signIn, logout, subscribeToAuthChanges, saveUserContent, getUserProfile, fetchUserContent };
+// Export all the functions, including the new ones
+export {
+  signUp,
+  signIn,
+  logout,
+  subscribeToAuthChanges,
+  saveUserContent,
+  getUserProfile,
+  subscribeToUserContent, // <--- EXPORT NEW REAL-TIME FUNCTION
+  updateUserContent,      // <--- EXPORT NEW UPDATE FUNCTION
+  deleteUserContent       // <--- EXPORT NEW DELETE FUNCTION
+};
