@@ -87,7 +87,7 @@ function Sidebar({ collapsed, activeTab, setActiveTab, setSidebarCollapsed }) {
             tabIndex={0}
             style={{
               position: "absolute",
-              top: 64,
+              top: 0, // Changed from 64 to 0 so the sidebar overlay sits flush with the top
               left: 0,
               width: "100vw",
               background: "rgba(60,68,112,0.96)",
