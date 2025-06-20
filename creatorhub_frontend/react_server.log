@@ -353,3 +353,68 @@ cached modules 3.16 MiB [cached] 83 modules
 runtime modules 27.5 KiB 14 modules
 ./src/components/PostPlanner.js 16.5 KiB [built] [code generated]
 webpack 5.99.9 compiled successfully in 131 ms
+assets by status 649 bytes [cached] 1 asset
+assets by path *.js 3.5 MiB
+  asset bundle.js 3.5 MiB [emitted] (name: main)
+  asset main.e6e482c6eb5653adb7c7.hot-update.js 5.78 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.e6e482c6eb5653adb7c7.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 3.5 MiB = bundle.js 3.5 MiB main.e6e482c6eb5653adb7c7.hot-update.js 5.78 KiB
+cached modules 3.17 MiB [cached] 83 modules
+runtime modules 27.5 KiB 14 modules
+./src/components/ToolsPage.js 2.66 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 79 ms
+assets by status 649 bytes [cached] 1 asset
+assets by path *.js 3.5 MiB
+  asset bundle.js 3.5 MiB [emitted] (name: main)
+  asset main.d4529fd8444ae405b0b4.hot-update.js 5.94 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.d4529fd8444ae405b0b4.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 3.5 MiB = bundle.js 3.5 MiB main.d4529fd8444ae405b0b4.hot-update.js 5.94 KiB
+cached modules 3.17 MiB [cached] 83 modules
+runtime modules 27.5 KiB 14 modules
+./src/components/ToolsPage.js 2.79 KiB [built] [code generated]
+
+ERROR in ./src/components/ToolsPage.js 3:0-60
+Module not found: Error: Can't resolve './SelfContainedToolCard' in '/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/src/components'
+resolve './SelfContainedToolCard' in '/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/src/components'
+  using description file: /home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/package.json (relative path: ./src/components)
+    Field 'browser' doesn't contain a valid alias configuration
+    using description file: /home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/package.json (relative path: ./src/components/SelfContainedToolCard)
+      no extension
+        Field 'browser' doesn't contain a valid alias configuration
+        /home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/src/components/SelfContainedToolCard doesn't exist
+      .js
+        Field 'browser' doesn't contain a valid alias configuration
+        /home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/src/components/SelfContainedToolCard.js doesn't exist
+      .jsx
+        Field 'browser' doesn't contain a valid alias configuration
+        /home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/src/components/SelfContainedToolCard.jsx doesn't exist
+      as directory
+        /home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/src/components/SelfContainedToolCard doesn't exist
+ @ ./src/App.js 7:0-47 92:34-43
+ @ ./src/index.js 5:0-24 11:32-35
+
+webpack 5.99.9 compiled with 1 error in 55 ms
+assets by status 649 bytes [cached] 1 asset
+assets by path *.js 3.5 MiB
+  asset bundle.js 3.5 MiB [emitted] (name: main)
+  asset main.1c9ccffc8854415c7d2e.hot-update.js 6.37 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.1c9ccffc8854415c7d2e.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 3.5 MiB = bundle.js 3.5 MiB main.1c9ccffc8854415c7d2e.hot-update.js 6.37 KiB
+cached modules 3.17 MiB [cached] 83 modules
+runtime modules 27.5 KiB 14 modules
+javascript modules 2.79 KiB
+  ./src/components/ToolsPage.js 2.79 KiB [code generated]
+  ./src/components/SelfContainedToolCard.js 1 bytes [built] [code generated]
+webpack 5.99.9 compiled successfully in 37 ms
+assets by status 649 bytes [cached] 1 asset
+assets by path *.js 3.52 MiB
+  asset bundle.js 3.5 MiB [emitted] (name: main)
+  asset main.45656fece4ad75a8bbbd.hot-update.js 13.4 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.45656fece4ad75a8bbbd.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 3.52 MiB = bundle.js 3.5 MiB main.45656fece4ad75a8bbbd.hot-update.js 13.4 KiB
+cached modules 3.17 MiB [cached] 83 modules
+runtime modules 27.5 KiB 14 modules
+javascript modules 7.97 KiB
+  ./src/components/ToolsPage.js 2.79 KiB [code generated]
+  ./src/components/SelfContainedToolCard.js 5.18 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 59 ms
