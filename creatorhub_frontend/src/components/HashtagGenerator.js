@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai"; // Import Gemini SDK
-import Modal from '../Modal'; // Import your Modal component
+import Modal from './Modal'; // Import your Modal component
 
 // PUBLIC_INTERFACE
 /**
