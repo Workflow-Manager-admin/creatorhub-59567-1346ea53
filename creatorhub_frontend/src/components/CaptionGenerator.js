@@ -11,6 +11,18 @@ function CaptionGenerator() {
   const [caption, setCaption] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false); // State for this modal
+// Function to open the modal
+  const openModal = () => {
+    console.log("openModal called. Setting isModalOpen to true."); // LOG THIS!
+    setIsModalOpen(true);
+  };
+
+  // Function to close the modal
+  const closeModal = () => {
+    console.log("closeModal called. Setting isModalOpen to false."); // LOG THIS!
+    setIsModalOpen(false);
+  };
 
   // ⚠️ Use environment variables in production
   const RAPIDAPI_KEY = '6d105ed8cfmsh977c9a021254071p16d2e4jsndadd8381e47f'; // Make sure this key is correct

@@ -22,4 +22,48 @@ modules by path ./.ve/ 15.1 KiB
     ./.ve/EditorOverlay.css 2.25 KiB [built] [code generated]
     ./node_modules/css-loader/dist/cjs.js!./.ve/EditorOverlay.css 697 bytes [built] [code generated]
   ./.ve/EditorOverlay.jsx 1.58 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 2022 ms
+webpack 5.99.9 compiled successfully in 2052 ms
+assets by status 649 bytes [cached] 1 asset
+assets by path *.js 3.54 MiB
+  asset bundle.js 3.53 MiB [emitted] (name: main)
+  asset main.ed50bd18e612340ad299.hot-update.js 12 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.ed50bd18e612340ad299.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 3.54 MiB = bundle.js 3.53 MiB main.ed50bd18e612340ad299.hot-update.js 12 KiB
+cached modules 3.2 MiB [cached] 85 modules
+runtime modules 27.5 KiB 14 modules
+./src/components/CaptionGenerator.js 8.63 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 155 ms
+assets by status 3.53 MiB [cached] 2 assets
+cached modules 3.2 MiB (javascript) 27.5 KiB (runtime) [cached] 99 modules
+./src/components/CaptionGenerator.js 8.63 KiB [built]
+webpack 5.99.9 compiled successfully in 81 ms
+assets by status 649 bytes [cached] 1 asset
+assets by path *.js 3.54 MiB
+  asset bundle.js 3.53 MiB [emitted] (name: main)
+  asset main.404a34dbfd5f10011238.hot-update.js 12 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.404a34dbfd5f10011238.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 3.54 MiB = bundle.js 3.53 MiB main.404a34dbfd5f10011238.hot-update.js 12 KiB
+cached modules 3.2 MiB [cached] 85 modules
+runtime modules 27.5 KiB 14 modules
+./src/components/CaptionGenerator.js 8.63 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 106 ms
+assets by status 649 bytes [cached] 1 asset
+assets by path *.js 3.54 MiB
+  asset bundle.js 3.53 MiB [emitted] (name: main)
+  asset main.60f450625da8f4269e70.hot-update.js 12.4 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.60f450625da8f4269e70.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 3.54 MiB = bundle.js 3.53 MiB main.60f450625da8f4269e70.hot-update.js 12.4 KiB
+cached modules 3.2 MiB [cached] 85 modules
+runtime modules 27.5 KiB 14 modules
+./src/components/CaptionGenerator.js 8.97 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 73 ms
+assets by status 649 bytes [cached] 1 asset
+assets by path *.js 3.54 MiB
+  asset bundle.js 3.53 MiB [emitted] (name: main)
+  asset main.ae5a395f7323fb818d97.hot-update.js 12.4 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.ae5a395f7323fb818d97.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 3.54 MiB = bundle.js 3.53 MiB main.ae5a395f7323fb818d97.hot-update.js 12.4 KiB
+cached modules 3.2 MiB [cached] 85 modules
+runtime modules 27.5 KiB 14 modules
+./src/components/CaptionGenerator.js 8.97 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 67 ms
