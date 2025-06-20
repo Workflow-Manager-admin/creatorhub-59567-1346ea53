@@ -5,8 +5,8 @@ import {
   signOut,
   onAuthStateChanged
 } from "firebase/auth";
-// IMPORTANT: Updated Firestore imports to include 'collection', 'addDoc', and 'getDoc'
-import { doc, setDoc, collection, addDoc, getDoc } from "firebase/firestore";
+// IMPORTANT: Ensure 'query', 'where', and 'getDocs' are imported for fetching content
+import { doc, setDoc, collection, addDoc, getDoc, query, where, getDocs } from "firebase/firestore"; // <--- ADD query, where, getDocs here
 import { auth, db } from "./firebaseConfig"; // Import auth and db instances
 
 /**
@@ -133,5 +133,37 @@ const getUserProfile = async (uid = auth.currentUser?.uid) => {
   }
 };
 
-// Export all the functions, including the new ones
-export { signUp, signIn, logout, subscribeToAuthChanges, saveUserContent, getUserProfile };
+/**
+ * Fetches all content documents belonging to the currently logged-in user.
+ * @returns {Promise<Array<object>>} - An array of content documents, each with an 'id' field.
+ */
+const fetchUserContent = async () => {
+  if (!auth.currentUser) {
+    console.error("No user logged in to fetch content.");
+    return []; // Return empty array if no user
+  }
+
+  try {
+    const userUid = auth.currentUser.uid;
+    // Create a query against the 'content' collection
+    // where the 'userId' field matches the current user's UID
+    const q = query(collection(db, "content"), where("userId", "==", userUid));
+
+    const querySnapshot = await getDocs(q);
+    const userContent = [];
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      userContent.push({ id: doc.id, ...doc.data() });
+    });
+
+    console.log("Fetched user content:", userContent);
+    return userContent;
+  } catch (error) {
+    console.error("Error fetching user content:", error);
+    throw error;
+  }
+};
+
+
+// Export all the functions, including the new one: fetchUserContent
+export { signUp, signIn, logout, subscribeToAuthChanges, saveUserContent, getUserProfile, fetchUserContent };
