@@ -10,12 +10,14 @@ import HookGenerator from "./HookGenerator";
 import ContentIdeaGenerator from "./ContentIdeaGenerator";
 import PostPlanner from "./PostPlanner";
 // IMPORTANT: NEW IMPORT FOR DISPLAYING USER CONTENT
-import UserContentList from "./UserContentList"; // <--- ADD THIS LINE
+import UserContentList from "./UserContentList";
 
 import { fetchYoutubeContent } from "../api/youtube";
 import { fetchDevToContent } from "../api/devto";
 import { fetchGeminiContent } from "../api/gemini";
 
+// IMPORT THE STATIC GUIDES FROM DashboardQuickCards.js
+import { staticDashboardGuides } from "./DashboardQuickCards"; // <--- ADD THIS LINE
 
 // Helper: Placeholder for icon/lottie (remains mostly the same)
 function IconLottiePlaceholder({ type = "lottie", size = 48 }) {
@@ -391,26 +393,6 @@ function DashboardView({ user = { name: "Alex" } }) {
         });
       }
 
-      // Instagram guide (manual static card)
-      fetchedGuides.push({
-        id: "instagram-creator-guide",
-        accent: "guide",
-        title: "Instagram Best Practices for Creators",
-        desc: "Boost your reach, engage your audience, and master Instagram features.",
-        iconType: "icon",
-        Button: (
-          <a
-            href="https://help.instagram.com/366992426735657"
-            className="ch-info-btn"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Instagram Creator Guide Help Center"
-          >
-            Visit Guide
-          </a>
-        ),
-      });
-
       // Dev.to articles (guides)
       if (devtoArr && devtoArr.length) {
         devtoArr.forEach(article => {
@@ -457,9 +439,28 @@ function DashboardView({ user = { name: "Alex" } }) {
         });
       }
 
-      // Combine all content: Quick Access Tools (red) + Fetched Guides (blue)
-      // The order here defines which category gets which accent based on previous discussions.
-      setAllContentCards([...quickAccessTools, ...fetchedGuides]);
+      // Combine all content: Quick Access Tools (red) + Fetched Guides (blue) + Static Guides
+      const combinedGuides = [
+        ...staticDashboardGuides.map(guide => ({ // Map static guides to ToolCard props
+          ...guide,
+          desc: guide.description, // Rename description to desc for ToolCard
+          accent: "guide", // Ensure accent is set
+          Button: (
+            <a
+              href={guide.link}
+              className="ch-info-btn"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {guide.title.includes("YouTube") ? "Watch" : guide.title.includes("Blogging") || guide.title.includes("Instagram") ? "Visit Guide" : "Read"}
+            </a>
+          ),
+          iconType: guide.icon === "🎥" || guide.icon === "✍️" || guide.icon === "📈" ? "lottie" : "icon", // Map icon to iconType
+        })),
+        ...fetchedGuides
+      ];
+
+      setAllContentCards([...quickAccessTools, ...combinedGuides]);
       setLoading(false);
     });
     return () => { isMounted = false; };

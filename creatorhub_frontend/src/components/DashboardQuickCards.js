@@ -1,8 +1,9 @@
+// DashboardQuickCards.js
 import React from "react";
 import Card from "./Card";
 
 // PUBLIC_INTERFACE
-const guides = [
+export const staticDashboardGuides = [ // Export the guides array
   {
     title: "How to Create Engaging YouTube Videos",
     description: "Learn the essentials of YouTube video production, scripting, editing, and optimizing for growth.",
@@ -21,10 +22,18 @@ const guides = [
     icon: "📈",
     link: "https://www.socialmediaexaminer.com/social-media-marketing-strategy-how-to-grow-your-following/",
   },
+  {
+    id: "instagram-creator-guide", // Add an ID for consistency
+    accent: "guide",
+    title: "Instagram Best Practices for Creators",
+    desc: "Boost your reach, engage your audience, and master Instagram features.",
+    icon: "icon",
+    link: "https://help.instagram.com/366992426735657",
+  },
   // Add more content creation guides as needed!
 ];
 
-// PUBLIC_INTERFACE
+// PUBLIC_INTERFACE (You might remove this component if it's no longer used for direct rendering)
 function DashboardQuickCards() {
   return (
     <div className="dashboard-quick-cards" style={{
@@ -34,9 +43,9 @@ function DashboardQuickCards() {
       marginTop: 25,
       width: "100%"
     }}>
-      {guides.map((card, idx) => (
+      {staticDashboardGuides.map((card, idx) => ( // Use the exported guides
         <Card
-          key={idx}
+          key={card.id || idx} // Use ID for key if available
           title={card.title}
           description={card.description}
           icon={card.icon}
