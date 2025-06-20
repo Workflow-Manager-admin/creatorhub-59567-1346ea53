@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai"; // Import Gemini SDK
+import Modal from '../Modal'; // Import your Modal component
 
 // PUBLIC_INTERFACE
 /**
  * HashtagGenerator - generates grouped hashtags using the Gemini API.
+ * This component now also handles its own modal display and acts as the tool card on the dashboard.
  */
 function HashtagGenerator() {
   const [topic, setTopic] = useState("");
-  // Initial state for groups will be empty; populate after Gemini call
   const [groups, setGroups] = useState({
     "High Engagement": [],
     "Trending": [],
@@ -15,29 +16,27 @@ function HashtagGenerator() {
   });
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [error, setError] = useState(null); // Added error state
+  const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to control this tool's modal
 
   // --- Gemini API Configuration ---
-  // IMPORTANT: Replace 'YOUR_GEMINI_API_HERE' with your actual API key.
-  // For production, consider storing this securely (e.g., environment variables)
-  // and routing API calls through a backend to avoid exposing it client-side.
-  const GEMINI_API_KEY = 'AIzaSyACx37UXHYLpnkMw0wZbWuYKECWU8negfo';
+  const GEMINI_API_KEY = 'AIzaSyACx37UXHYLpnkMw0wZbWuYKECWU8negfo'; // Your API key
   const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-pro-latest' }); // Using a capable model
+  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-pro-latest' });
 
-  // Function to call Gemini API for hashtags
-  async function generateHashtags() { // Renamed from handleGenerate
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+  async function generateHashtags() {
     if (!topic.trim()) {
       setError("Please enter a topic or niche to generate hashtags.");
       return;
     }
     setLoading(true);
     setError(null);
-    setGroups({ "High Engagement": [], "Trending": [], "Evergreen": [] }); // Clear previous groups
+    setGroups({ "High Engagement": [], "Trending": [], "Evergreen": [] });
 
     try {
-      // --- Construct the Prompt for Hashtag Generation ---
-      // This prompt explicitly asks for grouped hashtags
       let prompt = `Generate social media hashtags for a topic about: "${topic}".
       Please categorize them into three groups:
       1. High Engagement: 5 hashtags that drive interaction.
@@ -50,12 +49,11 @@ function HashtagGenerator() {
       Trending: #tagA #tagB #tagC #tagD #tagE
       Evergreen: #tagX #tagY #tagZ #tagAA #tagBB`;
 
-
       const result = await model.generateContent({
         contents: [{ role: 'user', parts: [{ text: prompt }] }],
         generationConfig: {
-          temperature: 0.7, // Keep it moderate for relevant tags
-          maxOutputTokens: 250, // Enough tokens for ~15 hashtags + categories
+          temperature: 0.7,
+          maxOutputTokens: 250,
         },
       });
 
@@ -63,7 +61,6 @@ function HashtagGenerator() {
       const generatedText = response.text();
 
       if (generatedText) {
-        // --- Complex Parsing for Grouped Hashtags ---
         const newGroups = {
           "High Engagement": [],
           "Trending": [],
@@ -84,7 +81,6 @@ function HashtagGenerator() {
             currentGroup = "Evergreen";
             newGroups[currentGroup] = line.substring("Evergreen:".length).split(' ').filter(tag => tag.startsWith('#') && tag.length > 1);
           } else if (currentGroup && line.startsWith('#')) {
-            // If the line starts with # and we are in a group context (for multi-line outputs)
             newGroups[currentGroup].push(...line.split(' ').filter(tag => tag.startsWith('#') && tag.length > 1));
           }
         });
@@ -114,196 +110,212 @@ function HashtagGenerator() {
   }
 
   function handleRegenerate() {
-    generateHashtags(); // Call the Gemini-powered function
+    generateHashtags();
     setCopied(false);
   }
 
-  // Ensure topic is not empty before allowing generation
   const isGenerateDisabled = loading || !topic.trim();
 
   return (
-    <div
-      className="ch-card" // Assuming this is your card styling class
-      style={{
-        maxWidth: 490,
-        margin: "0 auto",
-        borderRadius: 24,
-        boxShadow: "var(--shadow-card)",
-        padding: 30,
-        background: "var(--card-bg,rgba(36,38,50,0.92))",
-      }}
-    >
-      <div
-        className="ch-card-title"
-        style={{
-          fontWeight: 800,
-          fontSize: "1.24em",
-          marginBottom: 13,
-          color: "var(--accent,#A178DF)",
-          textShadow: "0 2px 11px #a178df1b",
-        }}
-      >
-        Hashtag Generator (Gemini AI)
+    // This is the dashboard card view for the Hashtag Generator
+    <div className="tool-card" onClick={openModal}> {/* Make the whole card clickable */}
+      <h4 className="tool-title">Hashtag Generator</h4>
+      <p className="tool-description">Generate grouped hashtags (High Engagement, Trending, Evergreen).</p>
+      <button className="open-tool-button" onClick={openModal}>Open Tool</button>
+      <div className="info-icon" onClick={(e) => { e.stopPropagation(); alert('Hashtag Generator Info: Provides categorized hashtags for your content.'); }}>
+          ⓘ
       </div>
-      <form
-        onSubmit={(e) => { e.preventDefault(); generateHashtags(); }} // Changed onSubmit handler
-        style={{ display: "flex", flexDirection: "column", gap: 13, marginBottom: 14 }}
-      >
-        <label htmlFor="hashtag-topic" style={{ fontSize: ".98em", color: "var(--text-secondary)" }}>
-          Enter a topic or niche:
-        </label>
-        <input
-          id="hashtag-topic"
-          type="text"
-          value={topic}
-          placeholder="e.g. Fitness, AI, Travel"
-          maxLength={60} // Increased max length for better prompts
-          className="ch-search" // Assuming this is your input style class
+
+      {/* This is the Modal that opens when the card is clicked */}
+      <Modal isOpen={isModalOpen} onClose={closeModal} title="Hashtag Generator (Gemini AI)">
+        {/* Content of the modal: your original HashtagGenerator form and results */}
+        <div
+          className="ch-card" // This specific card styling might not be needed INSIDE the modal if modal has its own
+          // However, keeping it for now to preserve original layout you provided for the form.
+          // Adjust inline styles from original ch-card if they conflict with modal styling.
+          // It's better to remove these inline styles if modal has proper padding/background.
           style={{
-            background: "#181d26",
-            color: "var(--text-color)",
-            border: "1.2px solid var(--border-color)",
-            borderRadius: 15,
-            fontSize: ".98em",
-            fontWeight: 500,
-            padding: "10px 16px",
-          }}
-          onChange={(e) => setTopic(e.target.value)}
-        />
-        <button
-          type="submit"
-          className="ch-info-btn" // Assuming this is your button style class
-          disabled={isGenerateDisabled}
-          style={{
-            marginTop: 2,
-            fontWeight: 700,
-            alignSelf: "flex-start",
-            minWidth: 95,
-            background: "var(--accent-gradient)",
-            color: "#fff"
+            maxWidth: 490, // Max width is less relevant inside a modal with its own width
+            margin: "0 auto",
+            borderRadius: 24, // Modal already has border-radius
+            boxShadow: "none", // Remove shadow inside modal, modal has its own shadow
+            padding: 20, // Reduced padding to let modal's padding handle it
+            background: "transparent", // Use transparent as modal provides background
           }}
         >
-          {loading ? "Generating..." : "Generate"}
-        </button>
-      </form>
-      
-      {error && <div style={{ color: "var(--danger)", margin: "8px 0" }}>{error}</div>}
-
-      <div>
-        {loading ? (
-          <div className="ch-loader" style={{ marginTop: 12, marginBottom: 15 }}>Generating hashtags...</div>
-        ) : (
-          Object.keys(groups).map((groupName) => (
-            <div
-              key={groupName}
+          <div
+            className="ch-card-title"
+            style={{
+              fontWeight: 800,
+              fontSize: "1.24em",
+              marginBottom: 13,
+              color: "var(--accent,#A178DF)", // Use CreatorHub accent here if preferred, or modal title handles it
+              textShadow: "0 2px 11px #a178df1b",
+            }}
+          >
+            Hashtag Generator (Gemini AI) {/* This title is redundant with modal title, consider removing */}
+          </div>
+          <form
+            onSubmit={(e) => { e.preventDefault(); generateHashtags(); }}
+            style={{ display: "flex", flexDirection: "column", gap: 13, marginBottom: 14 }}
+          >
+            <label htmlFor="hashtag-topic" style={{ fontSize: ".98em", color: "var(--text-secondary)" }}>
+              Enter a topic or niche:
+            </label>
+            <input
+              id="hashtag-topic"
+              type="text"
+              value={topic}
+              placeholder="e.g. Fitness, AI, Travel"
+              maxLength={60}
+              className="ch-search input" // Added 'input' class for global styling
               style={{
-                marginBottom: 13,
-                background:
-                  groupName === "High Engagement"
-                    ? "var(--success-bg)"
-                    : groupName === "Trending"
-                      ? "var(--info-bg)"
-                      : "var(--card-bg,rgba(43,48,70,0.82))",
-                borderRadius: 13,
-                padding: "13px 16px 10px 16px",
-                boxShadow: "0 2.5px 11px #a178df2a",
+                background: "#181d26", // Specific background from your original code
+                color: "var(--text-color)",
+                border: "1.2px solid var(--border-color)",
+                borderRadius: 15,
+                fontSize: ".98em",
+                fontWeight: 500,
+                padding: "10px 16px",
+              }}
+              onChange={(e) => setTopic(e.target.value)}
+            />
+            <button
+              type="submit"
+              className="ch-info-btn btn" // Added 'btn' class for global styling
+              disabled={isGenerateDisabled}
+              style={{
+                marginTop: 2,
+                fontWeight: 700,
+                alignSelf: "flex-start",
+                minWidth: 95,
+                background: "var(--accent-gradient)", // Keep this if you use gradients specific to buttons
+                color: "#fff"
               }}
             >
-              <div
-                style={{
-                  fontWeight: 700,
-                  color:
-                    groupName === "High Engagement"
-                      ? "var(--success)"
-                      : groupName === "Trending"
-                        ? "var(--info)"
-                        : "var(--text-color)",
-                  fontSize: ".98em",
-                  marginBottom: 6,
-                  letterSpacing: ".02em",
-                  textShadow: groupName === "High Engagement" ? "0 1.5px 9px #58D89A22" : undefined,
-                }}
-              >
-                {groupName}
-              </div>
-              <div>
-                {groups[groupName].length > 0 ? (
-                  groups[groupName].map((tag, idx) => (
-                    <span
-                      key={`${groupName}-${idx}-${tag}`} // Unique key
-                      className="ch-card-tag"
-                      style={{
-                        marginRight: 8,
-                        background:
-                          groupName === "Trending"
-                            ? "var(--accent-gradient)"
-                            : groupName === "High Engagement"
-                              ? "var(--success-bg)"
-                              : "rgba(48,54,81,0.92)",
-                        color: groupName === "Trending"
-                          ? "#fff"
-                          : groupName === "High Engagement"
-                            ? "var(--success)"
+              {loading ? "Generating..." : "Generate"}
+            </button>
+          </form>
+
+          {error && <div style={{ color: "var(--danger)", margin: "8px 0" }}>{error}</div>}
+
+          <div>
+            {loading ? (
+              <div className="ch-loader" style={{ marginTop: 12, marginBottom: 15 }}>Generating hashtags...</div>
+            ) : (
+              Object.keys(groups).map((groupName) => (
+                <div
+                  key={groupName}
+                  style={{
+                    marginBottom: 13,
+                    background:
+                      groupName === "High Engagement"
+                        ? "var(--success-bg)"
+                        : groupName === "Trending"
+                          ? "var(--info-bg)"
+                          : "var(--card-bg,rgba(43,48,70,0.82))", // Use a generic background if 'card-bg' not defined
+                    borderRadius: 13,
+                    padding: "13px 16px 10px 16px",
+                    boxShadow: "0 2.5px 11px rgba(161,120,223,0.16)", // Updated shadow for consistency
+                  }}
+                >
+                  <div
+                    style={{
+                      fontWeight: 700,
+                      color:
+                        groupName === "High Engagement"
+                          ? "var(--success)"
+                          : groupName === "Trending"
+                            ? "var(--info)"
                             : "var(--text-color)",
-                        display: 'inline-block', // Ensure tags wrap correctly
-                        marginBottom: '5px', // Spacing between tags if they wrap
-                        padding: '4px 8px', // Adjust padding for better look
-                        borderRadius: '6px', // Rounded corners for tags
-                        fontSize: '.85em', // Smaller font size for tags
-                      }}
-                    >
-                      {tag}
-                    </span>
-                  ))
-                ) : (
-                  <span style={{ color: "var(--text-secondary)", fontSize: '.85em' }}>No hashtags generated for this group.</span>
-                )}
-              </div>
-            </div>
-          ))
-        )}
-      </div>
-      {/* Actions */}
-      <div style={{ display: "flex", gap: 11, marginTop: 20 }}>
-        <button
-          type="button"
-          className="ch-info-btn"
-          style={{
-            background: "var(--accent-gradient-focus)",
-            color: "#fff",
-            fontWeight: 700,
-            minWidth: 83,
-            boxShadow: "0 1.1px 9px #ce6d8740",
-          }}
-          onClick={handleCopy}
-          disabled={loading || Object.values(groups).flat().length === 0} // Disable if loading or no tags
-          aria-label="Copy all hashtags"
-        >
-          {copied ? "Copied!" : "Copy"}
-        </button>
-        <button
-          type="button"
-          className="ch-info-btn"
-          style={{
-            background: "var(--info-bg)",
-            color: "var(--info)",
-            fontWeight: 600,
-            minWidth: 115,
-            boxShadow: "0 1.1px 8px #82C4EC20",
-          }}
-          onClick={handleRegenerate}
-          disabled={isGenerateDisabled} // Use the same disabled logic as generate button
-          aria-label="Regenerate hashtags"
-        >
-          Regenerate
-        </button>
-      </div>
-      <div style={{ fontSize: ".93em", color: "var(--text-secondary)", marginTop: 16 }}>
-        Hashtags grouped for optimal reach. Click "Copy" to use all; "Regenerate" for new picks.
-      </div>
-      <div style={{ fontSize: ".89em", color: "var(--success)", marginTop: 5, fontWeight: 500 }}>
-        Pro tip: Use 2-3 per group for best results!
-      </div>
+                      fontSize: ".98em",
+                      marginBottom: 6,
+                      letterSpacing: ".02em",
+                      textShadow: groupName === "High Engagement" ? "0 1.5px 9px rgba(88,216,154,0.13)" : undefined, // Updated shadow color
+                    }}
+                  >
+                    {groupName}
+                  </div>
+                  <div>
+                    {groups[groupName].length > 0 ? (
+                      groups[groupName].map((tag, idx) => (
+                        <span
+                          key={`${groupName}-${idx}-${tag}`}
+                          className="ch-card-tag"
+                          style={{
+                            marginRight: 8,
+                            background:
+                              groupName === "Trending"
+                                ? "var(--accent-gradient)" // This gradient is for the trending tags
+                                : groupName === "High Engagement"
+                                  ? "var(--success-bg)"
+                                  : "rgba(48,54,81,0.92)", // Generic tag background
+                            color: groupName === "Trending"
+                              ? "#fff"
+                              : groupName === "High Engagement"
+                                ? "var(--success)"
+                                : "var(--text-color)",
+                            display: 'inline-block',
+                            marginBottom: '5px',
+                            padding: '4px 8px',
+                            borderRadius: '6px',
+                            fontSize: '.85em',
+                          }}
+                        >
+                          {tag}
+                        </span>
+                      ))
+                    ) : (
+                      <span style={{ color: "var(--text-secondary)", fontSize: '.85em' }}>No hashtags generated for this group.</span>
+                    )}
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+          {/* Actions */}
+          <div style={{ display: "flex", gap: 11, marginTop: 20 }}>
+            <button
+              type="button"
+              className="ch-info-btn btn" // Added 'btn' class
+              style={{
+                background: "var(--accent-gradient-focus)",
+                color: "#fff",
+                fontWeight: 700,
+                minWidth: 83,
+                boxShadow: "0 1.1px 9px rgba(206,109,135,0.25)", // Updated shadow color
+              }}
+              onClick={handleCopy}
+              disabled={loading || Object.values(groups).flat().length === 0}
+              aria-label="Copy all hashtags"
+            >
+              {copied ? "Copied!" : "Copy"}
+            </button>
+            <button
+              type="button"
+              className="ch-info-btn btn" // Added 'btn' class
+              style={{
+                background: "var(--info-bg)",
+                color: "var(--info)",
+                fontWeight: 600,
+                minWidth: 115,
+                boxShadow: "0 1.1px 8px rgba(130,196,236,0.13)", // Updated shadow color
+              }}
+              onClick={handleRegenerate}
+              disabled={isGenerateDisabled}
+              aria-label="Regenerate hashtags"
+            >
+              Regenerate
+            </button>
+          </div>
+          <div style={{ fontSize: ".93em", color: "var(--text-secondary)", marginTop: 16 }}>
+            Hashtags grouped for optimal reach. Click "Copy" to use all; "Regenerate" for new picks.
+          </div>
+          <div style={{ fontSize: ".89em", color: "var(--success)", marginTop: 5, fontWeight: 500 }}>
+            Pro tip: Use 2-3 per group for best results!
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }
