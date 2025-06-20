@@ -11,8 +11,8 @@ asset bundle.js 3.53 MiB [emitted] (name: main)
 asset index.html 649 bytes [emitted]
 runtime modules 27.5 KiB 14 modules
 modules by path ./node_modules/ 2.99 MiB 51 modules
-modules by path ./src/ 208 KiB
-  modules by path ./src/components/*.js 149 KiB 18 modules
+modules by path ./src/ 209 KiB
+  modules by path ./src/components/*.js 150 KiB 18 modules
   modules by path ./src/*.js 17.3 KiB 4 modules
   modules by path ./src/*.css 36.9 KiB 4 modules
   modules by path ./src/api/*.js 4.53 KiB 4 modules
@@ -22,14 +22,4 @@ modules by path ./.ve/ 15.1 KiB
     ./.ve/EditorOverlay.css 2.25 KiB [built] [code generated]
     ./node_modules/css-loader/dist/cjs.js!./.ve/EditorOverlay.css 697 bytes [built] [code generated]
   ./.ve/EditorOverlay.jsx 1.58 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 2203 ms
-assets by status 649 bytes [cached] 1 asset
-assets by path *.js 3.56 MiB
-  asset bundle.js 3.53 MiB [emitted] (name: main)
-  asset main.be0ba8a1fd57a2cbda1d.hot-update.js 23.9 KiB [emitted] [immutable] [hmr] (name: main)
-asset main.be0ba8a1fd57a2cbda1d.hot-update.json 28 bytes [emitted] [immutable] [hmr]
-Entrypoint main 3.56 MiB = bundle.js 3.53 MiB main.be0ba8a1fd57a2cbda1d.hot-update.js 23.9 KiB
-cached modules 3.19 MiB [cached] 85 modules
-runtime modules 27.5 KiB 14 modules
-./src/components/Sidebar.js 18.3 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 214 ms
+webpack 5.99.9 compiled successfully in 2132 ms
