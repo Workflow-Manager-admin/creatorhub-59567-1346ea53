@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import AppShell from "./components/AppShell";
 import DashboardView from "./components/DashboardView";
-import LearningSplitView from "./components/LearningSplitView";
 import ToolsPage from "./components/ToolsPage";
 // NEW IMPORTS FOR AUTHENTICATION
 import AuthForm from "./components/AuthForm";
@@ -88,8 +87,6 @@ function App() {
       content = <DashboardView user={user} />;
     } else if (view === "tools") {
       content = <ToolsPage />;
-    } else if (view === "learning") {
-      content = <LearningSplitView />;
     } else if (view === "profile") { // <--- NEW PROFILE VIEW CASE
       content = <ProfileView user={user} />; // Pass the user object to ProfileView
     } else {

@@ -418,3 +418,23 @@ javascript modules 7.97 KiB
   ./src/components/ToolsPage.js 2.79 KiB [code generated]
   ./src/components/SelfContainedToolCard.js 5.18 KiB [built] [code generated]
 webpack 5.99.9 compiled successfully in 59 ms
+assets by status 649 bytes [cached] 1 asset
+assets by path *.js 3.5 MiB
+  asset bundle.js 3.49 MiB [emitted] (name: main)
+  asset main.8fd300bc5f96db1afd47.hot-update.js 9.44 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.8fd300bc5f96db1afd47.hot-update.json 67 bytes [emitted] [immutable] [hmr]
+Entrypoint main 3.5 MiB = bundle.js 3.49 MiB main.8fd300bc5f96db1afd47.hot-update.js 9.44 KiB
+cached modules 3.16 MiB [cached] 83 modules
+runtime modules 27.5 KiB 14 modules
+./src/App.js 5.49 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 55 ms
+assets by status 649 bytes [cached] 1 asset
+assets by path *.js 3.5 MiB
+  asset bundle.js 3.49 MiB [emitted] (name: main)
+  asset main.55c8ef904ef425f6c949.hot-update.js 9.24 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.55c8ef904ef425f6c949.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 3.5 MiB = bundle.js 3.49 MiB main.55c8ef904ef425f6c949.hot-update.js 9.24 KiB
+cached modules 3.16 MiB [cached] 83 modules
+runtime modules 27.5 KiB 14 modules
+./src/App.js 5.34 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 49 ms
