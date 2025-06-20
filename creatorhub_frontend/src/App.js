@@ -1,14 +1,15 @@
 // src/App.js
 
-import React, { useState, useEffect } from "react"; // <-- Import useEffect
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import AppShell from "./components/AppShell";
 import DashboardView from "./components/DashboardView";
 import LearningSplitView from "./components/LearningSplitView";
 import ToolsPage from "./components/ToolsPage";
 // NEW IMPORTS FOR AUTHENTICATION
-import AuthForm from "./components/AuthForm"; // Make sure AuthForm.js is in src/components
-import { logout, subscribeToAuthChanges } from "./firebaseAuthService"; // Make sure firebaseAuthService.js is in src
+import AuthForm from "./components/AuthForm";
+// IMPORTANT: ADD saveUserContent HERE
+import { logout, subscribeToAuthChanges, saveUserContent } from "./firebaseAuthService";
 
 // PUBLIC_INTERFACE
 /**
@@ -42,6 +43,23 @@ function App() {
     }
   };
 
+  // NEW HANDLER TO SAVE TEST CONTENT
+  const handleSaveTestContent = async () => {
+      try {
+          await saveUserContent({
+              title: `My Test Content ${new Date().toLocaleString()}`,
+              type: "test",
+              description: "This is a test content item saved from the app.",
+              // You can add more fields here if needed for testing
+          });
+          alert("Test content saved successfully!");
+      } catch (error) {
+          console.error("Failed to save test content:", error);
+          alert("Failed to save test content. Check console for details.");
+      }
+  };
+
+
   let content;
   // CONDITIONAL RENDERING BASED ON AUTH STATE
   if (!user) {
@@ -51,28 +69,26 @@ function App() {
     // If a user is logged in, render the regular app content based on the 'view' state
     if (view === "dashboard") {
       // Pass the user object to DashboardView if it needs user-specific data
-      content = <DashboardView user={user} />; // Changed from user={{ name: "Alex" }}
+      content = <DashboardView user={user} />;
     } else if (view === "tools") {
       content = <ToolsPage />;
     } else if (view === "learning") {
       content = <LearningSplitView />;
     } else {
-      content = <DashboardView user={user} />; // Changed from user={{ name: "Alex" }}
+      content = <DashboardView user={user} />;
     }
   }
 
   return (
-    // Only render AppShell if a user is logged in, otherwise just render the content (AuthForm)
-    // You can adjust the styling of the AuthForm's container if it's not wrapped by AppShell
     <>
       {user ? (
         <AppShell view={view} setView={setView}>
-          {/* Display welcome and logout if logged in within AppShell's header/toolbar */}
+          {/* Display welcome, logout, AND THE NEW SAVE BUTTON if logged in */}
           <div style={{
             position: 'absolute',
-            top: '20px', // Adjust as needed to fit your AppShell's header
+            top: '20px',
             right: '20px',
-            zIndex: 100, // Ensure it's above other elements
+            zIndex: 100,
             display: 'flex',
             alignItems: 'center',
             gap: '10px',
@@ -84,7 +100,7 @@ function App() {
               style={{
                 padding: '6px 12px',
                 borderRadius: '6px',
-                background: 'var(--danger)', // Assuming you have a --danger CSS variable
+                background: 'var(--danger)',
                 color: '#fff',
                 border: 'none',
                 cursor: 'pointer',
@@ -94,18 +110,33 @@ function App() {
             >
               Log Out
             </button>
+            {/* START OF NEW BUTTON ADDITION */}
+            <button
+                onClick={handleSaveTestContent}
+                style={{
+                    padding: '6px 12px',
+                    borderRadius: '6px',
+                    background: 'var(--accent)', // Assuming you have an accent color defined in your CSS
+                    color: '#fff',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontSize: '0.85em',
+                    fontWeight: 'bold',
+                }}
+            >
+                Save Test Content
+            </button>
+            {/* END OF NEW BUTTON ADDITION */}
           </div>
           {content}
         </AppShell>
       ) : (
-        // Render only the AuthForm if not logged in.
-        // You might want to wrap AuthForm in a simple div for basic styling if it looks off.
         <div style={{
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          minHeight: '100vh', // Take full viewport height
-          background: 'var(--background-color)', // Match your app's background
+          minHeight: '100vh',
+          background: 'var(--background-color)',
           padding: '20px'
         }}>
           {content}
