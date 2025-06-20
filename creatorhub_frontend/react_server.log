@@ -23,4 +23,333 @@ cacheable modules 3.17 MiB
       ./.ve/EditorOverlay.css 2.25 KiB [built] [code generated]
       ./node_modules/css-loader/dist/cjs.js!./.ve/EditorOverlay.css 697 bytes [built] [code generated]
     ./.ve/EditorOverlay.jsx 1.58 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 2032 ms
+webpack 5.99.9 compiled successfully in 2030 ms
+assets by status 649 bytes [cached] 1 asset
+assets by path *.js 3.49 MiB
+  asset bundle.js 3.48 MiB [emitted] (name: main)
+  asset main.02568837a7eabad83b85.hot-update.js 6.23 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.02568837a7eabad83b85.hot-update.json 63 bytes [emitted] [immutable] [hmr]
+Entrypoint main 3.49 MiB = bundle.js 3.48 MiB main.02568837a7eabad83b85.hot-update.js 6.23 KiB
+cached modules 3.16 MiB [cached] 84 modules
+runtime modules 27.5 KiB 14 modules
+./src/components/ToolsPage.js 3.09 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 110 ms
+assets by status 649 bytes [cached] 1 asset
+assets by path *.js 3.52 MiB
+  asset bundle.js 3.5 MiB [emitted] (name: main)
+  asset main.f181ec2c4641d1fb0aef.hot-update.js 21.1 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.f181ec2c4641d1fb0aef.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 3.52 MiB = bundle.js 3.5 MiB main.f181ec2c4641d1fb0aef.hot-update.js 21.1 KiB
+cached modules 3.17 MiB [cached] 85 modules
+runtime modules 27.5 KiB 14 modules
+./src/components/ToolsPage.js 4.53 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 84 ms
+assets by status 649 bytes [cached] 1 asset
+assets by path *.js 3.49 MiB
+  asset bundle.js 3.48 MiB [emitted] (name: main)
+  asset main.9ba6dcebedbc4b249977.hot-update.js 7.05 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.9ba6dcebedbc4b249977.hot-update.json 63 bytes [emitted] [immutable] [hmr]
+Entrypoint main 3.49 MiB = bundle.js 3.48 MiB main.9ba6dcebedbc4b249977.hot-update.js 7.05 KiB
+cached modules 3.15 MiB [cached] 83 modules
+runtime modules 27.5 KiB 14 modules
+javascript modules 5.59 KiB
+  ./src/App.js 5.55 KiB [code generated]
+  ./src/components/ToolsPage.js 39 bytes [built] [code generated] [1 error]
+
+ERROR in ./src/components/ToolsPage.js
+Module build failed (from ./node_modules/babel-loader/lib/index.js):
+SyntaxError: /home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/src/components/ToolsPage.js: Unexpected token (80:1)
+
+  78 |
+  79 | export default ToolsPage;
+> 80 |  * PUBLIC_INTERFACE
+     |  ^
+  81 |  * ToolsPage - Displays all peer tool cards, each launches a modal overlay using the unified Dashboard modal (Modal.js).
+  82 |  * Ensures all modals (for tool launching and AI insights) use the exact same structure/component as the Dashboard.
+  83 |  */
+    at constructor (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:363:19)
+    at JSXParserMixin.raise (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:6609:19)
+    at JSXParserMixin.unexpected (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:6629:16)
+    at JSXParserMixin.parseExprAtom (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:11378:16)
+    at JSXParserMixin.parseExprAtom (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:4776:20)
+    at JSXParserMixin.parseExprSubscripts (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:11012:23)
+    at JSXParserMixin.parseUpdate (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10997:21)
+    at JSXParserMixin.parseMaybeUnary (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10977:23)
+    at JSXParserMixin.parseMaybeUnaryOrPrivate (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10830:61)
+    at JSXParserMixin.parseExprOps (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10835:23)
+    at JSXParserMixin.parseMaybeConditional (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10812:23)
+    at JSXParserMixin.parseMaybeAssign (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10765:21)
+    at JSXParserMixin.parseExpressionBase (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10718:23)
+    at /home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10714:39
+    at JSXParserMixin.allowInAnd (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:12356:16)
+    at JSXParserMixin.parseExpression (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10714:17)
+    at JSXParserMixin.parseStatementContent (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:12814:23)
+    at JSXParserMixin.parseStatementLike (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:12685:17)
+    at JSXParserMixin.parseModuleItem (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:12662:17)
+    at JSXParserMixin.parseBlockOrModuleBlockBody (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:13235:36)
+    at JSXParserMixin.parseBlockBody (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:13228:10)
+    at JSXParserMixin.parseProgram (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:12541:10)
+    at JSXParserMixin.parseTopLevel (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:12531:25)
+    at JSXParserMixin.parse (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:14410:10)
+    at parse (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:14444:38)
+    at parser (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/core/lib/parser/index.js:41:34)
+    at parser.next (<anonymous>)
+    at normalizeFile (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/core/lib/transformation/normalize-file.js:64:37)
+    at normalizeFile.next (<anonymous>)
+    at run (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/core/lib/transformation/index.js:22:50)
+    at run.next (<anonymous>)
+    at transform (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/core/lib/transform.js:22:33)
+    at transform.next (<anonymous>)
+    at step (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/gensync/index.js:261:32)
+    at /home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/gensync/index.js:273:13
+    at async.call.result.err.err (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/gensync/index.js:223:11)
+ @ ./src/App.js 7:0-47 92:34-43
+ @ ./src/index.js 5:0-24 11:32-35
+
+webpack 5.99.9 compiled with 1 error in 60 ms
+assets by status 3.48 MiB [cached] 2 assets
+cached modules 3.16 MiB (javascript) 27.5 KiB (runtime) [cached] 98 modules
+./src/components/ToolsPage.js 39 bytes [built] [1 error]
+
+ERROR in ./src/components/ToolsPage.js
+Module build failed (from ./node_modules/babel-loader/lib/index.js):
+SyntaxError: /home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/src/components/ToolsPage.js: Unexpected token (80:1)
+
+  78 |
+  79 | export default ToolsPage;
+> 80 |  * PUBLIC_INTERFACE
+     |  ^
+  81 |  * ToolsPage - Displays all peer tool cards, each launches a modal overlay using the unified Dashboard modal (Modal.js).
+  82 |  * Ensures all modals (for tool launching and AI insights) use the exact same structure/component as the Dashboard.
+  83 |  */
+    at constructor (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:363:19)
+    at JSXParserMixin.raise (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:6609:19)
+    at JSXParserMixin.unexpected (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:6629:16)
+    at JSXParserMixin.parseExprAtom (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:11378:16)
+    at JSXParserMixin.parseExprAtom (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:4776:20)
+    at JSXParserMixin.parseExprSubscripts (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:11012:23)
+    at JSXParserMixin.parseUpdate (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10997:21)
+    at JSXParserMixin.parseMaybeUnary (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10977:23)
+    at JSXParserMixin.parseMaybeUnaryOrPrivate (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10830:61)
+    at JSXParserMixin.parseExprOps (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10835:23)
+    at JSXParserMixin.parseMaybeConditional (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10812:23)
+    at JSXParserMixin.parseMaybeAssign (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10765:21)
+    at JSXParserMixin.parseExpressionBase (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10718:23)
+    at /home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10714:39
+    at JSXParserMixin.allowInAnd (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:12356:16)
+    at JSXParserMixin.parseExpression (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10714:17)
+    at JSXParserMixin.parseStatementContent (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:12814:23)
+    at JSXParserMixin.parseStatementLike (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:12685:17)
+    at JSXParserMixin.parseModuleItem (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:12662:17)
+    at JSXParserMixin.parseBlockOrModuleBlockBody (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:13235:36)
+    at JSXParserMixin.parseBlockBody (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:13228:10)
+    at JSXParserMixin.parseProgram (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:12541:10)
+    at JSXParserMixin.parseTopLevel (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:12531:25)
+    at JSXParserMixin.parse (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:14410:10)
+    at parse (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:14444:38)
+    at parser (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/core/lib/parser/index.js:41:34)
+    at parser.next (<anonymous>)
+    at normalizeFile (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/core/lib/transformation/normalize-file.js:64:37)
+    at normalizeFile.next (<anonymous>)
+    at run (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/core/lib/transformation/index.js:22:50)
+    at run.next (<anonymous>)
+    at transform (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/core/lib/transform.js:22:33)
+    at transform.next (<anonymous>)
+    at step (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/gensync/index.js:261:32)
+    at /home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/gensync/index.js:273:13
+    at async.call.result.err.err (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/gensync/index.js:223:11)
+ @ ./src/App.js 7:0-47 92:34-43
+ @ ./src/index.js 5:0-24 11:32-35
+
+webpack 5.99.9 compiled with 1 error in 58 ms
+assets by status 3.48 MiB [cached] 2 assets
+cached modules 3.16 MiB (javascript) 27.5 KiB (runtime) [cached] 98 modules
+./src/components/ToolsPage.js 39 bytes [built] [1 error]
+
+ERROR in ./src/components/ToolsPage.js
+Module build failed (from ./node_modules/babel-loader/lib/index.js):
+SyntaxError: /home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/src/components/ToolsPage.js: Unexpected token (80:1)
+
+  78 |
+  79 | export default ToolsPage;
+> 80 |  * PUBLIC_INTERFACE
+     |  ^
+  81 |  * ToolsPage - Displays all peer tool cards, each launches a modal overlay using the unified Dashboard modal (Modal.js).
+  82 |  * Ensures all modals (for tool launching and AI insights) use the exact same structure/component as the Dashboard.
+  83 |  */
+    at constructor (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:363:19)
+    at JSXParserMixin.raise (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:6609:19)
+    at JSXParserMixin.unexpected (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:6629:16)
+    at JSXParserMixin.parseExprAtom (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:11378:16)
+    at JSXParserMixin.parseExprAtom (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:4776:20)
+    at JSXParserMixin.parseExprSubscripts (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:11012:23)
+    at JSXParserMixin.parseUpdate (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10997:21)
+    at JSXParserMixin.parseMaybeUnary (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10977:23)
+    at JSXParserMixin.parseMaybeUnaryOrPrivate (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10830:61)
+    at JSXParserMixin.parseExprOps (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10835:23)
+    at JSXParserMixin.parseMaybeConditional (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10812:23)
+    at JSXParserMixin.parseMaybeAssign (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10765:21)
+    at JSXParserMixin.parseExpressionBase (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10718:23)
+    at /home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10714:39
+    at JSXParserMixin.allowInAnd (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:12356:16)
+    at JSXParserMixin.parseExpression (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10714:17)
+    at JSXParserMixin.parseStatementContent (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:12814:23)
+    at JSXParserMixin.parseStatementLike (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:12685:17)
+    at JSXParserMixin.parseModuleItem (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:12662:17)
+    at JSXParserMixin.parseBlockOrModuleBlockBody (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:13235:36)
+    at JSXParserMixin.parseBlockBody (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:13228:10)
+    at JSXParserMixin.parseProgram (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:12541:10)
+    at JSXParserMixin.parseTopLevel (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:12531:25)
+    at JSXParserMixin.parse (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:14410:10)
+    at parse (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:14444:38)
+    at parser (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/core/lib/parser/index.js:41:34)
+    at parser.next (<anonymous>)
+    at normalizeFile (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/core/lib/transformation/normalize-file.js:64:37)
+    at normalizeFile.next (<anonymous>)
+    at run (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/core/lib/transformation/index.js:22:50)
+    at run.next (<anonymous>)
+    at transform (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/core/lib/transform.js:22:33)
+    at transform.next (<anonymous>)
+    at step (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/gensync/index.js:261:32)
+    at /home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/gensync/index.js:273:13
+    at async.call.result.err.err (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/gensync/index.js:223:11)
+ @ ./src/App.js 7:0-47 92:34-43
+ @ ./src/index.js 5:0-24 11:32-35
+
+webpack 5.99.9 compiled with 1 error in 39 ms
+assets by status 3.48 MiB [cached] 2 assets
+cached modules 3.16 MiB (javascript) 27.5 KiB (runtime) [cached] 98 modules
+./src/components/ToolsPage.js 39 bytes [built] [1 error]
+
+ERROR in ./src/components/ToolsPage.js
+Module build failed (from ./node_modules/babel-loader/lib/index.js):
+SyntaxError: /home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/src/components/ToolsPage.js: Unexpected token (80:1)
+
+  78 |
+  79 | export default ToolsPage;
+> 80 |  * PUBLIC_INTERFACE
+     |  ^
+  81 |  * ToolsPage - Displays all peer tool cards, each launches a modal overlay using the unified Dashboard modal (Modal.js).
+  82 |  * Ensures all modals (for tool launching and AI insights) use the exact same structure/component as the Dashboard.
+  83 |  */
+    at constructor (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:363:19)
+    at JSXParserMixin.raise (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:6609:19)
+    at JSXParserMixin.unexpected (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:6629:16)
+    at JSXParserMixin.parseExprAtom (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:11378:16)
+    at JSXParserMixin.parseExprAtom (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:4776:20)
+    at JSXParserMixin.parseExprSubscripts (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:11012:23)
+    at JSXParserMixin.parseUpdate (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10997:21)
+    at JSXParserMixin.parseMaybeUnary (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10977:23)
+    at JSXParserMixin.parseMaybeUnaryOrPrivate (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10830:61)
+    at JSXParserMixin.parseExprOps (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10835:23)
+    at JSXParserMixin.parseMaybeConditional (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10812:23)
+    at JSXParserMixin.parseMaybeAssign (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10765:21)
+    at JSXParserMixin.parseExpressionBase (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10718:23)
+    at /home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10714:39
+    at JSXParserMixin.allowInAnd (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:12356:16)
+    at JSXParserMixin.parseExpression (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10714:17)
+    at JSXParserMixin.parseStatementContent (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:12814:23)
+    at JSXParserMixin.parseStatementLike (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:12685:17)
+    at JSXParserMixin.parseModuleItem (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:12662:17)
+    at JSXParserMixin.parseBlockOrModuleBlockBody (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:13235:36)
+    at JSXParserMixin.parseBlockBody (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:13228:10)
+    at JSXParserMixin.parseProgram (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:12541:10)
+    at JSXParserMixin.parseTopLevel (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:12531:25)
+    at JSXParserMixin.parse (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:14410:10)
+    at parse (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:14444:38)
+    at parser (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/core/lib/parser/index.js:41:34)
+    at parser.next (<anonymous>)
+    at normalizeFile (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/core/lib/transformation/normalize-file.js:64:37)
+    at normalizeFile.next (<anonymous>)
+    at run (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/core/lib/transformation/index.js:22:50)
+    at run.next (<anonymous>)
+    at transform (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/core/lib/transform.js:22:33)
+    at transform.next (<anonymous>)
+    at step (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/gensync/index.js:261:32)
+    at /home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/gensync/index.js:273:13
+    at async.call.result.err.err (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/gensync/index.js:223:11)
+ @ ./src/App.js 7:0-47 92:34-43
+ @ ./src/index.js 5:0-24 11:32-35
+
+webpack 5.99.9 compiled with 1 error in 38 ms
+assets by status 3.48 MiB [cached] 2 assets
+cached modules 3.16 MiB (javascript) 27.5 KiB (runtime) [cached] 98 modules
+./src/components/ToolsPage.js 39 bytes [built] [1 error]
+
+ERROR in ./src/components/ToolsPage.js
+Module build failed (from ./node_modules/babel-loader/lib/index.js):
+SyntaxError: /home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/src/components/ToolsPage.js: Unexpected token (80:1)
+
+  78 |
+  79 | export default ToolsPage;
+> 80 |  * PUBLIC_INTERFACE
+     |  ^
+  81 |  * ToolsPage - Displays all peer tool cards, each launches a modal overlay using the unified Dashboard modal (Modal.js).
+  82 |  * Ensures all modals (for tool launching and AI insights) use the exact same structure/component as the Dashboard.
+  83 |  */
+    at constructor (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:363:19)
+    at JSXParserMixin.raise (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:6609:19)
+    at JSXParserMixin.unexpected (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:6629:16)
+    at JSXParserMixin.parseExprAtom (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:11378:16)
+    at JSXParserMixin.parseExprAtom (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:4776:20)
+    at JSXParserMixin.parseExprSubscripts (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:11012:23)
+    at JSXParserMixin.parseUpdate (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10997:21)
+    at JSXParserMixin.parseMaybeUnary (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10977:23)
+    at JSXParserMixin.parseMaybeUnaryOrPrivate (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10830:61)
+    at JSXParserMixin.parseExprOps (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10835:23)
+    at JSXParserMixin.parseMaybeConditional (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10812:23)
+    at JSXParserMixin.parseMaybeAssign (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10765:21)
+    at JSXParserMixin.parseExpressionBase (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10718:23)
+    at /home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10714:39
+    at JSXParserMixin.allowInAnd (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:12356:16)
+    at JSXParserMixin.parseExpression (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:10714:17)
+    at JSXParserMixin.parseStatementContent (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:12814:23)
+    at JSXParserMixin.parseStatementLike (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:12685:17)
+    at JSXParserMixin.parseModuleItem (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:12662:17)
+    at JSXParserMixin.parseBlockOrModuleBlockBody (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:13235:36)
+    at JSXParserMixin.parseBlockBody (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:13228:10)
+    at JSXParserMixin.parseProgram (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:12541:10)
+    at JSXParserMixin.parseTopLevel (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:12531:25)
+    at JSXParserMixin.parse (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:14410:10)
+    at parse (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/parser/lib/index.js:14444:38)
+    at parser (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/core/lib/parser/index.js:41:34)
+    at parser.next (<anonymous>)
+    at normalizeFile (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/core/lib/transformation/normalize-file.js:64:37)
+    at normalizeFile.next (<anonymous>)
+    at run (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/core/lib/transformation/index.js:22:50)
+    at run.next (<anonymous>)
+    at transform (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/@babel/core/lib/transform.js:22:33)
+    at transform.next (<anonymous>)
+    at step (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/gensync/index.js:261:32)
+    at /home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/gensync/index.js:273:13
+    at async.call.result.err.err (/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/node_modules/gensync/index.js:223:11)
+ @ ./src/App.js 7:0-47 92:34-43
+ @ ./src/index.js 5:0-24 11:32-35
+
+webpack 5.99.9 compiled with 1 error in 30 ms
+assets by status 649 bytes [cached] 1 asset
+assets by path *.js 3.49 MiB
+  asset bundle.js 3.48 MiB [emitted] (name: main)
+  asset main.6f4817cb058ef7a5f535.hot-update.js 6.34 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.6f4817cb058ef7a5f535.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 3.49 MiB = bundle.js 3.48 MiB main.6f4817cb058ef7a5f535.hot-update.js 6.34 KiB
+cached modules 3.15 MiB [cached] 83 modules
+runtime modules 27.5 KiB 14 modules
+javascript modules 8.75 KiB
+  ./src/App.js 5.55 KiB [code generated]
+  ./src/components/ToolsPage.js 3.2 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 59 ms
+assets by status 3.48 MiB [cached] 2 assets
+cached modules 3.16 MiB (javascript) 27.5 KiB (runtime) [cached] 98 modules
+./src/components/PostPlanner.js 2.56 KiB [built]
+webpack 5.99.9 compiled successfully in 80 ms
+assets by status 649 bytes [cached] 1 asset
+assets by path *.js 3.52 MiB
+  asset bundle.js 3.5 MiB [emitted] (name: main)
+  asset main.88cd867aa3649df4de9d.hot-update.js 21 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.88cd867aa3649df4de9d.hot-update.json 51 bytes [emitted] [immutable] [hmr]
+Entrypoint main 3.52 MiB = bundle.js 3.5 MiB main.88cd867aa3649df4de9d.hot-update.js 21 KiB
+cached modules 3.16 MiB [cached] 83 modules
+runtime modules 27.5 KiB 14 modules
+./src/components/PostPlanner.js 16.5 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 131 ms
