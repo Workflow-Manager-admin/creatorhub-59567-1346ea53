@@ -27,14 +27,7 @@ function Sidebar({ collapsed, activeTab, setActiveTab }) {
       ),
       label: "Tools",
     },
-    {
-      key: "learning",
-      icon: (
-        // Phosphor Book Icon
-        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round"><path d="M3 19.5V6a2 2 0 0 1 2-2h11.5"/><path d="M9 7h7.5A2.5 2 0 0 1 19 9.5v11.5"/><path d="M3.27 20h17.46"/><path d="M7 17l2-2 2 2 2-2 2 2"/></svg>
-      ),
-      label: "Learning",
-    },
+  
     {
       key: "profile",
       icon: (
