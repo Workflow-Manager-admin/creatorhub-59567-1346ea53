@@ -1,165 +1,233 @@
-// modal.js
 import React, { useEffect, useRef } from "react";
-import ReactDOM from 'react-dom'; // Import ReactDOM for portals
+
+/**
+ * Modal Component – CreatorHub enhanced version
+ * Features:
+ *  - Modern dark theme: CreatorHub color palette (primary: #2C3E70, secondary: #1E1E2F, accent: #C9B22D)
+ *  - Accessibility: ARIA roles/labels, keyboard (ESC/tab) navigation, focus trap, close on background click
+ *  - Smooth transitions for fade/scale in/out
+ *  - Responsive and visually modern layout
+ *  - Focus ring for keyboard users
+ *  - Dismissal via overlay/ESC/close button
+ */
 
 // PUBLIC_INTERFACE
-/**
- * Floating modal overlay: always centered, with standardized CreatorHub styles & guaranteed above all content.
- * Appends modal and backdrop to the document body for global stacking context using React Portals.
- *
- * Props:
- * - open: boolean, controls visibility.
- * - onClose: function, callback when modal needs to close.
- * - children: ReactNode, content to display inside the modal.
- * - blur: boolean, if true, applies a blur effect to the background content.
- */
-function Modal({ open, onClose, children, blur }) {
-  const modalBackdropRef = useRef(null); // Ref for the backdrop div
-  const modalContentRef = useRef(null); // Ref for the actual modal content div
+function Modal({ isOpen, onClose, title, children }) {
+  const modalRef = useRef(null);
+  const lastFocused = useRef(null);
 
-  // Store previously focused element to return focus after modal closes
-  const previouslyFocusedElement = useRef(null);
-
-  // Effect for handling focus management, ESC key, and initial focus
+  // Focus trap & return focus when modal closes
   useEffect(() => {
-    if (open) {
-      // Store the element that was focused before the modal opened
-      previouslyFocusedElement.current = document.activeElement;
-
-      // Use setTimeout to ensure the modal content is rendered and then focus it
-      const timer = setTimeout(() => {
-        if (modalContentRef.current) {
-          modalContentRef.current.focus();
-        }
-      }, 0); // Small delay to ensure content is painted
-
-      const handleKeydown = (event) => {
-        if (event.key === "Escape") {
-          onClose();
-        }
-        // Basic focus trap: prevents tabbing out of the modal
-        if (event.key === 'Tab' && modalContentRef.current) {
-          const focusableElements = modalContentRef.current.querySelectorAll(
+    if (isOpen) {
+      lastFocused.current = document.activeElement;
+      // Focus the modal container (or first focusable)
+      setTimeout(() => {
+        if (modalRef.current) {
+          const focusable = modalRef.current.querySelector(
             'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
           );
-          const firstElement = focusableElements[0];
-          const lastElement = focusableElements[focusableElements.length - 1];
-
-          if (!event.shiftKey && document.activeElement === lastElement) {
-            firstElement.focus();
-            event.preventDefault();
-          } else if (event.shiftKey && document.activeElement === firstElement) {
-            lastElement.focus();
-            event.preventDefault();
-          }
+          (focusable || modalRef.current).focus();
         }
-      };
+      }, 10);
 
-      document.addEventListener("keydown", handleKeydown);
-
-      // Cleanup function for when the modal closes or component unmounts
-      return () => {
-        clearTimeout(timer);
-        document.removeEventListener("keydown", handleKeydown);
-        // Return focus to the element that was focused before the modal opened
-        if (previouslyFocusedElement.current) {
-          previouslyFocusedElement.current.focus();
-        }
-      };
+      // Prevent background scroll
+      document.body.style.overflow = "hidden";
+    } else {
+      // Restore background scroll and focus
+      document.body.style.overflow = "";
+      if (lastFocused.current) lastFocused.current.focus();
     }
-  }, [open, onClose]); // Dependencies: open and onClose
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
 
-  // Click outside to close (backdrop click)
+  // Keyboard: close on ESC, trap tab focus
   useEffect(() => {
-    if (!open) return; // Only attach listener when modal is open
-
-    const handleClickOutside = (event) => {
-      // Check if the click occurred directly on the backdrop, not on the modal content itself
-      if (modalBackdropRef.current && event.target === modalBackdropRef.current) {
+    if (!isOpen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
         onClose();
       }
+      if (e.key === "Tab") {
+        // Focus trap
+        const focusEls = modalRef.current.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const focusArray = Array.prototype.slice.call(focusEls);
+        if (!focusArray.length) return;
+        const firstEl = focusArray[0];
+        const lastEl = focusArray[focusArray.length - 1];
+
+        if (!e.shiftKey && document.activeElement === lastEl) {
+          e.preventDefault();
+          firstEl.focus();
+        } else if (e.shiftKey && document.activeElement === firstEl) {
+          e.preventDefault();
+          lastEl.focus();
+        }
+      }
     };
+    document.addEventListener("keydown", handleKeyDown, true);
+    return () => document.removeEventListener("keydown", handleKeyDown, true);
+    // eslint-disable-next-line
+  }, [isOpen]);
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [open, onClose]); // Dependencies: open and onClose
+  // Prevent render if not open for transitions
+  if (!isOpen) return null;
 
-  if (!open) {
-    // If not open, do not render anything
-    return null;
-  }
+  // Handle click overlay to close, but not modal content
+  const handleOverlayClick = (e) => {
+    if (e.target === e.currentTarget) onClose();
+  };
 
-  // Use React Portal to render the modal's DOM directly into the 'modal-root' div
-  return ReactDOM.createPortal(
+  return (
     <div
-      ref={modalBackdropRef} // Attach ref to the backdrop for click-outside
-      className={`ch-modal-backdrop ${open ? "active" : ""}`}
+      aria-modal="true"
+      role="dialog"
+      tabIndex="-1"
+      className="ch-modal-overlay ch-modal-fade-in"
+      onClick={handleOverlayClick}
       style={{
         position: "fixed",
-        inset: 0,
-        zIndex: 2300, // Explicit z-index to ensure it's on top
+        zIndex: 1200,
+        top: 0,
+        left: 0,
+        width: "100vw",
+        height: "100vh",
+        background: "rgba(26,28,47,0.90)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: blur ? "rgba(28,29,37,0.29)" : "rgba(15,16,22,0.31)",
-        backdropFilter: blur ? "blur(8px) saturate(120%)" : "none",
-        transition: "background 0.23s, backdrop-filter 0.29s",
-        animation: "modal-fade-in 0.18s linear forwards", // 'forwards' keeps the end state of the animation
-        pointerEvents: "auto",
+        transition: "background 0.25s",
+        /* For high contrast: fallback */
       }}
-      tabIndex={-1} // Make backdrop tabbable for accessibility if needed, though click outside is primary interaction
-      aria-modal="true"
-      role="dialog"
+      data-testid="modal-overlay"
     >
       <div
-        ref={modalContentRef} // Attach ref to the modal content for focus management
-        className="ch-modal"
+        className="ch-modal-content ch-modal-zoom-in"
+        ref={modalRef}
+        tabIndex={-1}
+        aria-label={title}
         style={{
-          minWidth: 340,
-          minHeight: 175,
-          maxWidth: "95vw",
-          maxHeight: "86vh",
-          overflowY: "auto",
+          width: "95vw",
+          maxWidth: 420,
+          background: "#1E1E2F",
+          color: "#fff",
+          borderRadius: 16,
+          boxShadow:
+            "0 8px 24px 0 rgba(44,62,112,0.12), 0 0 0 1.5px #2C3E70",
+          padding: "2.4rem 1.5rem 1.4rem 1.5rem",
+          position: "relative",
+          outline: "none",
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "flex-start",
-          outline: "none", // Remove default focus outline
-          zIndex: 2303, // Ensure content is above backdrop but within portal
-          animation: "modal-zoom-in 0.18s ease-out forwards", // Example zoom animation
-          // Add backdrop-filter directly to the modal content if it needs its own specific blur,
-          // otherwise it will inherit from the backdrop. If it's a floating glass effect, put it here.
-          // backdropFilter: "blur(5px)", // Example for a "glassmorphism" effect on the modal itself
+          animation: "ch-modal-zoom-in 0.28s cubic-bezier(.61,-0.02,.31,1.09)",
+          fontFamily: "'Inter',sans-serif",
         }}
-        tabIndex={0} // Make the modal content itself focusable
-        onClick={e => e.stopPropagation()} // Prevent clicks on modal content from bubbling to backdrop
-        role="document"
-        aria-live="polite" // Announce changes to assistive technologies
       >
-        {children}
-        {/* Always render a close button inside the modal area for accessibility */}
         <button
-          type="button"
-          className="ch-modal-close"
           aria-label="Close modal"
+          className="ch-modal-close-btn"
           onClick={onClose}
+          tabIndex={0}
           style={{
-            marginTop: 15,
-            alignSelf: "flex-end",
-            position: "relative", // Changed to relative if CSS positions based on relative
-            top: 4,
-            right: 0,
-            minWidth: 72,
-            fontWeight: 700
+            position: "absolute",
+            top: 18,
+            right: 22,
+            width: 32,
+            height: 32,
+            background: "transparent",
+            border: "none",
+            color: "#C9B22D",
+            fontSize: 28,
+            cursor: "pointer",
+            borderRadius: "50%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            transition: "background 0.13s",
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              onClose();
+            }
           }}
         >
-          Close
+          <span style={{fontWeight:'bold',fontSize:28,lineHeight:'28px'}}>×</span>
         </button>
+        {title && (
+          <h2
+            className="ch-modal-title"
+            style={{
+              color: "#C9B22D",
+              fontWeight: 700,
+              fontSize: "1.25rem",
+              margin: 0,
+              marginBottom: 16,
+              letterSpacing: "0.01em",
+              lineHeight: 1.2,
+              textAlign: "left",
+            }}
+            id="modal-title"
+          >
+            {title}
+          </h2>
+        )}
+        <div
+          className="ch-modal-body"
+          style={{
+            color: "#eee",
+            fontSize: "1rem",
+            lineHeight: 1.6,
+            maxHeight: "56vh",
+            overflowY: "auto",
+            marginBottom: "5px"
+          }}
+        >
+          {children}
+        </div>
       </div>
-    </div>,
-    document.getElementById('modal-root') // The target DOM node for the portal
+      {/* Inline styles for transitions/responsiveness, plus keyframes */}
+      <style>{`
+        .ch-modal-fade-in {
+          animation: ch-modal-fade-in 0.23s cubic-bezier(.68,-0.15,.32,1.25);
+        }
+        @keyframes ch-modal-fade-in {
+          from { opacity: 0 }
+          to   { opacity: 1 }
+        }
+        .ch-modal-zoom-in {
+          animation: ch-modal-zoom-in 0.24s cubic-bezier(.69,-0.18,.32,1.12);
+        }
+        @keyframes ch-modal-zoom-in {
+          0% {
+            transform: scale(0.93);
+            opacity: 0.2;
+          }
+          65% {
+            transform: scale(1.04);
+            opacity: 1;
+          }
+          100% {
+            transform: scale(1.00);
+            opacity: 1;
+          }
+        }
+        .ch-modal-content:focus, 
+        .ch-modal-content:focus-visible, 
+        .ch-modal-close-btn:focus-visible {
+          outline: 2px solid #C9B22D;
+          box-shadow: 0 0 0 3px rgba(201,178,45,0.23);
+        }
+        @media (max-width: 650px) {
+          .ch-modal-content {
+            max-width: 98vw;
+            padding: 1.1rem 0.8rem !important;
+          }
+        }
+      `}</style>
+    </div>
   );
 }
 
