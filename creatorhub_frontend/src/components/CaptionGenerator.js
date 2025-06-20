@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import Modal from './Modal'; // <--- Make sure this path is correct for your Modal.js file
 
 // PUBLIC_INTERFACE
 /**
- * CaptionGenerator - generates social captions using the Gemini API via RapidAPI.
+ * CaptionGenerator - Generates social captions using the Gemini API via RapidAPI.
+ * This component now also handles its own modal display and acts as the tool card on the dashboard.
  */
 function CaptionGenerator() {
   const [description, setDescription] = useState("");
@@ -11,16 +13,17 @@ function CaptionGenerator() {
   const [caption, setCaption] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State for this modal
-// Function to open the modal
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to control this tool's modal
+
+  // Function to open the modal
   const openModal = () => {
-    console.log("openModal called. Setting isModalOpen to true."); // LOG THIS!
+    console.log("openModal called. Setting isModalOpen to true for CaptionGenerator.");
     setIsModalOpen(true);
   };
 
   // Function to close the modal
   const closeModal = () => {
-    console.log("closeModal called. Setting isModalOpen to false."); // LOG THIS!
+    console.log("closeModal called. Setting isModalOpen to false for CaptionGenerator.");
     setIsModalOpen(false);
   };
 
@@ -54,7 +57,6 @@ function CaptionGenerator() {
           "X-RapidAPI-Key": RAPIDAPI_KEY,
           "X-RapidAPI-Host": RAPIDAPI_HOST,
         },
-        // The body now mimics the 'contents' array structure expected by Gemini API
         body: JSON.stringify({
           contents: [
             {
@@ -66,27 +68,17 @@ function CaptionGenerator() {
               ],
             },
           ],
-          // You can also try to pass generationConfig here if RapidAPI supports it,
-          // but let's get the basic call working first.
-          // For example:
-          // generationConfig: {
-          //   temperature: 0.7,
-          //   maxOutputTokens: 150,
-          // },
         }),
       });
 
-      // It's better to check response.ok *before* trying to parse JSON,
-      // as some error responses might not be valid JSON.
       if (!response.ok) {
-        const errorText = await response.text(); // Get raw text for robust error handling
+        const errorText = await response.text();
         console.error("API error response (raw):", errorText);
         let errorMessage = "Unknown API error occurred.";
         try {
           const errorData = JSON.parse(errorText);
           errorMessage = errorData.message || errorData.error?.message || errorMessage;
         } catch (e) {
-          // If it's not JSON, use the raw text
           errorMessage = errorText;
         }
 
@@ -103,12 +95,9 @@ function CaptionGenerator() {
         return;
       }
 
-      // If response is OK, then parse JSON
       const data = await response.json();
-      console.log("API Full Response Data:", data); // Log the full response to console for debugging
+      console.log("API Full Response Data:", data);
 
-      // --- THIS IS THE FINAL CRUCIAL CHANGE ---
-      // Access the caption from the correct path in the response object
       if (data?.candidate?.content?.parts?.[0]?.text) {
         setCaption(data.candidate.content.parts[0].text.trim());
       } else {
@@ -125,80 +114,117 @@ function CaptionGenerator() {
   }
 
   return (
-    <div style={{ padding: "15px" }}>
-      <h3 style={{ marginBottom: "15px", color: "var(--text-primary)" }}>
-        Caption Generator (Gemini AI via RapidAPI)
-      </h3>
-
-      {/* Description */}
-      <div style={{ marginBottom: "10px" }}>
-        <label htmlFor="description" style={labelStyle}>Describe your post or image:</label>
-        <textarea
-          id="description"
-          className="input"
-          placeholder="e.g., A sunny beach day with friends..."
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          rows="4"
-          style={textareaStyle}
-        />
-      </div>
-
-      {/* Tone Selector */}
-      <div style={{ marginBottom: "10px" }}>
-        <label htmlFor="tone" style={labelStyle}>Select Tone:</label>
-        <select
-          id="tone"
-          className="input"
-          value={tone}
-          onChange={(e) => setTone(e.target.value)}
-          style={selectStyle}
-        >
-          {["neutral", "funny", "inspirational", "professional", "witty", "casual", "sarcastic"].map((t) => (
-            <option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>
-          ))}
-        </select>
-      </div>
-
-      {/* Keywords */}
-      <div style={{ marginBottom: "15px" }}>
-        <label htmlFor="keywords" style={labelStyle}>Keywords (comma-separated):</label>
-        <input
-          id="keywords"
-          type="text"
-          className="input"
-          placeholder="e.g., summer, beachlife, #travel"
-          value={keywords}
-          onChange={(e) => setKeywords(e.target.value)}
-          style={{ width: "98%" }}
-        />
-      </div>
-
-      {/* Generate Button */}
+    // This is the dashboard card view for the Caption Generator
+    <div
+      className="tool-card"
+      onClick={openModal} // Clicking anywhere on the card opens the modal
+      style={{ cursor: 'pointer' }} // Visual cue that it's clickable
+    >
+      <h4 className="tool-title">Caption Generator</h4>
+      <p className="tool-description">Type a topic and pick a tone for fresh caption ideas.</p>
+      {/* The "Open Tool" button */}
       <button
-        className="btn"
-        style={{ width: 170 }}
-        onClick={generateCaptions}
-        disabled={loading || !description.trim()}
+        className="open-tool-button"
+        onClick={(e) => {
+          e.stopPropagation(); // Prevents the parent card's onClick from firing again
+          openModal();
+        }}
       >
-        {loading ? "Generating..." : "Generate Caption"}
+        Open Tool
       </button>
+      {/* The "i" info button */}
+      <div
+        className="info-icon"
+        onClick={(e) => {
+          e.stopPropagation(); // Prevents the parent card's onClick from firing
+          alert('Caption Generator Info: Generates creative captions for your social media posts!');
+        }}
+      >
+        ⓘ
+      </div>
 
-      {/* Error */}
-      {error && <div style={{ color: "var(--danger)", marginTop: "15px" }}>{error}</div>}
+      {/* The Modal component, rendered only when isModalOpen is true */}
+      <Modal isOpen={isModalOpen} onClose={closeModal} title="Caption Generator (Gemini AI)">
+        {/*
+          This is the content that will appear inside the modal.
+          It's the full UI and logic for your Caption Generator tool.
+        */}
+        <div style={{ padding: "15px" }}> {/* Added padding to align with modal structure */}
+          <h3 style={{ marginBottom: "15px", color: "var(--text-primary)" }}>
+            Caption Generator (Gemini AI via RapidAPI)
+          </h3>
 
-      {/* Result */}
-      {caption && (
-        <div style={resultBoxStyle}>
-          <h4 style={{ marginBottom: "10px", color: "var(--text-primary)" }}>Generated Caption:</h4>
-          <p style={captionStyle}>{caption}</p>
+          {/* Description */}
+          <div style={{ marginBottom: "10px" }}>
+            <label htmlFor="description" style={labelStyle}>Describe your post or image:</label>
+            <textarea
+              id="description"
+              className="input" // Using the global 'input' class from App.css
+              placeholder="e.g., A sunny beach day with friends..."
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows="4"
+              style={textareaStyle}
+            />
+          </div>
+
+          {/* Tone Selector */}
+          <div style={{ marginBottom: "10px" }}>
+            <label htmlFor="tone" style={labelStyle}>Select Tone:</label>
+            <select
+              id="tone"
+              className="input custom-select-arrow" // Added 'custom-select-arrow' for custom styling
+              value={tone}
+              onChange={(e) => setTone(e.target.value)}
+              style={selectStyle}
+            >
+              {["neutral", "funny", "inspirational", "professional", "witty", "casual", "sarcastic"].map((t) => (
+                <option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Keywords */}
+          <div style={{ marginBottom: "15px" }}>
+            <label htmlFor="keywords" style={labelStyle}>Keywords (comma-separated):</label>
+            <input
+              id="keywords"
+              type="text"
+              className="input" // Using the global 'input' class from App.css
+              placeholder="e.g., summer, beachlife, #travel"
+              value={keywords}
+              onChange={(e) => setKeywords(e.target.value)}
+              style={{ width: "98%" }}
+            />
+          </div>
+
+          {/* Generate Button */}
+          <button
+            className="btn" // Using the global 'btn' class from App.css
+            style={{ width: 170 }}
+            onClick={generateCaptions}
+            disabled={loading || !description.trim()}
+          >
+            {loading ? "Generating..." : "Generate Caption"}
+          </button>
+
+          {/* Error */}
+          {error && <div style={{ color: "var(--danger)", marginTop: "15px" }}>{error}</div>}
+
+          {/* Result */}
+          {caption && (
+            <div style={resultBoxStyle}>
+              <h4 style={{ marginBottom: "10px", color: "var(--text-primary)" }}>Generated Caption:</h4>
+              <p style={captionStyle}>{caption}</p>
+            </div>
+          )}
         </div>
-      )}
+      </Modal>
     </div>
   );
 }
 
-// 🔧 Inline Styles
+// 🔧 Inline Styles (These styles are for the form elements within the modal content)
 const labelStyle = {
   display: "block",
   marginBottom: "5px",
@@ -212,7 +238,7 @@ const textareaStyle = {
 };
 
 const selectStyle = {
-  width: "calc(98% + 2px)",
+  width: "calc(98% + 2px)", // Adjust to make sure it fills like other inputs
 };
 
 const resultBoxStyle = {
