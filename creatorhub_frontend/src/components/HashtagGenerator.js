@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { GoogleGenerativeAI } from "@google/generative-ai"; // Import Gemini SDK
-import Modal from './Modal'; // Import your Modal component
+import Modal from './Modal';
 
 // PUBLIC_INTERFACE
 /**
- * HashtagGenerator - generates grouped hashtags using the Gemini API.
+ * HashtagGenerator - generates grouped hashtags using the Gemini 1.5 Pro API via RapidAPI.
  * This component now also handles its own modal display and acts as the tool card on the dashboard.
  */
 function HashtagGenerator() {
@@ -17,12 +16,13 @@ function HashtagGenerator() {
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State to control this tool's modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // --- Gemini API Configuration ---
-  const GEMINI_API_KEY = 'AIzaSyACx37UXHYLpnkMw0wZbWuYKECWU8negfo'; // Your API key
-  const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-pro-latest' });
+  // --- RapidAPI Configuration (Use your RapidAPI Key here) ---
+  // IMPORTANT: Ensure this is your RapidAPI key, NOT your direct Google API key.
+  const RAPIDAPI_KEY = '6d105ed8cfmsh977c9a021254071p16d2e4jsndadd8381e47f'; // Your RapidAPI Key
+  const RAPIDAPI_HOST = "gemini-2-5-pro.p.rapidapi.com";
+  const RAPIDAPI_ENDPOINT = `https://${RAPIDAPI_HOST}/`;
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -49,16 +49,84 @@ function HashtagGenerator() {
       Trending: #tagA #tagB #tagC #tagD #tagE
       Evergreen: #tagX #tagY #tagZ #tagAA #tagBB`;
 
-      const result = await model.generateContent({
-        contents: [{ role: 'user', parts: [{ text: prompt }] }],
-        generationConfig: {
-          temperature: 0.7,
-          maxOutputTokens: 250,
+      console.log("Sending prompt to Gemini 1.5 Pro (via RapidAPI):", prompt);
+
+      const response = await fetch(RAPIDAPI_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-RapidAPI-Key": RAPIDAPI_KEY,
+          "X-RapidAPI-Host": RAPIDAPI_HOST,
         },
+        body: JSON.stringify({
+          messages: [
+            {
+              role: "user",
+              content: prompt,
+            },
+          ],
+          model: "gemini-2-5-pro",
+        }),
       });
 
-      const response = await result.response;
-      const generatedText = response.text();
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("API error response (raw):", errorText);
+        let errorMessage = `API request failed with status ${response.status}.`;
+        try {
+          const errorData = JSON.parse(errorText);
+          errorMessage = errorData.message || errorData.error?.message || errorMessage;
+        } catch (e) {
+          errorMessage = errorText;
+        }
+
+        if (response.status === 429) {
+          setError("Rate limit exceeded. Please wait and try again after a few moments.");
+        } else if (response.status === 403 || response.status === 401) {
+          setError(`Authentication error: Invalid RapidAPI key or subscription. Details: ${errorMessage}`);
+        } else if (response.status === 400) {
+          setError(`Bad request: The API expected a different input format or has a validation error. Details: ${errorMessage}`);
+        } else if (response.status === 500) {
+          setError(`Server error (500): The API encountered an internal problem. Details: ${errorMessage}. Please try again later.`);
+        } else {
+          setError(`Server error: ${errorMessage}`);
+        }
+        return;
+      }
+
+      const responseText = await response.text();
+      console.log("Raw API Response Text:", responseText); // Debugging: See the raw response
+
+      if (!responseText || responseText.trim().length < 5) {
+          console.error("RapidAPI returned a 200 OK but with an empty or extremely minimal response body:", responseText);
+          setError("RapidAPI responded with an empty or invalid response. This might indicate a server-side issue. Please double-check your RapidAPI subscription details.");
+          setLoading(false);
+          return;
+      }
+
+      let data;
+      try {
+        data = JSON.parse(responseText);
+      } catch (jsonParseError) {
+        console.error("Failed to parse RapidAPI response as JSON:", responseText, jsonParseError);
+        setError("Received an invalid response from RapidAPI (not valid JSON). Please check your RapidAPI subscription or contact support.");
+        setLoading(false);
+        return;
+      }
+      
+      console.log("Parsed API Data (from Gemini 1.5 Pro via RapidAPI):", data);
+
+      let generatedText = '';
+      if (data?.candidate?.content?.parts?.[0]?.text) {
+        generatedText = data.candidate.content.parts[0].text.trim();
+      } else if (data?.choices?.[0]?.message?.content) { // Fallback for other common LLM API formats
+        generatedText = data.choices[0].message.content.trim();
+      } else if (data?.error) {
+        setError(`Gemini 1.5 Pro API error: ${data.error.message || "Unknown error"}. Check API response in console for details.`);
+        console.error("Gemini 1.5 Pro API returned an error object:", data.error);
+      }
+
+      console.log("Extracted generatedText:", generatedText); // Debugging: See the final text to be parsed
 
       if (generatedText) {
         const newGroups = {
@@ -68,23 +136,41 @@ function HashtagGenerator() {
         };
 
         const lines = generatedText.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+        console.log("Lines after splitting and trimming:", lines); // Debugging: See individual lines
+
         let currentGroup = "";
+        const hashtagRegex = /#\w+/g; // Matches # followed by one or more word characters
 
         lines.forEach(line => {
-          if (line.toLowerCase().startsWith("high engagement:")) {
+          const lowerLine = line.toLowerCase();
+          if (lowerLine.includes("high engagement")) { // Use includes for more flexibility
             currentGroup = "High Engagement";
-            newGroups[currentGroup] = line.substring("High Engagement:".length).split(' ').filter(tag => tag.startsWith('#') && tag.length > 1);
-          } else if (line.toLowerCase().startsWith("trending:")) {
+          } else if (lowerLine.includes("trending")) { // Use includes for more flexibility
             currentGroup = "Trending";
-            newGroups[currentGroup] = line.substring("Trending:".length).split(' ').filter(tag => tag.startsWith('#') && tag.length > 1);
-          } else if (line.toLowerCase().startsWith("evergreen:")) {
+          } else if (lowerLine.includes("evergreen")) { // Use includes for more flexibility
             currentGroup = "Evergreen";
-            newGroups[currentGroup] = line.substring("Evergreen:".length).split(' ').filter(tag => tag.startsWith('#') && tag.length > 1);
-          } else if (currentGroup && line.startsWith('#')) {
-            newGroups[currentGroup].push(...line.split(' ').filter(tag => tag.startsWith('#') && tag.length > 1));
+          }
+
+          // Extract all hashtags from the current line using regex
+          const foundHashtags = line.match(hashtagRegex);
+          if (foundHashtags && currentGroup) {
+            // Filter out empty or too short tags, and add them to the current group
+            newGroups[currentGroup].push(...foundHashtags.filter(tag => tag.length > 1));
           }
         });
+
+        // Remove duplicates within each group if any
+        newGroups["High Engagement"] = [...new Set(newGroups["High Engagement"])];
+        newGroups["Trending"] = [...new Set(newGroups["Trending"])];
+        newGroups["Evergreen"] = [...new Set(newGroups["Evergreen"])];
+
         setGroups(newGroups);
+        console.log("Final newGroups before setting state:", newGroups); // Debugging: See the structured groups
+
+        // Add a check if no hashtags were actually generated/parsed
+        if (Object.values(newGroups).flat().length === 0) {
+            setError("The API returned a response, but no hashtags could be parsed from it. The format might be unexpected. Please try regenerating or refining your topic.");
+        }
 
       } else {
         setGroups({
@@ -92,10 +178,11 @@ function HashtagGenerator() {
           "Trending": [],
           "Evergreen": [],
         });
+        setError("The API did not return any readable text for hashtags. This might indicate an issue with the API response.");
       }
     } catch (err) {
-      console.error('Error generating hashtags with Gemini API:', err);
-      setError(`Failed to generate hashtags: ${err.message || 'An unknown error occurred.'}`);
+      console.error('Network/API error generating hashtags with Gemini API:', err);
+      setError(`Failed to generate hashtags: ${err.message || 'An unknown network error occurred.'}`);
     } finally {
       setLoading(false);
     }
@@ -121,7 +208,16 @@ function HashtagGenerator() {
     <div className="tool-card" onClick={openModal}> {/* Make the whole card clickable */}
       <h4 className="tool-title">Hashtag Generator</h4>
       <p className="tool-description">Generate grouped hashtags (High Engagement, Trending, Evergreen).</p>
-      <button className="open-tool-button" onClick={openModal}>Open Tool</button>
+      {/* FIX: Add e.stopPropagation() to prevent click bubbling from button to parent div */}
+      <button 
+        className="open-tool-button" 
+        onClick={(e) => { 
+          e.stopPropagation(); // Prevents the div's onClick from firing
+          openModal();
+        }}
+      >
+        Open Tool
+      </button>
       <div className="info-icon" onClick={(e) => { e.stopPropagation(); alert('Hashtag Generator Info: Provides categorized hashtags for your content.'); }}>
           ⓘ
       </div>
@@ -130,17 +226,14 @@ function HashtagGenerator() {
       <Modal isOpen={isModalOpen} onClose={closeModal} title="Hashtag Generator (Gemini AI)">
         {/* Content of the modal: your original HashtagGenerator form and results */}
         <div
-          className="ch-card" // This specific card styling might not be needed INSIDE the modal if modal has its own
-          // However, keeping it for now to preserve original layout you provided for the form.
-          // Adjust inline styles from original ch-card if they conflict with modal styling.
-          // It's better to remove these inline styles if modal has proper padding/background.
+          className="ch-card" 
           style={{
-            maxWidth: 490, // Max width is less relevant inside a modal with its own width
+            maxWidth: 490, 
             margin: "0 auto",
-            borderRadius: 24, // Modal already has border-radius
-            boxShadow: "none", // Remove shadow inside modal, modal has its own shadow
-            padding: 20, // Reduced padding to let modal's padding handle it
-            background: "transparent", // Use transparent as modal provides background
+            borderRadius: 24, 
+            boxShadow: "none", 
+            padding: 20, 
+            background: "transparent", 
           }}
         >
           <div
@@ -149,11 +242,11 @@ function HashtagGenerator() {
               fontWeight: 800,
               fontSize: "1.24em",
               marginBottom: 13,
-              color: "var(--accent,#A178DF)", // Use CreatorHub accent here if preferred, or modal title handles it
+              color: "var(--accent,#A178DF)",
               textShadow: "0 2px 11px #a178df1b",
             }}
           >
-            Hashtag Generator (Gemini AI) {/* This title is redundant with modal title, consider removing */}
+            Hashtag Generator (Gemini AI)
           </div>
           <form
             onSubmit={(e) => { e.preventDefault(); generateHashtags(); }}
@@ -168,9 +261,9 @@ function HashtagGenerator() {
               value={topic}
               placeholder="e.g. Fitness, AI, Travel"
               maxLength={60}
-              className="ch-search input" // Added 'input' class for global styling
+              className="ch-search input" 
               style={{
-                background: "#181d26", // Specific background from your original code
+                background: "#181d26", 
                 color: "var(--text-color)",
                 border: "1.2px solid var(--border-color)",
                 borderRadius: 15,
@@ -182,14 +275,14 @@ function HashtagGenerator() {
             />
             <button
               type="submit"
-              className="ch-info-btn btn" // Added 'btn' class for global styling
+              className="ch-info-btn btn" 
               disabled={isGenerateDisabled}
               style={{
                 marginTop: 2,
                 fontWeight: 700,
                 alignSelf: "flex-start",
                 minWidth: 95,
-                background: "var(--accent-gradient)", // Keep this if you use gradients specific to buttons
+                background: "var(--accent-gradient)", 
                 color: "#fff"
               }}
             >
@@ -213,10 +306,10 @@ function HashtagGenerator() {
                         ? "var(--success-bg)"
                         : groupName === "Trending"
                           ? "var(--info-bg)"
-                          : "var(--card-bg,rgba(43,48,70,0.82))", // Use a generic background if 'card-bg' not defined
+                          : "var(--card-bg,rgba(43,48,70,0.82))", 
                     borderRadius: 13,
                     padding: "13px 16px 10px 16px",
-                    boxShadow: "0 2.5px 11px rgba(161,120,223,0.16)", // Updated shadow for consistency
+                    boxShadow: "0 2.5px 11px rgba(161,120,223,0.16)", 
                   }}
                 >
                   <div
@@ -231,7 +324,7 @@ function HashtagGenerator() {
                       fontSize: ".98em",
                       marginBottom: 6,
                       letterSpacing: ".02em",
-                      textShadow: groupName === "High Engagement" ? "0 1.5px 9px rgba(88,216,154,0.13)" : undefined, // Updated shadow color
+                      textShadow: groupName === "High Engagement" ? "0 1.5px 9px rgba(88,216,154,0.13)" : undefined, 
                     }}
                   >
                     {groupName}
@@ -246,10 +339,10 @@ function HashtagGenerator() {
                             marginRight: 8,
                             background:
                               groupName === "Trending"
-                                ? "var(--accent-gradient)" // This gradient is for the trending tags
+                                ? "var(--accent-gradient)" 
                                 : groupName === "High Engagement"
                                   ? "var(--success-bg)"
-                                  : "rgba(48,54,81,0.92)", // Generic tag background
+                                  : "rgba(48,54,81,0.92)", 
                             color: groupName === "Trending"
                               ? "#fff"
                               : groupName === "High Engagement"
@@ -277,13 +370,13 @@ function HashtagGenerator() {
           <div style={{ display: "flex", gap: 11, marginTop: 20 }}>
             <button
               type="button"
-              className="ch-info-btn btn" // Added 'btn' class
+              className="ch-info-btn btn" 
               style={{
                 background: "var(--accent-gradient-focus)",
                 color: "#fff",
                 fontWeight: 700,
                 minWidth: 83,
-                boxShadow: "0 1.1px 9px rgba(206,109,135,0.25)", // Updated shadow color
+                boxShadow: "0 1.1px 9px rgba(206,109,135,0.25)", 
               }}
               onClick={handleCopy}
               disabled={loading || Object.values(groups).flat().length === 0}
@@ -293,13 +386,13 @@ function HashtagGenerator() {
             </button>
             <button
               type="button"
-              className="ch-info-btn btn" // Added 'btn' class
+              className="ch-info-btn btn" 
               style={{
                 background: "var(--info-bg)",
                 color: "var(--info)",
                 fontWeight: 600,
                 minWidth: 115,
-                boxShadow: "0 1.1px 8px rgba(130,196,236,0.13)", // Updated shadow color
+                boxShadow: "0 1.1px 8px rgba(130,196,236,0.13)", 
               }}
               onClick={handleRegenerate}
               disabled={isGenerateDisabled}

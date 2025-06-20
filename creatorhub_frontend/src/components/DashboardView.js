@@ -2,13 +2,15 @@ import React, { useState, useEffect, useMemo } from "react";
 import Card from "./Card";
 import SkeletonLoader from "./SkeletonLoader";
 import GeminiInsightsModal from "./GeminiInsightsModal";
-import Modal from "./Modal";
-// Import Generator components directly, as they will be passed as content
+import Modal from "./Modal"; // <--- This central Modal will be used for tools
+
+// Import Generator components (modal content only)
 import HashtagGenerator from "./HashtagGenerator";
 import CaptionGenerator from "./CaptionGenerator";
 import HookGenerator from "./HookGenerator";
 import ContentIdeaGenerator from "./ContentIdeaGenerator";
 import PostPlanner from "./PostPlanner";
+
 // IMPORTANT: NEW IMPORT FOR DISPLAYING USER CONTENT
 import UserContentList from "./UserContentList";
 
@@ -17,7 +19,7 @@ import { fetchDevToContent } from "../api/devto";
 import { fetchGeminiContent } from "../api/gemini";
 
 // IMPORT THE STATIC GUIDES FROM DashboardQuickCards.js
-import { staticDashboardGuides } from "./DashboardQuickCards"; // <--- ADD THIS LINE
+import { staticDashboardGuides } from "./DashboardQuickCards";
 
 // Helper: Placeholder for icon/lottie (remains mostly the same)
 function IconLottiePlaceholder({ type = "lottie", size = 48 }) {
@@ -52,6 +54,7 @@ function IconLottiePlaceholder({ type = "lottie", size = 48 }) {
 /**
  * ToolCard component - now simplified and passed onLearnMore prop
  * and a direct Button prop.
+ * The Button prop will be a clickable element that triggers a modal open.
  */
 function ToolCard({ title, desc, accent, loading, Button, iconType, onLearnMore }) {
   // Decide Gemini modal category by accent (default "Other")
@@ -72,12 +75,13 @@ function ToolCard({ title, desc, accent, loading, Button, iconType, onLearnMore 
             {desc}
           </div>
           <div style={{ marginTop: 10, display: "flex", flexWrap: "wrap", gap: 7 }}>
-            {Button ? Button : null}
+            {/* The Button prop is now rendered directly here */}
+            {Button}
             {/* Learn More button now opens the central GeminiInsightsModal */}
             <button
-              className="dashboard-card-info-icon" // Re-using the class for styling simplicity
+              className="dashboard-card-info-icon"
               style={{
-                position: "absolute", // Position it bottom-right of the card
+                position: "absolute",
                 bottom: "1rem",
                 right: "1rem",
                 color: "#ccc",
@@ -86,7 +90,6 @@ function ToolCard({ title, desc, accent, loading, Button, iconType, onLearnMore 
                 fontSize: "1.5rem",
                 padding: 0,
                 cursor: "pointer",
-                // Ensure visibility and interaction
                 zIndex: 1
               }}
               type="button"
@@ -98,7 +101,6 @@ function ToolCard({ title, desc, accent, loading, Button, iconType, onLearnMore 
               aria-label={`Show AI insights for ${title}`}
               title="Show AI insights"
             >
-              {/* Info icon */}
               <svg
                 width="25"
                 height="25"
@@ -120,20 +122,16 @@ function ToolCard({ title, desc, accent, loading, Button, iconType, onLearnMore 
 }
 
 /**
- * CarouselSection component (re-integrated from previous version)
- * Handles horizontal scrolling with navigation arrows.
+ * CarouselSection component
  */
 function CarouselSection({ title, items, CardComp, accent }) {
   const [scrollIdx, setScrollIdx] = useState(0);
-  const CARD_WIDTH = 340; // Original card width
-  const GAP_WIDTH = 28;   // Original gap width
-  const TOTAL_CARD_SPACE = CARD_WIDTH + GAP_WIDTH; // 368px
+  const CARD_WIDTH = 340;
+  const GAP_WIDTH = 28;
+  const TOTAL_CARD_SPACE = CARD_WIDTH + GAP_WIDTH;
   const CARDS_VISIBLE = 3;
 
-  // Clamp scrollIdx so we never go out of bounds
   useEffect(() => {
-    // Max scroll index: total items minus visible cards.
-    // If items.length is less than CARDS_VISIBLE, maxScrollIdx will be 0 or negative, clamped to 0.
     const maxScrollIdx = Math.max(0, items.length - CARDS_VISIBLE);
     if (scrollIdx > maxScrollIdx) {
       setScrollIdx(maxScrollIdx);
@@ -161,8 +159,7 @@ function CarouselSection({ title, items, CardComp, accent }) {
         <div style={{
           fontWeight: 800,
           fontSize: "1.22rem",
-          // Dynamic color based on accent type
-          color: accent === "guide" ? "var(--accent)" : accent === "tool" ? "#FF4500" : "var(--accent)", // Red for tools
+          color: accent === "guide" ? "var(--accent)" : accent === "tool" ? "#FF4500" : "var(--accent)",
           flex: 1,
           letterSpacing: "-0.02em"
         }}>
@@ -211,8 +208,7 @@ function CarouselSection({ title, items, CardComp, accent }) {
           overflow: "hidden",
           position: "relative",
           paddingBottom: 7,
-          // Total width for 3 cards + 2 gaps
-          width: (CARD_WIDTH * CARDS_VISIBLE) + (GAP_WIDTH * (CARDS_VISIBLE - 1)), // 340*3 + 28*2 = 1020 + 56 = 1076px
+          width: (CARD_WIDTH * CARDS_VISIBLE) + (GAP_WIDTH * (CARDS_VISIBLE - 1)),
           maxWidth: "100%",
           margin: "0 auto"
         }}
@@ -221,12 +217,11 @@ function CarouselSection({ title, items, CardComp, accent }) {
           style={{
             display: "flex",
             flexDirection: "row",
-            gap: GAP_WIDTH, // Use GAP_WIDTH constant
+            gap: GAP_WIDTH,
             transition: "transform 0.33s cubic-bezier(.47, .12, .18, 1.1)",
             willChange: "transform",
-            transform: `translateX(-${scrollIdx * TOTAL_CARD_SPACE}px)`, // Use TOTAL_CARD_SPACE
+            transform: `translateX(-${scrollIdx * TOTAL_CARD_SPACE}px)`,
             minHeight: 176,
-            // Adjust overall width of the inner container to accommodate all items with gaps
             width: items.length * TOTAL_CARD_SPACE,
             boxSizing: "content-box"
           }}
@@ -235,8 +230,8 @@ function CarouselSection({ title, items, CardComp, accent }) {
             <div
               key={item.id || item.title || idx}
               style={{
-                minWidth: CARD_WIDTH, // Use CARD_WIDTH constant
-                maxWidth: CARD_WIDTH, // Use CARD_WIDTH constant
+                minWidth: CARD_WIDTH,
+                maxWidth: CARD_WIDTH,
                 flex: `0 0 ${CARD_WIDTH}px`
               }}
             >
@@ -294,7 +289,7 @@ function DashboardView({ user = { name: "Alex" } }) {
         iconType: "lottie",
         Button: (
           <button
-            className="ch-info-btn"
+            className="ch-info-btn" // Re-using existing button class for styling
             onClick={() => setToolModal({ open: true, title: "Hashtag Generator", content: <HashtagGenerator /> })}
           >
             Open Tool
@@ -397,7 +392,7 @@ function DashboardView({ user = { name: "Alex" } }) {
       if (devtoArr && devtoArr.length) {
         devtoArr.forEach(article => {
           fetchedGuides.push({
-            id: article.id || `devto-guide-${Math.random()}`, // Ensure unique ID
+            id: article.id || `devto-guide-${Math.random()}`,
             accent: "guide",
             title: article.title,
             desc: article.author ? `By ${article.author}` : "Dev.to Article",
@@ -424,12 +419,11 @@ function DashboardView({ user = { name: "Alex" } }) {
       if (geminiArr && geminiArr.length) {
         geminiArr.forEach(item => {
           fetchedGuides.push({
-            id: item.id || `gemini-guide-${Math.random()}`, // Ensure unique ID
+            id: item.id || `gemini-guide-${Math.random()}`,
             accent: "guide",
             title: item.title,
-            desc: item.result || "Gemini AI Demo (Text Generation)", // Refined desc
+            desc: item.result || "Gemini AI Demo (Text Generation)",
             iconType: "lottie",
-            // Assuming these Gemini items don't "open a tool" but provide info
             Button: (
               <button className="ch-info-btn" disabled>
                 View Content
@@ -441,10 +435,10 @@ function DashboardView({ user = { name: "Alex" } }) {
 
       // Combine all content: Quick Access Tools (red) + Fetched Guides (blue) + Static Guides
       const combinedGuides = [
-        ...staticDashboardGuides.map(guide => ({ // Map static guides to ToolCard props
+        ...staticDashboardGuides.map(guide => ({
           ...guide,
-          desc: guide.description, // Rename description to desc for ToolCard
-          accent: "guide", // Ensure accent is set
+          desc: guide.description,
+          accent: "guide",
           Button: (
             <a
               href={guide.link}
@@ -455,7 +449,7 @@ function DashboardView({ user = { name: "Alex" } }) {
               {guide.title.includes("YouTube") ? "Watch" : guide.title.includes("Blogging") || guide.title.includes("Instagram") ? "Visit Guide" : "Read"}
             </a>
           ),
-          iconType: guide.icon === "🎥" || guide.icon === "✍️" || guide.icon === "📈" ? "lottie" : "icon", // Map icon to iconType
+          iconType: guide.icon === "🎥" || guide.icon === "✍️" || guide.icon === "📈" ? "lottie" : "icon",
         })),
         ...fetchedGuides
       ];
@@ -464,7 +458,7 @@ function DashboardView({ user = { name: "Alex" } }) {
       setLoading(false);
     });
     return () => { isMounted = false; };
-  }, []); // Empty dependency array means this runs once on mount
+  }, []);
 
   // Classify content for carousels using useMemo for performance
   const guides = useMemo(() => allContentCards.filter(card => card.accent === "guide"), [allContentCards]);
@@ -483,6 +477,7 @@ function DashboardView({ user = { name: "Alex" } }) {
     setInsightsModal(cur => ({ ...cur, open: false }));
   };
 
+  // Handler to close the central tool modal
   const handleCloseToolModal = () => {
     setToolModal({ open: false, title: "", content: null });
   };
@@ -571,7 +566,7 @@ function DashboardView({ user = { name: "Alex" } }) {
       ) : (
         <>
           {/* Guides Carousel */}
-          {guides.length > 0 && ( // Only render if there are guides
+          {guides.length > 0 && (
             <CarouselSection
               title="Guides"
               items={guides}
@@ -588,7 +583,7 @@ function DashboardView({ user = { name: "Alex" } }) {
           )}
 
           {/* Tools Carousel */}
-          {tools.length > 0 && ( // Only render if there are tools
+          {tools.length > 0 && (
             <CarouselSection
               title="Tools"
               items={tools}
@@ -596,7 +591,7 @@ function DashboardView({ user = { name: "Alex" } }) {
                 <ToolCard
                   {...props}
                   accent="tool"
-                  onLearnMore={handleOpenInsightsModal} // Tools can also have insights
+                  onLearnMore={handleOpenInsightsModal}
                   loading={false}
                 />
               )}
@@ -624,10 +619,9 @@ function DashboardView({ user = { name: "Alex" } }) {
 
       {/* Central Tool Modal for Hashtag/Caption/Hook Generators */}
       {toolModal.open && (
-        <Modal // <--- Changed from GeminiInsightsModal to Modal
-          open={toolModal.open}
+        <Modal
+          isOpen={toolModal.open} // Corrected prop name to isOpen
           onClose={handleCloseToolModal}
-          // Assuming your generic Modal component accepts a title prop for its header
           title={toolModal.title}
           blur={true}
         >

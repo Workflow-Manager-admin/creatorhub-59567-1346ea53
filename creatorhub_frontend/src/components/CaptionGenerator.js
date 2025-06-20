@@ -1,55 +1,44 @@
 import React, { useState } from "react";
-import Modal from './Modal'; // <--- Make sure this path is correct for your Modal.js file
+import Modal from './Modal'; // Import your Modal component
 
 // PUBLIC_INTERFACE
 /**
- * CaptionGenerator - Generates social captions using the Gemini API via RapidAPI.
+ * CaptionGenerator - generates social media captions using the Gemini 1.5 Pro API via RapidAPI.
  * This component now also handles its own modal display and acts as the tool card on the dashboard.
  */
 function CaptionGenerator() {
-  const [description, setDescription] = useState("");
-  const [tone, setTone] = useState("neutral");
-  const [keywords, setKeywords] = useState("");
-  const [caption, setCaption] = useState("");
+  const [promptInput, setPromptInput] = useState("");
+  const [tone, setTone] = useState("creative"); // Default tone
+  const [captions, setCaptions] = useState([]); // Changed to an array to store individual captions
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [copied, setCopied] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false); // State to control this tool's modal
 
-  // Function to open the modal
-  const openModal = () => {
-    console.log("openModal called. Setting isModalOpen to true for CaptionGenerator.");
-    setIsModalOpen(true);
-  };
-
-  // Function to close the modal
-  const closeModal = () => {
-    console.log("closeModal called. Setting isModalOpen to false for CaptionGenerator.");
-    setIsModalOpen(false);
-  };
-
-  // ⚠️ Use environment variables in production
-  const RAPIDAPI_KEY = '6d105ed8cfmsh977c9a021254071p16d2e4jsndadd8381e47f'; // Make sure this key is correct
-  const RAPIDAPI_HOST = "gemini-pro-ai.p.rapidapi.com";
-  // CONFIRMED: The endpoint is just the host, no /text path needed.
+  // --- RapidAPI Configuration ---
+  const RAPIDAPI_KEY = '6d105ed8cfmsh977c9a021254071p16d2e4jsndadd8381e47f'; // Your RapidAPI Key
+  const RAPIDAPI_HOST = "gemini-2-5-pro.p.rapidapi.com";
   const RAPIDAPI_ENDPOINT = `https://${RAPIDAPI_HOST}/`;
 
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
   async function generateCaptions() {
-    if (!description.trim()) {
-      setError("Please provide a description for the caption.");
+    if (!promptInput.trim()) {
+      setError("Please describe your post or product to generate captions.");
       return;
     }
-
     setLoading(true);
     setError(null);
-    setCaption("");
-
-    // Build prompt string
-    let prompt = `Generate a social media caption based on: "${description}".`;
-    if (tone !== "neutral") prompt += ` Tone: ${tone}.`;
-    if (keywords.trim()) prompt += ` Include these keywords: ${keywords}.`;
-    prompt += " Keep it concise and engaging.";
+    setCaptions([]); // Clear previous captions
 
     try {
+      const prompt = `Generate 5 social media captions for a post about "${promptInput}".
+                      The tone should be ${tone}.
+                      Each caption should be on a new line, numbered (e.g., "1. Your caption here.").`;
+
+      console.log("Sending prompt to Gemini 1.5 Pro (via RapidAPI) for captions:", prompt);
+
       const response = await fetch(RAPIDAPI_ENDPOINT, {
         method: "POST",
         headers: {
@@ -58,201 +47,298 @@ function CaptionGenerator() {
           "X-RapidAPI-Host": RAPIDAPI_HOST,
         },
         body: JSON.stringify({
-          contents: [
+          messages: [
             {
               role: "user",
-              parts: [
-                {
-                  text: prompt,
-                },
-              ],
+              content: prompt,
             },
           ],
+          model: "gemini-2-5-pro",
         }),
       });
 
       if (!response.ok) {
         const errorText = await response.text();
         console.error("API error response (raw):", errorText);
-        let errorMessage = "Unknown API error occurred.";
+        let errorMessage = `API request failed with status ${response.status}.`;
         try {
           const errorData = JSON.parse(errorText);
           errorMessage = errorData.message || errorData.error?.message || errorMessage;
         } catch (e) {
           errorMessage = errorText;
         }
-
-        if (response.status === 429) {
-          setError("Rate limit exceeded. Please wait and try again.");
-        } else if (response.status === 403 || response.status === 401) {
-          setError("Invalid API key or subscription issue. " + errorMessage);
-        } else if (response.status === 400 && errorMessage.includes("contents")) {
-           setError("Bad request: Issue with request format. Ensure 'contents' is correctly structured.");
-        }
-        else {
-          setError(`API error: ${errorMessage}`);
-        }
+        setError(`Failed to generate captions: ${errorMessage}`);
         return;
       }
 
-      const data = await response.json();
-      console.log("API Full Response Data:", data);
+      const responseText = await response.text();
+      console.log("Raw API Response Text (Captions):", responseText);
 
-      if (data?.candidate?.content?.parts?.[0]?.text) {
-        setCaption(data.candidate.content.parts[0].text.trim());
-      } else {
-        setCaption("No caption generated. Try refining your input or check console for response details.");
-        console.warn("Unexpected response format or no caption in expected path:", data);
+      if (!responseText || responseText.trim().length < 5) {
+          console.error("RapidAPI returned a 200 OK but with an empty or extremely minimal response body:", responseText);
+          setError("RapidAPI responded with an empty or invalid response. This might indicate a server-side issue. Please double-check your RapidAPI subscription details.");
+          setLoading(false);
+          return;
       }
 
+      let data;
+      try {
+        data = JSON.parse(responseText);
+      } catch (jsonParseError) {
+        console.error("Failed to parse RapidAPI response as JSON:", responseText, jsonParseError);
+        setError("Received an invalid response from RapidAPI (not valid JSON). Please check your RapidAPI subscription or contact support.");
+        setLoading(false);
+        return;
+      }
+      
+      console.log("Parsed API Data (Captions):", data);
+
+      let generatedText = '';
+      if (data?.candidate?.content?.parts?.[0]?.text) {
+        generatedText = data.candidate.content.parts[0].text.trim();
+      } else if (data?.choices?.[0]?.message?.content) {
+        generatedText = data.choices[0].message.content.trim();
+      } else if (data?.error) {
+        setError(`Gemini 1.5 Pro API error: ${data.error.message || "Unknown error"}. Check API response in console for details.`);
+        console.error("Gemini 1.5 Pro API returned an error object:", data.error);
+      }
+
+      console.log("Extracted generatedText (Captions):", generatedText);
+
+      if (generatedText) {
+        // Split captions by new line and clean them up
+        const newCaptions = generatedText
+          .split('\n')
+          .map(line => line.trim())
+          .filter(line => line.length > 0 && !/^\d+\.\s*$/.test(line)) // Filter out empty lines and just numbers
+          .map(line => line.replace(/^\d+\.\s*/, '')); // Remove numbering (e.g., "1. ")
+
+        if (newCaptions.length === 0) {
+            setError("The API generated text, but no distinct captions could be parsed. Try regenerating or adjusting your prompt.");
+        }
+        setCaptions(newCaptions);
+      } else {
+        setCaptions([]);
+        setError("No captions were generated. Please try again.");
+      }
     } catch (err) {
-      console.error("Network/API error:", err);
-      setError(`Network error: ${err.message || "Unknown issue"}`);
+      console.error('Error generating captions with Gemini API:', err);
+      setError(`Failed to generate captions: ${err.message || 'An unknown error occurred.'}`);
     } finally {
       setLoading(false);
     }
   }
 
+  function handleCopyAllCaptions() {
+    const allCaptionsText = captions.join('\n\n'); // Join with double newline for readability
+    if (allCaptionsText) {
+      navigator.clipboard.writeText(allCaptionsText).then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1100);
+      }).catch(err => {
+        console.error("Failed to copy captions:", err);
+        setError("Failed to copy captions to clipboard.");
+      });
+    }
+  }
+
+  function handleRegenerate() {
+    generateCaptions();
+    setCopied(false);
+  }
+
+  const isGenerateDisabled = loading || !promptInput.trim();
+
   return (
-    // This is the dashboard card view for the Caption Generator
-    <div
-      className="tool-card"
-      onClick={openModal} // Clicking anywhere on the card opens the modal
-      style={{ cursor: 'pointer' }} // Visual cue that it's clickable
-    >
+    <div className="tool-card" onClick={openModal}>
       <h4 className="tool-title">Caption Generator</h4>
-      <p className="tool-description">Type a topic and pick a tone for fresh caption ideas.</p>
-      {/* The "Open Tool" button */}
+      <p className="tool-description">Generate engaging social media captions.</p>
       <button
         className="open-tool-button"
         onClick={(e) => {
-          e.stopPropagation(); // Prevents the parent card's onClick from firing again
+          e.stopPropagation(); // Prevents the div's onClick from firing
           openModal();
         }}
       >
         Open Tool
       </button>
-      {/* The "i" info button */}
-      <div
-        className="info-icon"
-        onClick={(e) => {
-          e.stopPropagation(); // Prevents the parent card's onClick from firing
-          alert('Caption Generator Info: Generates creative captions for your social media posts!');
-        }}
-      >
+      <div className="info-icon" onClick={(e) => { e.stopPropagation(); alert('Caption Generator Info: Creates engaging captions for your social media posts based on your input and desired tone.'); }}>
         ⓘ
       </div>
 
-      {/* The Modal component, rendered only when isModalOpen is true */}
       <Modal isOpen={isModalOpen} onClose={closeModal} title="Caption Generator (Gemini AI)">
-        {/*
-          This is the content that will appear inside the modal.
-          It's the full UI and logic for your Caption Generator tool.
-        */}
-        <div style={{ padding: "15px" }}> {/* Added padding to align with modal structure */}
-          <h3 style={{ marginBottom: "15px", color: "var(--text-primary)" }}>
-            Caption Generator (Gemini AI via RapidAPI)
-          </h3>
-
-          {/* Description */}
-          <div style={{ marginBottom: "10px" }}>
-            <label htmlFor="description" style={labelStyle}>Describe your post or image:</label>
-            <textarea
-              id="description"
-              className="input" // Using the global 'input' class from App.css
-              placeholder="e.g., A sunny beach day with friends..."
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              rows="4"
-              style={textareaStyle}
-            />
+        <div
+          className="ch-card"
+          style={{
+            maxWidth: 490,
+            margin: "0 auto",
+            borderRadius: 24,
+            boxShadow: "none",
+            padding: 20,
+            background: "transparent",
+          }}
+        >
+          <div
+            className="ch-card-title"
+            style={{
+              fontWeight: 800,
+              fontSize: "1.24em",
+              marginBottom: 13,
+              color: "var(--accent,#A178DF)",
+              textShadow: "0 2px 11px #a178df1b",
+            }}
+          >
+            Caption Generator (Gemini AI)
           </div>
+          <form
+            onSubmit={(e) => { e.preventDefault(); generateCaptions(); }}
+            style={{ display: "flex", flexDirection: "column", gap: 13, marginBottom: 14 }}
+          >
+            <label htmlFor="caption-prompt" style={{ fontSize: ".98em", color: "var(--text-secondary)" }}>
+              Describe your post or product:
+            </label>
+            <input
+              id="caption-prompt"
+              type="text"
+              value={promptInput}
+              placeholder="e.g. New coffee blend, sunset beach photo, workout routine"
+              maxLength={100}
+              className="ch-search input"
+              style={{
+                background: "#181d26",
+                color: "var(--text-color)",
+                border: "1.2px solid var(--border-color)",
+                borderRadius: 15,
+                fontSize: ".98em",
+                fontWeight: 500,
+                padding: "10px 16px",
+              }}
+              onChange={(e) => setPromptInput(e.target.value)}
+            />
 
-          {/* Tone Selector */}
-          <div style={{ marginBottom: "10px" }}>
-            <label htmlFor="tone" style={labelStyle}>Select Tone:</label>
+            <label htmlFor="caption-tone" style={{ fontSize: ".98em", color: "var(--text-secondary)" }}>
+              Choose a tone:
+            </label>
             <select
-              id="tone"
-              className="input custom-select-arrow" // Added 'custom-select-arrow' for custom styling
+              id="caption-tone"
               value={tone}
               onChange={(e) => setTone(e.target.value)}
-              style={selectStyle}
+              className="ch-search input" // Reusing input styling for consistency
+              style={{
+                background: "#181d26",
+                color: "var(--text-color)",
+                border: "1.2px solid var(--border-color)",
+                borderRadius: 15,
+                fontSize: ".98em",
+                fontWeight: 500,
+                padding: "10px 16px",
+                appearance: 'none', // Remove default select arrow
+                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23A178DF' class='bi bi-chevron-down' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E")`,
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'right 12px center',
+                paddingRight: '30px', // Make space for the arrow
+              }}
             >
-              {["neutral", "funny", "inspirational", "professional", "witty", "casual", "sarcastic"].map((t) => (
-                <option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>
-              ))}
+              <option value="creative">Creative</option>
+              <option value="professional">Professional</option>
+              <option value="funny">Funny</option>
+              <option value="inspirational">Inspirational</option>
+              <option value="informative">Informative</option>
             </select>
+
+            <button
+              type="submit"
+              className="ch-info-btn btn"
+              disabled={isGenerateDisabled}
+              style={{
+                marginTop: 2,
+                fontWeight: 700,
+                alignSelf: "flex-start",
+                minWidth: 95,
+                background: "var(--accent-gradient)",
+                color: "#fff"
+              }}
+            >
+              {loading ? "Generating..." : "Generate"}
+            </button>
+          </form>
+
+          {error && <div style={{ color: "var(--danger)", margin: "8px 0" }}>{error}</div>}
+
+          <div>
+            {loading ? (
+              <div className="ch-loader" style={{ marginTop: 12, marginBottom: 15 }}>Generating captions...</div>
+            ) : (
+              captions.length > 0 && (
+                <>
+                  <div style={{ fontSize: ".98em", color: "var(--text-secondary)", marginBottom: 10 }}>
+                    Generated Captions:
+                  </div>
+                  {captions.map((cap, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        marginBottom: 10,
+                        background: "var(--card-bg, rgba(43,48,70,0.82))", // Use a generic background
+                        borderRadius: 13,
+                        padding: "13px 16px",
+                        boxShadow: "0 2.5px 11px rgba(161,120,223,0.16)",
+                        fontSize: ".95em",
+                        color: "var(--text-color)",
+                      }}
+                    >
+                      {cap}
+                    </div>
+                  ))}
+                </>
+              )
+            )}
           </div>
-
-          {/* Keywords */}
-          <div style={{ marginBottom: "15px" }}>
-            <label htmlFor="keywords" style={labelStyle}>Keywords (comma-separated):</label>
-            <input
-              id="keywords"
-              type="text"
-              className="input" // Using the global 'input' class from App.css
-              placeholder="e.g., summer, beachlife, #travel"
-              value={keywords}
-              onChange={(e) => setKeywords(e.target.value)}
-              style={{ width: "98%" }}
-            />
+          {/* Actions */}
+          <div style={{ display: "flex", gap: 11, marginTop: 20 }}>
+            <button
+              type="button"
+              className="ch-info-btn btn"
+              style={{
+                background: "var(--accent-gradient-focus)",
+                color: "#fff",
+                fontWeight: 700,
+                minWidth: 83,
+                boxShadow: "0 1.1px 9px rgba(206,109,135,0.25)",
+              }}
+              onClick={handleCopyAllCaptions}
+              disabled={loading || captions.length === 0}
+              aria-label="Copy all captions"
+            >
+              {copied ? "Copied!" : "Copy All"}
+            </button>
+            <button
+              type="button"
+              className="ch-info-btn btn"
+              style={{
+                background: "var(--info-bg)",
+                color: "var(--info)",
+                fontWeight: 600,
+                minWidth: 115,
+                boxShadow: "0 1.1px 8px rgba(130,196,236,0.13)",
+              }}
+              onClick={handleRegenerate}
+              disabled={isGenerateDisabled}
+              aria-label="Regenerate captions"
+            >
+              Regenerate
+            </button>
           </div>
-
-          {/* Generate Button */}
-          <button
-            className="btn" // Using the global 'btn' class from App.css
-            style={{ width: 170 }}
-            onClick={generateCaptions}
-            disabled={loading || !description.trim()}
-          >
-            {loading ? "Generating..." : "Generate Caption"}
-          </button>
-
-          {/* Error */}
-          {error && <div style={{ color: "var(--danger)", marginTop: "15px" }}>{error}</div>}
-
-          {/* Result */}
-          {caption && (
-            <div style={resultBoxStyle}>
-              <h4 style={{ marginBottom: "10px", color: "var(--text-primary)" }}>Generated Caption:</h4>
-              <p style={captionStyle}>{caption}</p>
-            </div>
-          )}
+          <div style={{ fontSize: ".93em", color: "var(--text-secondary)", marginTop: 16 }}>
+            Captions generated for your social media posts. Click "Copy All" to save them.
+          </div>
+          <div style={{ fontSize: ".89em", color: "var(--success)", marginTop: 5, fontWeight: 500 }}>
+            Pro tip: Select the best fit or mix and match for optimal engagement!
+          </div>
         </div>
       </Modal>
     </div>
   );
 }
-
-// 🔧 Inline Styles (These styles are for the form elements within the modal content)
-const labelStyle = {
-  display: "block",
-  marginBottom: "5px",
-  color: "var(--text-secondary)",
-  fontSize: "0.9em",
-};
-
-const textareaStyle = {
-  width: "98%",
-  resize: "vertical",
-};
-
-const selectStyle = {
-  width: "calc(98% + 2px)", // Adjust to make sure it fills like other inputs
-};
-
-const resultBoxStyle = {
-  marginTop: "20px",
-  border: "1px solid var(--border-color)",
-  padding: "15px",
-  borderRadius: "8px",
-  background: "var(--background-secondary)",
-};
-
-const captionStyle = {
-  color: "var(--text-secondary)",
-  whiteSpace: "pre-wrap",
-  fontFamily: "monospace",
-};
 
 export default CaptionGenerator;
