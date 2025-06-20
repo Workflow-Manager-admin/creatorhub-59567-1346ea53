@@ -2,22 +2,20 @@ import React, { useState, useEffect, useMemo } from "react";
 import Card from "./Card";
 import SkeletonLoader from "./SkeletonLoader";
 import GeminiInsightsModal from "./GeminiInsightsModal";
-import Modal from "./Modal"; // <--- NEW: Import the generic Modal component
+import Modal from "./Modal";
 // Import Generator components directly, as they will be passed as content
 import HashtagGenerator from "./HashtagGenerator";
 import CaptionGenerator from "./CaptionGenerator";
 import HookGenerator from "./HookGenerator";
 import ContentIdeaGenerator from "./ContentIdeaGenerator";
 import PostPlanner from "./PostPlanner";
-
-// Removed FilterBar, DashboardQuickCards, SmallToolCard imports
-// import FilterBar from "./FilterBar";
-// import DashboardQuickCards from "./LsmallToolCard"; // Typo fixed if it was there
-// import SmallToolCard from "./SmallToolCard"; // Typo fixed if it was there
+// IMPORTANT: NEW IMPORT FOR DISPLAYING USER CONTENT
+import UserContentList from "./UserContentList"; // <--- ADD THIS LINE
 
 import { fetchYoutubeContent } from "../api/youtube";
 import { fetchDevToContent } from "../api/devto";
 import { fetchGeminiContent } from "../api/gemini";
+
 
 // Helper: Placeholder for icon/lottie (remains mostly the same)
 function IconLottiePlaceholder({ type = "lottie", size = 48 }) {
@@ -180,7 +178,6 @@ function CarouselSection({ title, items, CardComp, accent }) {
               cursor: canScrollLeft ? "pointer" : "default",
               fontSize: "2.1rem",
               transition: "color 0.13s",
-              // outline: "none", // Explicitly ensure no outline
               marginRight: 2
             }}
             tabIndex={0}
@@ -199,7 +196,6 @@ function CarouselSection({ title, items, CardComp, accent }) {
               cursor: canScrollRight ? "pointer" : "default",
               fontSize: "2.1rem",
               transition: "color 0.13s",
-              // outline: "none" // Explicitly ensure no outline
             }}
             tabIndex={0}
             type="button"
@@ -516,7 +512,7 @@ function DashboardView({ user = { name: "Alex" } }) {
           textShadow: "0 2px 40px #1e90ff54,0 1px 8px #fd3a6921"
         }}
       >
-        Welcome back, {user.name} <span role="img" aria-label="wave">👋</span>
+        Welcome back, {user.email ? user.email.split('@')[0] : 'Creator'} <span role="img" aria-label="wave">👋</span>
       </div>
       <div
         style={{
@@ -608,6 +604,12 @@ function DashboardView({ user = { name: "Alex" } }) {
           )}
         </>
       )}
+
+      {/* IMPORTANT: ADD THE USER CONTENT LIST HERE */}
+      <div style={{ width: "100%", maxWidth: 1200, padding: '0 20px', margin: '40px auto' }}>
+        <UserContentList />
+      </div>
+
 
       {/* Central Gemini InsightsModal for any card */}
       {insightsModal.open && (
