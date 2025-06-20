@@ -22,6 +22,7 @@ modules by path ./.ve/ 15.1 KiB
     ./.ve/EditorOverlay.css 2.25 KiB [built] [code generated]
     ./node_modules/css-loader/dist/cjs.js!./.ve/EditorOverlay.css 697 bytes [built] [code generated]
   ./.ve/EditorOverlay.jsx 1.58 KiB [built] [code generated]
+<<<<<<< Updated upstream
 
 ERROR in ./src/components/CaptionGenerator.js 2:0-29
 Module not found: Error: Can't resolve '../Modal' in '/home/kavia/workspace/code-generation/creatorhub-59567-1346ea53/creatorhub_frontend/src/components'
@@ -55,3 +56,6 @@ cached modules 3.2 MiB [cached] 85 modules
 runtime modules 27.5 KiB 14 modules
 ./src/components/CaptionGenerator.js 11.1 KiB [built] [code generated]
 webpack 5.99.9 compiled successfully in 81 ms
+=======
+webpack 5.99.9 compiled successfully in 2430 ms
+>>>>>>> Stashed changes
