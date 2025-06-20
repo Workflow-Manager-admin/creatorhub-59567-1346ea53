@@ -6,10 +6,8 @@ import {
   onAuthStateChanged
 } from "firebase/auth";
 // IMPORTANT: Ensure 'onSnapshot' and 'deleteDoc' are imported
-import { doc, setDoc, collection, addDoc, getDoc, query, where, getDocs, onSnapshot, updateDoc, deleteDoc } from "firebase/firestore"; // <--- ADD onSnapshot, updateDoc, deleteDoc
+import { doc, setDoc, collection, addDoc, getDoc, query, where, getDocs, onSnapshot, updateDoc, deleteDoc } from "firebase/firestore";
 import { auth, db } from "./firebaseConfig";
-
-// ... (your existing signUp, signIn, logout, subscribeToAuthChanges, saveUserContent, getUserProfile functions) ...
 
 /**
  * Registers a new user with email and password and saves basic user data to Firestore.
@@ -209,6 +207,33 @@ const deleteUserContent = async (contentId) => {
   }
 };
 
+/**
+ * Updates the profile data for the currently logged-in user in Firestore.
+ * @param {object} profileData - The data to update (e.g., { name: "Jane Doe", bio: "Content Creator" }).
+ * @returns {Promise<void>}
+ */
+const updateUserProfile = async (profileData) => {
+  if (!auth.currentUser) {
+    console.error("No user logged in to update profile.");
+    throw new Error("Authentication required to update profile.");
+  }
+
+  try {
+    const userUid = auth.currentUser.uid;
+    const userRef = doc(db, "users", userUid); // Reference to the user's document
+
+    // Use updateDoc to merge new data into the existing document
+    await updateDoc(userRef, {
+      ...profileData,
+      updatedAt: new Date() // Add an 'updatedAt' timestamp
+    });
+    console.log(`User profile for UID: ${userUid} updated successfully.`);
+  } catch (error) {
+    console.error("Error updating user profile:", error);
+    throw error;
+  }
+};
+
 
 // Export all the functions, including the new ones
 export {
@@ -218,7 +243,8 @@ export {
   subscribeToAuthChanges,
   saveUserContent,
   getUserProfile,
-  subscribeToUserContent, // <--- EXPORT NEW REAL-TIME FUNCTION
-  updateUserContent,      // <--- EXPORT NEW UPDATE FUNCTION
-  deleteUserContent       // <--- EXPORT NEW DELETE FUNCTION
+  subscribeToUserContent,
+  updateUserContent,
+  deleteUserContent,
+  updateUserProfile // <--- NEW EXPORTED FUNCTION
 };

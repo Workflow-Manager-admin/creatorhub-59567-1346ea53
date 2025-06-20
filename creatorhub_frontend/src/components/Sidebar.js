@@ -1,3 +1,4 @@
+// src/components/Sidebar.js
 import React, { useState, useEffect } from "react";
 
 /**
@@ -24,7 +25,7 @@ function Sidebar({ collapsed, activeTab, setActiveTab }) {
         // Lucide Wrench Icon
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round"><path d="M21.6 20.3a2.4 2.4 0 0 1-3.5 0l-4.2-4.2a7 7 0 0 1-6.1-1.9 7 7 0 0 1-1.9-6.1l4.2-4.2a2.4 2.4 0 1 1 3.5-3.5l4.2 4.2a7 7 0 0 1 1.9 6.1 7 7 0 0 1-6.1 1.9z"/><path d="M18 22h0"/></svg>
       ),
-      label: "Tools", // Updated to route to new Tools page via its key
+      label: "Tools",
     },
     {
       key: "learning",
@@ -32,7 +33,15 @@ function Sidebar({ collapsed, activeTab, setActiveTab }) {
         // Phosphor Book Icon
         <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round"><path d="M3 19.5V6a2 2 0 0 1 2-2h11.5"/><path d="M9 7h7.5A2.5 2.5 0 0 1 19 9.5v11.5"/><path d="M3.27 20h17.46"/><path d="M7 17l2-2 2 2 2-2 2 2"/></svg>
       ),
-      label: "Learning", // Updated to route to LearningSplitView via its key
+      label: "Learning",
+    },
+    {
+      key: "profile",
+      icon: (
+        // Lucide User Icon
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      ),
+      label: "Profile",
     },
   ];
 
@@ -108,10 +117,10 @@ function Sidebar({ collapsed, activeTab, setActiveTab }) {
                     margin: "0 0 13px 0",
                     borderRadius: 15,
                     color: activeTab === link.key ? "#fff" : "var(--text-secondary)",
-                    background: activeTab === link.key
-                      ? "var(--accent-gradient)"
+                    background: activeTab === link.key // <--- CHANGED HERE
+                      ? "var(--button-blaze-orange)" // <--- NEW COLOR VARIABLE
                       : "none",
-                    boxShadow: activeTab === link.key ? "0 3px 18px #fd3a6929" : "none",
+                    boxShadow: activeTab === link.key ? "0 3px 18px #fd3a6929" : "none", // Keep existing shadow or update
                     cursor: "pointer",
                     transition: "background .15s, color .17s,box-shadow .19s",
                     outline: "none"
@@ -127,7 +136,7 @@ function Sidebar({ collapsed, activeTab, setActiveTab }) {
                     <span
                       aria-hidden="true"
                       style={{
-                        background: "var(--accent-gradient)",
+                        background: "var(--accent-gradient)", // Keep accent gradient for the small indicator
                         borderRadius: "7px",
                         width: 8, height: 8,
                         marginLeft: "auto"
@@ -180,8 +189,8 @@ function Sidebar({ collapsed, activeTab, setActiveTab }) {
               borderRadius: collapsed ? "17px" : "19px",
               fontWeight: activeTab === link.key ? 700 : 500,
               color: activeTab === link.key ? "#fff" : "var(--text-secondary)",
-              background: activeTab === link.key
-                ? "var(--accent-gradient)"
+              background: activeTab === link.key // <--- CHANGED HERE
+                ? "var(--button-blaze-orange)" // <--- NEW COLOR VARIABLE
                 : "none",
               position: "relative",
               padding: collapsed ? "14px 0" : "14px 22px 14px 13px",
@@ -216,7 +225,7 @@ function Sidebar({ collapsed, activeTab, setActiveTab }) {
                   top: "50%",
                   transform: "translateY(-50%)",
                   borderRadius: 4,
-                  background: "linear-gradient(92deg,#FF7E5F 26%,#FD3A69 100%)",
+                  background: "linear-gradient(92deg,#FF7E5F 26%,#FD3A69 100%)", // Keep this gradient for the side indicator
                   boxShadow: "0 2.5px 12px #ef943d23"
                 }}
               />
