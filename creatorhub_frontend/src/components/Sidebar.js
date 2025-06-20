@@ -1,11 +1,11 @@
-// src/components/Sidebar.js
 import React, { useState, useEffect } from "react";
 
 /**
  * PUBLIC_INTERFACE
  * Sidebar - Modern, animated, compact, gradient/blur sidebar with icons. Collapsible & mobile-friendly.
+ * Integrated logo and app name at the top, moved sidebar collapse/expand button here from removed Topbar.
  */
-function Sidebar({ collapsed, activeTab, setActiveTab }) {
+function Sidebar({ collapsed, activeTab, setActiveTab, setSidebarCollapsed }) {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 800);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -160,9 +160,102 @@ function Sidebar({ collapsed, activeTab, setActiveTab }) {
       style={{
         minWidth: collapsed ? 64 : 178,
         width: collapsed ? 66 : undefined,
-        transition: "min-width 0.25s, width 0.25s"
+        transition: "min-width 0.25s, width 0.25s",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: collapsed ? "center" : "flex-start"
       }}
     >
+      {/* Logo and App name at the very top */}
+      <div style={{
+        display: "flex",
+        flexDirection: collapsed ? "column" : "row",
+        alignItems: "center",
+        justifyContent: collapsed ? "center" : "flex-start",
+        width: "100%",
+        minHeight: 70,
+        padding: collapsed ? "17px 0 10px 0" : "25px 0 10px 18px",
+        marginBottom: collapsed ? 10 : 18,
+        gap: collapsed ? 0 : 13
+      }}>
+        {/* Simple SVG logo or emoji as placeholder; swap with PNG/SVG asset if needed */}
+        <span style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "var(--accent-gradient)",
+          borderRadius: "37%",
+          width: collapsed ? 38 : 44,
+          height: collapsed ? 38 : 44,
+          minWidth: 36,
+          boxShadow: "0 1.5px 8px #e87a4133",
+          marginRight: collapsed ? 0 : 9,
+        }}>
+          {/* You can replace with an SVG or imported asset */}
+          <svg width={collapsed ? 27 : 31} height={collapsed ? 27 : 31} viewBox="0 0 32 32" fill="none">
+            <rect x="2.5" y="6.5" width="27" height="19" rx="7" fill="#E87A41" />
+            <rect x="8" y="10" width="16" height="12" rx="6" fill="#2C3E70" />
+          </svg>
+        </span>
+        {!collapsed && (
+          <span
+            style={{
+              fontSize: "1.31rem",
+              fontWeight: 800,
+              color: "var(--accent)",
+              textShadow: "0 2px 24px #e87a4140",
+              letterSpacing: "-.01em",
+              marginLeft: 0,
+              userSelect: "none",
+              lineHeight: 1.0
+            }}
+            className="sidebar-app-title"
+          >
+            CreatorHub
+          </span>
+        )}
+        {/* Sidebar toggle/collapse button (top right of sidebar header) */}
+        <button
+          className="ch-sidebar-toggle"
+          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          style={{
+            marginLeft: collapsed ? 0 : "auto",
+            marginTop: collapsed ? 7 : 0,
+            background: "var(--accent-gradient)",
+            color: "#fff",
+            border: "none",
+            borderRadius: 99,
+            padding: collapsed ? "7px 8px" : "7px 14px",
+            fontWeight: 700,
+            fontSize: "1.09em",
+            boxShadow: "0 2px 10px #e87a4130",
+            transition: "filter .15s",
+            outline: "none",
+            cursor: "pointer"
+          }}
+          onClick={() => setSidebarCollapsed && setSidebarCollapsed((v) => !v)}
+          tabIndex={0}
+          type="button"
+        >
+          <span style={{ display: "inline-flex", alignItems: "center" }}>
+            {collapsed ? (
+              // Icon for expand
+              <svg width={23} height={23} viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="3" />
+                <line x1="9" y1="3" x2="9" y2="21" />
+              </svg>
+            ) : (
+              // Icon for collapse
+              <svg width={23} height={23} viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" strokeWidth="2.15" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="3" />
+                <line x1="6" y1="3" x2="6" y2="21" />
+              </svg>
+            )}
+          </span>
+        </button>
+      </div>
       <ul
         style={{
           listStyle: "none",
@@ -171,7 +264,8 @@ function Sidebar({ collapsed, activeTab, setActiveTab }) {
           display: "flex",
           flexDirection: "column",
           alignItems: collapsed ? "center" : "flex-start",
-          gap: 7
+          gap: 7,
+          flex: 1 // allow nav to fill vertical space below header
         }}
       >
         {links.map((link, idx) => (
@@ -189,8 +283,8 @@ function Sidebar({ collapsed, activeTab, setActiveTab }) {
               borderRadius: collapsed ? "17px" : "19px",
               fontWeight: activeTab === link.key ? 700 : 500,
               color: activeTab === link.key ? "#fff" : "var(--text-secondary)",
-              background: activeTab === link.key // <--- CHANGED HERE
-                ? "var(--button-blaze-orange)" // <--- NEW COLOR VARIABLE
+              background: activeTab === link.key
+                ? "var(--button-blaze-orange)"
                 : "none",
               position: "relative",
               padding: collapsed ? "14px 0" : "14px 22px 14px 13px",
@@ -225,7 +319,7 @@ function Sidebar({ collapsed, activeTab, setActiveTab }) {
                   top: "50%",
                   transform: "translateY(-50%)",
                   borderRadius: 4,
-                  background: "linear-gradient(92deg,#FF7E5F 26%,#FD3A69 100%)", // Keep this gradient for the side indicator
+                  background: "linear-gradient(92deg,#FF7E5F 26%,#FD3A69 100%)",
                   boxShadow: "0 2.5px 12px #ef943d23"
                 }}
               />

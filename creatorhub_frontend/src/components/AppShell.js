@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Topbar from "./Topbar";
 import Sidebar from "./Sidebar";
 
 /**
@@ -12,15 +11,12 @@ function AppShell({ children, view, setView }) {
 
   return (
     <div className={`app-shell${sidebarCollapsed ? " sidebar-collapsed" : ""}`}>
-      <Topbar
-        sidebarCollapsed={sidebarCollapsed}
-        setSidebarCollapsed={setSidebarCollapsed}
-      />
       <div className="app-shell-body">
         <Sidebar
           collapsed={sidebarCollapsed}
           activeTab={view}
           setActiveTab={setView}
+          setSidebarCollapsed={setSidebarCollapsed}
         />
         <main className="main-content">
           {children}
