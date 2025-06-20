@@ -3,11 +3,12 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  onAuthStateChanged
+  onAuthStateChanged,
+  signInWithPopup // <--- Correctly imported
 } from "firebase/auth";
 // IMPORTANT: Ensure 'onSnapshot' and 'deleteDoc' are imported
 import { doc, setDoc, collection, addDoc, getDoc, query, where, getDocs, onSnapshot, updateDoc, deleteDoc } from "firebase/firestore";
-import { auth, db } from "./firebaseConfig";
+import { auth, db , googleProvider} from "./firebaseConfig"; // <--- googleProvider is imported
 
 /**
  * Registers a new user with email and password and saves basic user data to Firestore.
@@ -234,8 +235,45 @@ const updateUserProfile = async (profileData) => {
   }
 };
 
+/**
+ * Signs in a user using Google with a popup.
+ * If it's a new user, their basic profile data (email, name) will be saved to Firestore.
+ * @returns {Promise<UserCredential>} - Firebase UserCredential object
+ */
+const signInWithGoogle = async () => { // <--- NEW FUNCTION ADDED HERE
+  try {
+    const userCredential = await signInWithPopup(auth, googleProvider);
+    const user = userCredential.user;
 
-// Export all the functions, including the new ones
+    // Check if the user is new and save their profile if they are.
+    // This is important because Google sign-ins don't automatically
+    // create a 'users' document in your Firestore.
+    const userDocRef = doc(db, "users", user.uid);
+    const userDocSnap = await getDoc(userDocRef);
+
+    if (!userDocSnap.exists()) {
+      // User is new, save their initial data
+      await setDoc(userDocRef, {
+        email: user.email,
+        name: user.displayName || "", // Google provides displayName
+        photoURL: user.photoURL || "", // Google provides photoURL
+        createdAt: new Date(),
+      });
+      console.log("New Google user data saved:", user.uid);
+    } else {
+      console.log("Existing Google user signed in:", user.uid);
+    }
+
+    return userCredential;
+  } catch (error) {
+    console.error("Error signing in with Google:", error.code, error.message);
+    // Handle specific errors like 'popup-closed-by-user' more gracefully if needed
+    throw error; // Re-throw to be handled by the component
+  }
+};
+
+
+// Export all the functions, including the new one
 export {
   signUp,
   signIn,
@@ -246,5 +284,6 @@ export {
   subscribeToUserContent,
   updateUserContent,
   deleteUserContent,
-  updateUserProfile // <--- NEW EXPORTED FUNCTION
+  updateUserProfile,
+  signInWithGoogle // <--- NEW EXPORTED FUNCTION ADDED HERE
 };

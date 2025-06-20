@@ -76,55 +76,7 @@ function Topbar({ sidebarCollapsed, setSidebarCollapsed }) {
       </button>
       <div className="ch-logo">CreatorHub</div>
       <div style={{ flex: 1 }} />
-      {/* Right area: search and login */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "1.1rem",
-          marginLeft: "auto",
-        }}
-      >
-        <input
-          className="ch-search"
-          type="text"
-          placeholder="Search tools or tutorials..."
-          style={{ margin: "0 0.2rem 0 0", minWidth: 175 }}
-        />
-        <button
-          className="ch-login-btn"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            fontWeight: 700,
-            gap: 7,
-          }}
-        >
-          {/* Heroicons User Icon */}
-          <span
-            style={{
-              display: "flex",
-              alignItems: "center",
-              fontSize: "1.06em",
-            }}
-          >
-            <svg
-              width={22}
-              height={22}
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.12"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="12" cy="9" r="4" />
-              <path d="M5.9 19a7 7 0 0112.2 0" />
-            </svg>
-          </span>
-          <span>Login</span>
-        </button>
-      </div>
+      {/* Right area removed: search and login */}
     </header>
   );
 }
