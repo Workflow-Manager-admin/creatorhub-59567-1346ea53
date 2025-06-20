@@ -1,158 +1,101 @@
 import React from "react";
 
 /**
- * Sidebar component for CreatorHub
- * 
- * This sidebar features a modern, minimal look and includes a custom SVG 'CH' badge logo at the top.
- * 
- * ----- LOGO SWAP INSTRUCTIONS -----
- * The SVG-based 'CH' badge serves as a branded placeholder.
- * 
- * To replace this logo with a custom image or SVG:
- *   1. Swap the <CHBadgeLogo /> element below with your logo asset (e.g., <img src={logoAsset} ... /> or your SVG JSX).
- *   2. Ensure your asset fits the existing container (see .sidebar__logo styles) or update styles as needed.
- *   3. For consistent appearance, keep max width/height (48px) and margin.
- * 
- * You may also import and use a dedicated logo component or image:
- *   // import AppLogo from '../assets/logo.svg';
- *   // <img src={AppLogo} alt="CreatorHub logo" style={{maxWidth: 48, maxHeight: 48, ...}} />
- * 
- * The rest of the sidebar layout will remain compatible—a block or inline logo works seamlessly.
- * ----------------------------------
+ * Sidebar navigation for the app shell. 
+ * This renders the CreatorHub logo and navigation links. (Restored version with prior logo)
  */
+const navLinks = [
+  { label: "Dashboard", icon: "🏠", view: "dashboard" },
+  { label: "Tools", icon: "🛠️", view: "tools" },
+  { label: "Learning", icon: "📚", view: "learning" },
+  { label: "Profile", icon: "👤", view: "profile" }
+];
 
 // PUBLIC_INTERFACE
-function Sidebar({ menuItems = [], selected, onSelect }) {
+function Sidebar({ view, setView }) {
   return (
-    <aside className="sidebar" style={sidebarStyle}>
-      {/* Logo area (top) */}
-      <div style={logoContainerStyle} className="sidebar__logo">
-        {/* 
-          SVG 'CH' badge—replace this <CHBadgeLogo /> with your logo as needed.
-        */}
-        <CHBadgeLogo />
+    <aside
+      style={{
+        width: "220px",
+        minWidth: "180px",
+        background: "var(--kavia-dark)",
+        color: "var(--text-color)",
+        borderRight: "1px solid var(--border-color)",
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        paddingTop: "24px",
+        position: "relative",
+        zIndex: 2
+      }}
+      data-testid="sidebar"
+    >
+      {/* Logo/logo-text (restored) */}
+      <div
+        style={{
+          fontFamily: "'Montserrat', 'Arial', sans-serif",
+          fontWeight: 900,
+          letterSpacing: "0.02em",
+          fontSize: "2.2rem",
+          color: "var(--kavia-orange)",
+          marginBottom: "32px",
+          display: "flex",
+          alignItems: "center",
+          userSelect: "none"
+        }}
+      >
+        {/* If there was a logo image before, restore it here. Otherwise, restore the styled text logo */}
+        Creator
+        <span style={{ color: "#fff", fontWeight: 700, marginLeft: "4px" }}>
+          Hub
+        </span>
       </div>
-      {/* Navigation / menu items */}
-      <nav className="sidebar__nav" style={navStyle}>
-        {menuItems.map(item => (
+
+      {/* Navigation Links */}
+      <nav
+        style={{
+          width: "100%",
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          gap: "6px"
+        }}
+      >
+        {navLinks.map((item) => (
           <button
-            key={item.key}
-            onClick={() => onSelect(item.key)}
-            className={`sidebar__nav-item${selected === item.key ? " selected" : ""}`}
+            key={item.view}
+            onClick={() => setView(item.view)}
             style={{
-              ...navItemStyle,
-              ...(selected === item.key ? navItemSelectedStyle : {}),
+              display: "flex",
+              alignItems: "center",
+              width: "100%",
+              background:
+                view === item.view
+                  ? "rgba(255,255,255,0.07)"
+                  : "transparent",
+              border: "none",
+              outline: "none",
+              color: "inherit",
+              cursor: "pointer",
+              padding: "14px 24px",
+              fontSize: "1.04em",
+              fontWeight: view === item.view ? 700 : 400,
+              borderRadius: "0 32px 32px 0",
+              transition: "background 0.17s"
             }}
+            aria-current={view === item.view ? "page" : undefined}
           >
-            {item.icon && <span style={{ marginRight: 10 }}>{item.icon}</span>}
-            <span>{item.label}</span>
+            <span style={{ fontSize: "1.18em", marginRight: "11px" }}>
+              {item.icon}
+            </span>
+            {item.label}
           </button>
         ))}
       </nav>
+      <div style={{ flex: 0, minHeight: "40px" }} />
     </aside>
   );
 }
-
-// PUBLIC_INTERFACE
-function CHBadgeLogo() {
-  /**
-   * SVG badge logo for CreatorHub ("CH")
-   * - Replace with branded asset as needed
-   * - Preserves layout/spacing for future logo swaps
-   */
-  return (
-    <svg
-      width="48"
-      height="48"
-      viewBox="0 0 48 48"
-      aria-label="CreatorHub Logo"
-      style={{
-        display: "block",
-        margin: "0 auto",
-        background: "var(--kavia-dark, #1A1A1A)",
-        borderRadius: "12px",
-        boxShadow: "0 1px 6px 0 rgba(60,60,60,0.09)",
-      }}
-    >
-      <rect
-        x="0" y="0" width="48" height="48"
-        rx="12"
-        fill="var(--kavia-dark, #1A1A1A)"
-        stroke="var(--kavia-orange, #E87A41)"
-        strokeWidth="2"
-      />
-      <text
-        x="50%"
-        y="54%"
-        textAnchor="middle"
-        dominantBaseline="middle"
-        fill="var(--kavia-orange, #E87A41)"
-        fontFamily="'Inter', 'Segoe UI', Arial, sans-serif"
-        fontWeight="bold"
-        fontSize="22"
-        letterSpacing="4"
-      >
-        CH
-      </text>
-    </svg>
-  );
-}
-
-/* ---- Inline styles for sidebar ---- */
-
-const sidebarStyle = {
-  width: 80,
-  minWidth: 80,
-  background: "var(--kavia-dark, #1A1A1A)",
-  color: "var(--text-color, #fff)",
-  borderRight: "1.5px solid var(--border-color, rgba(255,255,255,0.10))",
-  height: "100vh",
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  padding: "16px 0",
-  boxSizing: "border-box",
-  flexShrink: 0,
-  zIndex: 40,
-};
-
-const logoContainerStyle = {
-  marginBottom: 32,
-  width: "100%",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-};
-
-const navStyle = {
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  gap: 12,
-  width: "100%",
-};
-
-const navItemStyle = {
-  background: "none",
-  border: "none",
-  color: "inherit",
-  font: "inherit",
-  padding: "12px 8px",
-  cursor: "pointer",
-  borderRadius: 8,
-  transition: "background 0.16s",
-  display: "flex",
-  alignItems: "center",
-  width: "80%",
-  justifyContent: "flex-start",
-  textAlign: "left",
-};
-
-const navItemSelectedStyle = {
-  background: "var(--kavia-orange, #E87A41)",
-  color: "#fff",
-};
-
-/* ---- END OF STYLES ---- */
 
 export default Sidebar;
