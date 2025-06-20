@@ -183,18 +183,38 @@ function Sidebar({ collapsed, activeTab, setActiveTab, setSidebarCollapsed }) {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "var(--accent-gradient)",
+          // Use a subtle gradient that fits the new logo colors
+          background: "linear-gradient(135deg, #2C3E70 68%, #C9B22D 135%)",
           borderRadius: "37%",
           width: collapsed ? 38 : 44,
           height: collapsed ? 38 : 44,
           minWidth: 36,
-          boxShadow: "0 1.5px 8px #e87a4133",
+          boxShadow: "0 2px 12px #2C3E7032, 0 1.5px 8px #C9B22D22",
           marginRight: collapsed ? 0 : 9,
+          transition: "background 0.24s"
         }}>
-          {/* You can replace with an SVG or imported asset */}
-          <svg width={collapsed ? 27 : 31} height={collapsed ? 27 : 31} viewBox="0 0 32 32" fill="none">
-            <rect x="2.5" y="6.5" width="27" height="19" rx="7" fill="#E87A41" />
-            <rect x="8" y="10" width="16" height="12" rx="6" fill="#2C3E70" />
+          {/* Modernized SVG Logo using brand colors, Creative "CH" monogram with shine accent */}
+          <svg
+            width={collapsed ? 27 : 32}
+            height={collapsed ? 27 : 32}
+            viewBox="0 0 40 40"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            style={{ display: "block" }}
+            aria-label="CreatorHub Logo"
+          >
+            <circle cx="20" cy="20" r="19" fill="#2C3E70" stroke="#C9B22D" strokeWidth="2"/>
+            <path
+              d="M10.25 19.98c0-5.6 3.14-9.1 8.7-9.1 3.82 0 6.34 2.06 7.15 5.36h-4.26c-.45-1.09-1.42-1.7-2.86-1.7-2.47 0-3.99 1.84-3.99 5.2s1.52 5.14 3.99 5.14c1.44 0 2.41-.61 2.86-1.68h4.26c-.81 3.26-3.37 5.33-7.15 5.33-5.56 0-8.7-3.51-8.7-9.1z"
+              fill="#C9B22D"
+              style={{ filter: "drop-shadow(0 0 5px #2C3E7011)" }}
+            />
+            <text x="20" y="28" textAnchor="middle" fontFamily="Poppins,Arial,sans-serif" fontSize="12" fontWeight="bold" fill="#1E1E2F" letterSpacing="2"
+              style={{ textShadow: "0 1px 7px #C9B22D88" }}>CH</text>
+            <ellipse cx="31" cy="12" rx="4" ry="1.3"
+              fill="#fff" opacity="0.18" transform="rotate(-14 31 12)"/>
+            <ellipse cx="17" cy="13" rx="1.4" ry="0.6"
+              fill="#fff" opacity="0.17" transform="rotate(-9 17 13)"/>
           </svg>
         </span>
         {!collapsed && (
