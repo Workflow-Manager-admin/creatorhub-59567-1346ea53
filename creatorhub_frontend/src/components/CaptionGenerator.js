@@ -1,35 +1,23 @@
 import React, { useState } from "react";
-// Import the GoogleGenerativeAI SDK
-import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // PUBLIC_INTERFACE
 /**
- * CaptionGenerator - generates social captions using the Gemini API.
+ * CaptionGenerator - generates social captions using the Gemini API via RapidAPI.
  */
 function CaptionGenerator() {
-  // Renamed 'input' to 'description' for clarity and added 'tone' and 'keywords'
   const [description, setDescription] = useState("");
-  const [tone, setTone] = useState("neutral"); // Default tone
-  const [keywords, setKeywords] = useState(""); // For comma-separated keywords
-  const [caption, setCaption] = useState(""); // Changed from 'captions' array to a single 'caption' string
+  const [tone, setTone] = useState("neutral");
+  const [keywords, setKeywords] = useState("");
+  const [caption, setCaption] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // --- Gemini API Configuration ---
-  // IMPORTANT: For production, this key MUST be handled on a backend server
-  // (e.g., using process.env.REACT_APP_GEMINI_API_KEY for a React app,
-  // but the actual call to Gemini should be from your server).
-  const GEMINI_API_KEY = 'AIzaSyDfR-hi5UrN9BD4olYleIT-ELn0wXh0g4g'; // <<< REPLACE THIS with your actual API key
+  // ⚠️ Use environment variables in production
+  const RAPIDAPI_KEY = '6d105ed8cfmsh977c9a021254071p16d2e4jsndadd8381e47f'; // Make sure this key is correct
+  const RAPIDAPI_HOST = "gemini-pro-ai.p.rapidapi.com";
+  // CONFIRMED: The endpoint is just the host, no /text path needed.
+  const RAPIDAPI_ENDPOINT = `https://${RAPIDAPI_HOST}/`;
 
-  // Initialize the Generative Model
-  // Ensure 'gemini-pro' is the correct model for text generation based on your project's access
-  const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-pro-latest' });
-
-  // PUBLIC_INTERFACE
-  /**
-   * Calls the Gemini API to generate a caption based on user input.
-   */
   async function generateCaptions() {
     if (!description.trim()) {
       setError("Please provide a description for the caption.");
@@ -38,143 +26,195 @@ function CaptionGenerator() {
 
     setLoading(true);
     setError(null);
-    setCaption(""); // Clear previous caption
+    setCaption("");
+
+    // Build prompt string
+    let prompt = `Generate a social media caption based on: "${description}".`;
+    if (tone !== "neutral") prompt += ` Tone: ${tone}.`;
+    if (keywords.trim()) prompt += ` Include these keywords: ${keywords}.`;
+    prompt += " Keep it concise and engaging.";
 
     try {
-      // --- Construct the Prompt for Gemini ---
-      // This is where you tell Gemini exactly what you want
-      let prompt = `Generate a social media caption based on the following description: "${description}".`;
-
-      if (tone && tone !== 'neutral') {
-        prompt += ` The tone should be ${tone}.`;
-      }
-      if (keywords.trim()) {
-        prompt += ` Include these keywords: ${keywords}.`;
-      }
-      prompt += ` Keep it concise and engaging.`;
-
-      // Make the API call to Gemini
-      const result = await model.generateContent({
-        contents: [{ role: 'user', parts: [{ text: prompt }] }],
-        generationConfig: {
-          temperature: 0.7, // Controls creativity: 0.0 (less creative) to 1.0 (more creative)
-          maxOutputTokens: 150, // Max length of the generated caption
+      const response = await fetch(RAPIDAPI_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-RapidAPI-Key": RAPIDAPI_KEY,
+          "X-RapidAPI-Host": RAPIDAPI_HOST,
         },
-        // You can also add safetySettings here if needed, for example:
-        // safetySettings: [
-        //   {
-        //     category: 'HARM_CATEGORY_HARASSMENT',
-        //     threshold: 'BLOCK_MEDIUM_AND_ABOVE',
-        //   },
-        // ],
+        // The body now mimics the 'contents' array structure expected by Gemini API
+        body: JSON.stringify({
+          contents: [
+            {
+              role: "user",
+              parts: [
+                {
+                  text: prompt,
+                },
+              ],
+            },
+          ],
+          // You can also try to pass generationConfig here if RapidAPI supports it,
+          // but let's get the basic call working first.
+          // For example:
+          // generationConfig: {
+          //   temperature: 0.7,
+          //   maxOutputTokens: 150,
+          // },
+        }),
       });
 
-      // Get the plain text response from Gemini
-      const response = await result.response;
-      const generatedText = response.text();
+      // It's better to check response.ok *before* trying to parse JSON,
+      // as some error responses might not be valid JSON.
+      if (!response.ok) {
+        const errorText = await response.text(); // Get raw text for robust error handling
+        console.error("API error response (raw):", errorText);
+        let errorMessage = "Unknown API error occurred.";
+        try {
+          const errorData = JSON.parse(errorText);
+          errorMessage = errorData.message || errorData.error?.message || errorMessage;
+        } catch (e) {
+          // If it's not JSON, use the raw text
+          errorMessage = errorText;
+        }
 
-      if (generatedText) {
-        setCaption(generatedText.trim());
+        if (response.status === 429) {
+          setError("Rate limit exceeded. Please wait and try again.");
+        } else if (response.status === 403 || response.status === 401) {
+          setError("Invalid API key or subscription issue. " + errorMessage);
+        } else if (response.status === 400 && errorMessage.includes("contents")) {
+           setError("Bad request: Issue with request format. Ensure 'contents' is correctly structured.");
+        }
+        else {
+          setError(`API error: ${errorMessage}`);
+        }
+        return;
+      }
+
+      // If response is OK, then parse JSON
+      const data = await response.json();
+      console.log("API Full Response Data:", data); // Log the full response to console for debugging
+
+      // --- THIS IS THE FINAL CRUCIAL CHANGE ---
+      // Access the caption from the correct path in the response object
+      if (data?.candidate?.content?.parts?.[0]?.text) {
+        setCaption(data.candidate.content.parts[0].text.trim());
       } else {
-        setCaption("No caption was generated. Please try again with a different description.");
+        setCaption("No caption generated. Try refining your input or check console for response details.");
+        console.warn("Unexpected response format or no caption in expected path:", data);
       }
 
     } catch (err) {
-      console.error('Error generating caption with Gemini API:', err);
-      // Provide more specific error messages based on common Gemini API errors
-      if (err.message.includes('API key not valid')) {
-        setError('Invalid Gemini API Key. Please check your key.');
-      } else if (err.message.includes('Quota exceeded')) {
-        setError('API quota exceeded for the selected model. Please check your usage limits.');
-      } else if (err.message.includes('429')) { // Too Many Requests
-        setError('Too many requests. Please wait a moment and try again.');
-      } else {
-        setError(`Failed to generate caption: ${err.message || 'An unknown error occurred.'}`);
-      }
+      console.error("Network/API error:", err);
+      setError(`Network error: ${err.message || "Unknown issue"}`);
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div style={{ padding: '15px' }}> {/* Added some padding for better spacing within the modal */}
-      <h3 style={{ marginBottom: '15px', color: 'var(--text-primary)' }}>Caption Generator (Gemini AI)</h3>
+    <div style={{ padding: "15px" }}>
+      <h3 style={{ marginBottom: "15px", color: "var(--text-primary)" }}>
+        Caption Generator (Gemini AI via RapidAPI)
+      </h3>
 
-      {/* Description Input (now a textarea) */}
-      <div style={{ marginBottom: '10px' }}>
-        <label htmlFor="description" style={{ display: 'block', marginBottom: '5px', color: 'var(--text-secondary)', fontSize: '0.9em' }}>
-          Describe your post or image:
-        </label>
+      {/* Description */}
+      <div style={{ marginBottom: "10px" }}>
+        <label htmlFor="description" style={labelStyle}>Describe your post or image:</label>
         <textarea
           id="description"
-          className="input" // Reusing your existing styling class
-          placeholder="e.g., A sunny beach day with friends, New product launch for eco-friendly bags..."
+          className="input"
+          placeholder="e.g., A sunny beach day with friends..."
           value={description}
-          autoFocus
           onChange={(e) => setDescription(e.target.value)}
-          rows="4" // Make it a textarea for longer descriptions
-          style={{ width: "98%", resize: 'vertical' }} // Allow vertical resizing
+          rows="4"
+          style={textareaStyle}
         />
       </div>
 
-      {/* Tone Selection (New) */}
-      <div style={{ marginBottom: '10px' }}>
-        <label htmlFor="tone" style={{ display: 'block', marginBottom: '5px', color: 'var(--text-secondary)', fontSize: '0.9em' }}>
-          Select Tone:
-        </label>
+      {/* Tone Selector */}
+      <div style={{ marginBottom: "10px" }}>
+        <label htmlFor="tone" style={labelStyle}>Select Tone:</label>
         <select
           id="tone"
-          className="input" // Reusing your existing styling class for dropdown
+          className="input"
           value={tone}
           onChange={(e) => setTone(e.target.value)}
-          style={{ width: "calc(98% + 2px)" }} // Adjust width to visually align with textarea/input
+          style={selectStyle}
         >
-          <option value="neutral">Neutral</option>
-          <option value="funny">Funny</option>
-          <option value="inspirational">Inspirational</option>
-          <option value="professional">Professional</option>
-          <option value="witty">Witty</option>
-          <option value="casual">Casual</option>
-          <option value="sarcastic">Sarcastic</option>
-          {/* Add more tones as you find useful */}
+          {["neutral", "funny", "inspirational", "professional", "witty", "casual", "sarcastic"].map((t) => (
+            <option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>
+          ))}
         </select>
       </div>
 
-      {/* Keywords Input (New) */}
-      <div style={{ marginBottom: '15px' }}>
-        <label htmlFor="keywords" style={{ display: 'block', marginBottom: '5px', color: 'var(--text-secondary)', fontSize: '0.9em' }}>
-          Keywords (comma-separated, optional):
-        </label>
+      {/* Keywords */}
+      <div style={{ marginBottom: "15px" }}>
+        <label htmlFor="keywords" style={labelStyle}>Keywords (comma-separated):</label>
         <input
           id="keywords"
           type="text"
-          className="input" // Reusing your existing styling class
-          placeholder="e.g., summer, beachlife, friendship, #travel"
+          className="input"
+          placeholder="e.g., summer, beachlife, #travel"
           value={keywords}
           onChange={(e) => setKeywords(e.target.value)}
           style={{ width: "98%" }}
         />
       </div>
 
+      {/* Generate Button */}
       <button
-        className="btn" // Reusing your existing styling class
+        className="btn"
         style={{ width: 170 }}
         onClick={generateCaptions}
-        disabled={loading || !description.trim()} // Disable if loading or description is empty
+        disabled={loading || !description.trim()}
       >
         {loading ? "Generating..." : "Generate Caption"}
       </button>
 
-      {error && <div style={{ color: "var(--danger)", margin: "15px 0 0" }}>{error}</div>}
+      {/* Error */}
+      {error && <div style={{ color: "var(--danger)", marginTop: "15px" }}>{error}</div>}
 
+      {/* Result */}
       {caption && (
-        <div style={{ marginTop: '20px', border: '1px solid var(--border-color)', padding: '15px', borderRadius: '8px', background: 'var(--background-secondary)' }}>
-          <h4 style={{ marginBottom: '10px', color: 'var(--text-primary)' }}>Generated Caption:</h4>
-          <p style={{ color: 'var(--text-secondary)', whiteSpace: 'pre-wrap', fontFamily: 'monospace' }}>{caption}</p>
+        <div style={resultBoxStyle}>
+          <h4 style={{ marginBottom: "10px", color: "var(--text-primary)" }}>Generated Caption:</h4>
+          <p style={captionStyle}>{caption}</p>
         </div>
       )}
     </div>
   );
 }
+
+// 🔧 Inline Styles
+const labelStyle = {
+  display: "block",
+  marginBottom: "5px",
+  color: "var(--text-secondary)",
+  fontSize: "0.9em",
+};
+
+const textareaStyle = {
+  width: "98%",
+  resize: "vertical",
+};
+
+const selectStyle = {
+  width: "calc(98% + 2px)",
+};
+
+const resultBoxStyle = {
+  marginTop: "20px",
+  border: "1px solid var(--border-color)",
+  padding: "15px",
+  borderRadius: "8px",
+  background: "var(--background-secondary)",
+};
+
+const captionStyle = {
+  color: "var(--text-secondary)",
+  whiteSpace: "pre-wrap",
+  fontFamily: "monospace",
+};
 
 export default CaptionGenerator;
