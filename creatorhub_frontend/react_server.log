@@ -33,3 +33,7 @@ cached modules 3.16 MiB [cached] 83 modules
 runtime modules 27.5 KiB 14 modules
 ./src/components/Sidebar.js 12.8 KiB [built] [code generated]
 webpack 5.99.9 compiled successfully in 194 ms
+assets by status 3.49 MiB [cached] 2 assets
+cached modules 3.16 MiB (javascript) 27.5 KiB (runtime) [cached] 97 modules
+./src/App.js 5.34 KiB [built]
+webpack 5.99.9 compiled successfully in 85 ms
